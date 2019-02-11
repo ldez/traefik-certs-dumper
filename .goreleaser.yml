@@ -1,7 +1,7 @@
-project_name: treafik-certs-dumper
+project_name: traefik-certs-dumper
 
 builds:
-  - binary: treafik-certs-dumper
+  - binary: traefik-certs-dumper
     env:
       - GO111MODULE=on
     goos:

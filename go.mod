@@ -1,4 +1,4 @@
-module github.com/ldez/treafik-cert-dumper
+module github.com/ldez/traefik-certs-dumper
 
 require (
 	github.com/cenkalti/backoff v2.1.1+incompatible // indirect

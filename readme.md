@@ -37,9 +37,9 @@ Flags:
 ## Examples
 
 ```bash
-treafik-certs-dumper dump
+traefik-certs-dumper dump
 ```
 
 ```bash
-treafik-certs-dumper dump --source ./acme.json --dest ./dump
+traefik-certs-dumper dump --source ./acme.json --dest ./dump
 ```

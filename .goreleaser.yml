@@ -1,0 +1,47 @@
+project_name: treafik-certs-dumper
+
+builds:
+  - binary: treafik-certs-dumper
+    env:
+      - GO111MODULE=on
+    goos:
+      - windows
+      - darwin
+      - linux
+      - freebsd
+      - openbsd
+    goarch:
+      - amd64
+      - 386
+      - arm
+      - arm64
+    goarm:
+      - 7
+      - 6
+      - 5
+
+    ignore:
+      - goos: darwin
+        goarch: 386
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^doc:'
+      - '^chore:'
+      - '^test:'
+      - '^tests:'
+
+archive:
+  name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm}}v{{ .Arm }}{{ end }}'
+  format: tar.gz
+  format_overrides:
+    - goos: windows
+      format: zip
+  files:
+    - LICENSE
+
+#release:
+#  disable: true

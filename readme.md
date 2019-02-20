@@ -32,7 +32,7 @@ Flags:
       --crt-ext string   The file extension of the generated certificates (default ".crt")
       --dest string      Path to store the dump content. (default "./dump")
   -h, --help             help for dump
-      --key-ext string   The file extension of the generated privates keys (default ".key")
+      --key-ext string   The file extension of the generated private keys (default ".key")
       --source string    Path to 'acme.json' file. (default "./acme.json")
 ```
 
@@ -48,7 +48,6 @@ traefik-certs-dumper dump --source ./acme.json --dest ./dump
 
 ```bash
 traefik-certs-dumper dump --crt-ext=.pem --key-ext=.pem
-
 ```
 
 - https://github.com/containous/traefik/issues/4381

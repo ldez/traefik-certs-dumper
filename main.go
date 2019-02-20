@@ -36,7 +36,7 @@ func main() {
 	dumpCmd.Flags().String("source", "./acme.json", "Path to 'acme.json' file.")
 	dumpCmd.Flags().String("dest", "./dump", "Path to store the dump content.")
 	dumpCmd.Flags().String("crt-ext", ".crt", "The file extension of the generated certificates")
-	dumpCmd.Flags().String("key-ext", ".key", "The file extension of the generated privates keys")
+	dumpCmd.Flags().String("key-ext", ".key", "The file extension of the generated private keys")
 	rootCmd.AddCommand(dumpCmd)
 
 	var versionCmd = &cobra.Command{

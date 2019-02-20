@@ -4,8 +4,7 @@
 [![Build Status](https://travis-ci.org/ldez/traefik-certs-dumper.svg?branch=master)](https://travis-ci.org/ldez/traefik-certs-dumper)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ldez/traefik-certs-dumper)](https://goreportcard.com/report/github.com/ldez/traefik-certs-dumper)
 
-
-```yml
+```yaml
 Dump the content of the "acme.json" file from Traefik to certificates.
 
 Usage:
@@ -23,7 +22,7 @@ Flags:
 Use "traefik-certs-dumper [command] --help" for more information about a command.
 ```
 
-```yml
+```yaml
 Dump the content of the "acme.json" file from Traefik to certificates.
 
 Usage:
@@ -40,27 +39,44 @@ Flags:
 
 ## Examples
 
-```bash
-traefik-certs-dumper dump
+```console
+$ traefik-certs-dumper dump
+dump
+├──certs
+│  └──my.domain.com.key
+└──private
+   ├──my.domain.com.crt
+   └──letsencrypt.key
+
 ```
 
-```bash
-traefik-certs-dumper dump --source ./acme.json --dest ./dump
+```console
+$ traefik-certs-dumper dump --domain-subdir=true
+dump
+├──my.domain.com
+│  ├──certificate.crt
+│  └──privatekey.key
+└──private
+   └──letsencrypt.key
 ```
 
-```bash
-traefik-certs-dumper dump --crt-ext=.pem --key-ext=.pem
+```console
+$ traefik-certs-dumper dump --domain-subdir=true --crt-ext=.pem --key-ext=.pem
+dump
+├──my.domain.com
+│  ├──certificate.pem
+│  └──privatekey.pem
+└──private
+   └──letsencrypt.key
 ```
 
-```bash
-traefik-certs-dumper dump --domain-subdir=true
-```
+```console
+$ traefik-certs-dumper dump --source ./acme.json --dest ./dump/test
+test
+├──certs
+│  └──my.domain.com.key
+└──private
+   ├──my.domain.com.crt
+   └──letsencrypt.key
 
-- https://github.com/containous/traefik/issues/4381
-- https://github.com/containous/traefik/issues/2418
-- https://github.com/containous/traefik/issues/3847
-- https://github.com/SvenDowideit/traefik-certdumper
-
-```bash
-traefik-certs-dumper dump --use-subdir=false --crt-ext=.pem --key-ext=.pem --dest="/home/your_user/.homeassistant/"
 ```

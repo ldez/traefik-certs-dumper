@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -30,7 +31,7 @@ func main() {
 			}
 			return nil
 		},
-		Run: func(cmd *cobra.Command, _ []string) {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			acmeFile := cmd.Flag("source").Value.String()
 			dumpPath := cmd.Flag("dest").Value.String()
 			crtExt := cmd.Flag("crt-ext").Value.String()
@@ -39,8 +40,10 @@ func main() {
 
 			err := dump(acmeFile, dumpPath, crtExt, keyExt, subDir)
 			if err != nil {
-				log.Fatal(err)
+				return err
 			}
+
+			return tree(dumpPath, "")
 		},
 	}
 
@@ -65,4 +68,44 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func tree(root, indent string) error {
+	fi, err := os.Stat(root)
+	if err != nil {
+		return fmt.Errorf("could not stat %s: %v", root, err)
+	}
+
+	fmt.Println(fi.Name())
+	if !fi.IsDir() {
+		return nil
+	}
+
+	fis, err := ioutil.ReadDir(root)
+	if err != nil {
+		return fmt.Errorf("could not read dir %s: %v", root, err)
+	}
+
+	var names []string
+	for _, fi := range fis {
+		if fi.Name()[0] != '.' {
+			names = append(names, fi.Name())
+		}
+	}
+
+	for i, name := range names {
+		add := "│  "
+		if i == len(names)-1 {
+			fmt.Printf(indent + "└──")
+			add = "   "
+		} else {
+			fmt.Printf(indent + "├──")
+		}
+
+		if err := tree(filepath.Join(root, name), indent+add); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

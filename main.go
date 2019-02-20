@@ -21,6 +21,15 @@ func main() {
 		Use:   "dump",
 		Short: "Dump Let's Encrypt certificates from Traefik",
 		Long:  `Dump the content of the "acme.json" file from Traefik to certificates.`,
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			crtExt := cmd.Flag("crt-ext").Value.String()
+			keyExt := cmd.Flag("key-ext").Value.String()
+			subDir, _ := strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
+			if crtExt == keyExt && !subDir {
+				return fmt.Errorf("--crt-ext (%q) and --key-ext (%q) are identical, in this case --domain-subdir is required", crtExt, keyExt)
+			}
+			return nil
+		},
 		Run: func(cmd *cobra.Command, _ []string) {
 			acmeFile := cmd.Flag("source").Value.String()
 			dumpPath := cmd.Flag("dest").Value.String()

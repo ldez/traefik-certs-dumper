@@ -23,8 +23,10 @@ func main() {
 		Run: func(cmd *cobra.Command, _ []string) {
 			acmeFile := cmd.Flag("source").Value.String()
 			dumpPath := cmd.Flag("dest").Value.String()
+			crtExt := cmd.Flag("crt-ext").Value.String()
+			keyExt := cmd.Flag("key-ext").Value.String()
 
-			err := dump(acmeFile, dumpPath)
+			err := dump(acmeFile, dumpPath, crtExt, keyExt)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -33,6 +35,8 @@ func main() {
 
 	dumpCmd.Flags().String("source", "./acme.json", "Path to 'acme.json' file.")
 	dumpCmd.Flags().String("dest", "./dump", "Path to store the dump content.")
+	dumpCmd.Flags().String("crt-ext", ".crt", "The file extension of the generated certificates")
+	dumpCmd.Flags().String("key-ext", ".key", "The file extension of the generated privates keys")
 	rootCmd.AddCommand(dumpCmd)
 
 	var versionCmd = &cobra.Command{

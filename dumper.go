@@ -40,7 +40,7 @@ type Account struct {
 	KeyType      certcrypto.KeyType
 }
 
-func dump(acmeFile, dumpPath string) error {
+func dump(acmeFile, dumpPath string, crtExt, keyExt string) error {
 	f, err := os.Open(acmeFile)
 	if err != nil {
 		return err
@@ -66,18 +66,18 @@ func dump(acmeFile, dumpPath string) error {
 	}
 
 	privateKeyPem := extractPEMPrivateKey(data.Account)
-	err = ioutil.WriteFile(filepath.Join(dumpPath, "private", "letsencrypt.key"), privateKeyPem, 0666)
+	err = ioutil.WriteFile(filepath.Join(dumpPath, "private", "letsencrypt"+keyExt), privateKeyPem, 0666)
 	if err != nil {
 		return err
 	}
 
 	for _, cert := range data.Certificates {
-		err = ioutil.WriteFile(filepath.Join(dumpPath, "private", cert.Domain.Main+".key"), cert.Key, 0666)
+		err = ioutil.WriteFile(filepath.Join(dumpPath, "private", cert.Domain.Main+keyExt), cert.Key, 0666)
 		if err != nil {
 			return err
 		}
 
-		err = ioutil.WriteFile(filepath.Join(dumpPath, "certs", cert.Domain.Main+".crt"), cert.Certificate, 0666)
+		err = ioutil.WriteFile(filepath.Join(dumpPath, "certs", cert.Domain.Main+crtExt), cert.Certificate, 0666)
 		if err != nil {
 			return err
 		}

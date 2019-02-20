@@ -4,7 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/ldez/traefik-certs-dumper)](https://goreportcard.com/report/github.com/ldez/traefik-certs-dumper)
 
 
-```
+```yml
 Dump the content of the "acme.json" file from Traefik to certificates.
 
 Usage:
@@ -22,7 +22,7 @@ Flags:
 Use "traefik-certs-dumper [command] --help" for more information about a command.
 ```
 
-```
+```yml
 Dump the content of the "acme.json" file from Traefik to certificates.
 
 Usage:

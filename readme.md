@@ -29,11 +29,12 @@ Usage:
   traefik-certs-dumper dump [flags]
 
 Flags:
-      --crt-ext string   The file extension of the generated certificates (default ".crt")
+      --crt-ext string   The file extension of the generated certificates. (default ".crt")
       --dest string      Path to store the dump content. (default "./dump")
   -h, --help             help for dump
-      --key-ext string   The file extension of the generated private keys (default ".key")
+      --key-ext string   The file extension of the generated private keys. (default ".key")
       --source string    Path to 'acme.json' file. (default "./acme.json")
+      --use-subdir       Use separated directories for certificates and keys. (default true)
 ```
 
 ## Examples
@@ -48,6 +49,10 @@ traefik-certs-dumper dump --source ./acme.json --dest ./dump
 
 ```bash
 traefik-certs-dumper dump --crt-ext=.pem --key-ext=.pem
+```
+
+```bash
+traefik-certs-dumper dump --use-subdir=false
 ```
 
 - https://github.com/containous/traefik/issues/4381

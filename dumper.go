@@ -11,6 +11,11 @@ import (
 	"github.com/xenolf/lego/registration"
 )
 
+const (
+	certsSubDir = "certs"
+	keysSubDir  = "private"
+)
+
 // StoredData represents the data managed by the Store
 type StoredData struct {
 	Account        *Account
@@ -40,7 +45,7 @@ type Account struct {
 	KeyType      certcrypto.KeyType
 }
 
-func dump(acmeFile, dumpPath string, crtExt, keyExt string) error {
+func dump(acmeFile, dumpPath string, crtExt, keyExt string, subDir bool) error {
 	f, err := os.Open(acmeFile)
 	if err != nil {
 		return err
@@ -55,35 +60,42 @@ func dump(acmeFile, dumpPath string, crtExt, keyExt string) error {
 		return err
 	}
 
-	err = os.MkdirAll(filepath.Join(dumpPath, "certs"), 0755)
+	err = os.MkdirAll(filepath.Join(dumpPath, withSubDir(subDir, certsSubDir)), 0755)
 	if err != nil {
 		return err
 	}
 
-	err = os.MkdirAll(filepath.Join(dumpPath, "private"), 0755)
+	err = os.MkdirAll(filepath.Join(dumpPath, withSubDir(subDir, keysSubDir)), 0755)
 	if err != nil {
 		return err
 	}
 
 	privateKeyPem := extractPEMPrivateKey(data.Account)
-	err = ioutil.WriteFile(filepath.Join(dumpPath, "private", "letsencrypt"+keyExt), privateKeyPem, 0666)
+	err = ioutil.WriteFile(filepath.Join(dumpPath, withSubDir(subDir, keysSubDir), "letsencrypt"+keyExt), privateKeyPem, 0666)
 	if err != nil {
 		return err
 	}
 
 	for _, cert := range data.Certificates {
-		err = ioutil.WriteFile(filepath.Join(dumpPath, "private", cert.Domain.Main+keyExt), cert.Key, 0666)
+		err = ioutil.WriteFile(filepath.Join(dumpPath, withSubDir(subDir, keysSubDir), cert.Domain.Main+keyExt), cert.Key, 0666)
 		if err != nil {
 			return err
 		}
 
-		err = ioutil.WriteFile(filepath.Join(dumpPath, "certs", cert.Domain.Main+crtExt), cert.Certificate, 0666)
+		err = ioutil.WriteFile(filepath.Join(dumpPath, withSubDir(subDir, certsSubDir), cert.Domain.Main+crtExt), cert.Certificate, 0666)
 		if err != nil {
 			return err
 		}
 	}
 
 	return nil
+}
+
+func withSubDir(sub bool, name string) string {
+	if sub {
+		return name
+	}
+	return ""
 }
 
 func extractPEMPrivateKey(account *Account) []byte {

@@ -21,7 +21,7 @@ before_install:
 
 install:
   - echo "TRAVIS_GO_VERSION=$TRAVIS_GO_VERSION"
-  - go get
+  - go mod download
 
 deploy:
   - provider: script

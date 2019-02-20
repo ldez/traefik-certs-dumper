@@ -26,7 +26,7 @@ func main() {
 			dumpPath := cmd.Flag("dest").Value.String()
 			crtExt := cmd.Flag("crt-ext").Value.String()
 			keyExt := cmd.Flag("key-ext").Value.String()
-			subDir, _ := strconv.ParseBool(cmd.Flag("use-subdir").Value.String())
+			subDir, _ := strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
 
 			err := dump(acmeFile, dumpPath, crtExt, keyExt, subDir)
 			if err != nil {
@@ -39,7 +39,7 @@ func main() {
 	dumpCmd.Flags().String("dest", "./dump", "Path to store the dump content.")
 	dumpCmd.Flags().String("crt-ext", ".crt", "The file extension of the generated certificates.")
 	dumpCmd.Flags().String("key-ext", ".key", "The file extension of the generated private keys.")
-	dumpCmd.Flags().Bool("use-subdir", true, "Use separated directories for certificates and keys.")
+	dumpCmd.Flags().Bool("domain-subdir", false, "Use domain as sub-directory.")
 	rootCmd.AddCommand(dumpCmd)
 
 	var versionCmd = &cobra.Command{

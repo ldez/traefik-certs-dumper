@@ -32,10 +32,10 @@ Usage:
 Flags:
       --crt-ext string   The file extension of the generated certificates. (default ".crt")
       --dest string      Path to store the dump content. (default "./dump")
+      --domain-subdir    Use domain as sub-directory.
   -h, --help             help for dump
       --key-ext string   The file extension of the generated private keys. (default ".key")
       --source string    Path to 'acme.json' file. (default "./acme.json")
-      --use-subdir       Use separated directories for certificates and keys. (default true)
 ```
 
 ## Examples
@@ -53,10 +53,14 @@ traefik-certs-dumper dump --crt-ext=.pem --key-ext=.pem
 ```
 
 ```bash
-traefik-certs-dumper dump --use-subdir=false
+traefik-certs-dumper dump --domain-subdir=true
 ```
 
 - https://github.com/containous/traefik/issues/4381
 - https://github.com/containous/traefik/issues/2418
 - https://github.com/containous/traefik/issues/3847
 - https://github.com/SvenDowideit/traefik-certdumper
+
+```bash
+traefik-certs-dumper dump --use-subdir=false --crt-ext=.pem --key-ext=.pem --dest="/home/your_user/.homeassistant/"
+```

@@ -45,7 +45,7 @@ type Account struct {
 	KeyType      certcrypto.KeyType
 }
 
-func dump(acmeFile, dumpPath string, crtExt, keyExt string, subDir bool) error {
+func dump(acmeFile, dumpPath string, crtExt, keyExt string, domainSubDir bool) error {
 	f, err := os.Open(acmeFile)
 	if err != nil {
 		return err
@@ -60,29 +60,29 @@ func dump(acmeFile, dumpPath string, crtExt, keyExt string, subDir bool) error {
 		return err
 	}
 
-	err = os.MkdirAll(filepath.Join(dumpPath, withSubDir(subDir, certsSubDir)), 0755)
-	if err != nil {
-		return err
+	if !domainSubDir {
+		if err = os.MkdirAll(filepath.Join(dumpPath, certsSubDir), 0755); err != nil {
+			return err
+		}
 	}
 
-	err = os.MkdirAll(filepath.Join(dumpPath, withSubDir(subDir, keysSubDir)), 0755)
-	if err != nil {
+	if err = os.MkdirAll(filepath.Join(dumpPath, keysSubDir), 0755); err != nil {
 		return err
 	}
 
 	privateKeyPem := extractPEMPrivateKey(data.Account)
-	err = ioutil.WriteFile(filepath.Join(dumpPath, withSubDir(subDir, keysSubDir), "letsencrypt"+keyExt), privateKeyPem, 0666)
+	err = ioutil.WriteFile(filepath.Join(dumpPath, keysSubDir, "letsencrypt"+keyExt), privateKeyPem, 0666)
 	if err != nil {
 		return err
 	}
 
 	for _, cert := range data.Certificates {
-		err = ioutil.WriteFile(filepath.Join(dumpPath, withSubDir(subDir, keysSubDir), cert.Domain.Main+keyExt), cert.Key, 0666)
+		err := writeCert(dumpPath, cert, crtExt, domainSubDir)
 		if err != nil {
 			return err
 		}
 
-		err = ioutil.WriteFile(filepath.Join(dumpPath, withSubDir(subDir, certsSubDir), cert.Domain.Main+crtExt), cert.Certificate, 0666)
+		err = writeKey(dumpPath, cert, keyExt, domainSubDir)
 		if err != nil {
 			return err
 		}
@@ -91,11 +91,28 @@ func dump(acmeFile, dumpPath string, crtExt, keyExt string, subDir bool) error {
 	return nil
 }
 
-func withSubDir(sub bool, name string) string {
-	if sub {
-		return name
+func writeCert(dumpPath string, cert *Certificate, ext string, domainSubDir bool) error {
+	certPath := filepath.Join(dumpPath, keysSubDir, cert.Domain.Main+ext)
+	if domainSubDir {
+		certPath = filepath.Join(dumpPath, cert.Domain.Main, "certificate"+ext)
+		if err := os.MkdirAll(filepath.Join(dumpPath, cert.Domain.Main), 0755); err != nil {
+			return err
+		}
 	}
-	return ""
+
+	return ioutil.WriteFile(certPath, cert.Key, 0666)
+}
+
+func writeKey(dumpPath string, cert *Certificate, ext string, domainSubDir bool) error {
+	keyPath := filepath.Join(dumpPath, certsSubDir, cert.Domain.Main+ext)
+	if domainSubDir {
+		keyPath = filepath.Join(dumpPath, cert.Domain.Main, "privatekey"+ext)
+		if err := os.MkdirAll(filepath.Join(dumpPath, cert.Domain.Main), 0755); err != nil {
+			return err
+		}
+	}
+
+	return ioutil.WriteFile(keyPath, cert.Certificate, 0666)
 }
 
 func extractPEMPrivateKey(account *Account) []byte {

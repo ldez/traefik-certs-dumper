@@ -30,15 +30,19 @@ Usage:
   traefik-certs-dumper dump [flags]
 
 Flags:
-      --crt-ext string   The file extension of the generated certificates. (default ".crt")
-      --dest string      Path to store the dump content. (default "./dump")
-      --domain-subdir    Use domain as sub-directory.
-  -h, --help             help for dump
-      --key-ext string   The file extension of the generated private keys. (default ".key")
-      --source string    Path to 'acme.json' file. (default "./acme.json")
+      --crt-ext string    The file extension of the generated certificates. (default ".crt")
+      --crt-name string   The file name (without extension) of the generated certificates. (default "certificate")
+      --dest string       Path to store the dump content. (default "./dump")
+      --domain-subdir     Use domain as sub-directory.
+  -h, --help              help for dump
+      --key-ext string    The file extension of the generated private keys. (default ".key")
+      --key-name string   The file name (without extension) of the generated private keys. (default "privatekey")
+      --source string     Path to 'acme.json' file. (default "./acme.json")
 ```
 
 ## Examples
+
+### Simple Dump
 
 ```console
 $ traefik-certs-dumper dump
@@ -51,6 +55,21 @@ dump
 
 ```
 
+#### Change source and destination
+
+```console
+$ traefik-certs-dumper dump --source ./acme.json --dest ./dump/test
+test
+├──certs
+│  └──my.domain.com.key
+└──private
+   ├──my.domain.com.crt
+   └──letsencrypt.key
+
+```
+
+### Use domain as sub-directory
+
 ```console
 $ traefik-certs-dumper dump --domain-subdir=true
 dump
@@ -60,6 +79,8 @@ dump
 └──private
    └──letsencrypt.key
 ```
+
+#### Change file extension
 
 ```console
 $ traefik-certs-dumper dump --domain-subdir=true --crt-ext=.pem --key-ext=.pem
@@ -71,13 +92,14 @@ dump
    └──letsencrypt.key
 ```
 
-```console
-$ traefik-certs-dumper dump --source ./acme.json --dest ./dump/test
-test
-├──certs
-│  └──my.domain.com.key
-└──private
-   ├──my.domain.com.crt
-   └──letsencrypt.key
+#### Change file name
 
+```console
+$ traefik-certs-dumper dump --domain-subdir=true --crt-name=fullchain --key-name=privkey
+dump
+├──my.domain.com
+│  ├──fullchain.crt
+│  └──privkey.key
+└──private
+   └──letsencrypt.key
 ```

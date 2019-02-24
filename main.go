@@ -25,20 +25,33 @@ func main() {
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			crtExt := cmd.Flag("crt-ext").Value.String()
 			keyExt := cmd.Flag("key-ext").Value.String()
+
 			subDir, _ := strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
-			if crtExt == keyExt && !subDir {
-				return fmt.Errorf("--crt-ext (%q) and --key-ext (%q) are identical, in this case --domain-subdir is required", crtExt, keyExt)
+			if !subDir {
+				if crtExt == keyExt {
+					return fmt.Errorf("--crt-ext (%q) and --key-ext (%q) are identical, in this case --domain-subdir is required", crtExt, keyExt)
+				}
 			}
+
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			acmeFile := cmd.Flag("source").Value.String()
 			dumpPath := cmd.Flag("dest").Value.String()
-			crtExt := cmd.Flag("crt-ext").Value.String()
-			keyExt := cmd.Flag("key-ext").Value.String()
+
+			crtInfo := fileInfo{
+				Name: cmd.Flag("crt-name").Value.String(),
+				Ext:  cmd.Flag("crt-ext").Value.String(),
+			}
+
+			keyInfo := fileInfo{
+				Name: cmd.Flag("key-name").Value.String(),
+				Ext:  cmd.Flag("key-ext").Value.String(),
+			}
+
 			subDir, _ := strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
 
-			err := dump(acmeFile, dumpPath, crtExt, keyExt, subDir)
+			err := dump(acmeFile, dumpPath, crtInfo, keyInfo, subDir)
 			if err != nil {
 				return err
 			}
@@ -50,7 +63,9 @@ func main() {
 	dumpCmd.Flags().String("source", "./acme.json", "Path to 'acme.json' file.")
 	dumpCmd.Flags().String("dest", "./dump", "Path to store the dump content.")
 	dumpCmd.Flags().String("crt-ext", ".crt", "The file extension of the generated certificates.")
+	dumpCmd.Flags().String("crt-name", "certificate", "The file name (without extension) of the generated certificates.")
 	dumpCmd.Flags().String("key-ext", ".key", "The file extension of the generated private keys.")
+	dumpCmd.Flags().String("key-name", "privatekey", "The file name (without extension) of the generated private keys.")
 	dumpCmd.Flags().Bool("domain-subdir", false, "Use domain as sub-directory.")
 	rootCmd.AddCommand(dumpCmd)
 

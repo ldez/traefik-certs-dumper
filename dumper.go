@@ -45,7 +45,12 @@ type Account struct {
 	KeyType      certcrypto.KeyType
 }
 
-func dump(acmeFile, dumpPath string, crtExt, keyExt string, domainSubDir bool) error {
+type fileInfo struct {
+	Name string
+	Ext  string
+}
+
+func dump(acmeFile, dumpPath string, crtInfo, keyInfo fileInfo, domainSubDir bool) error {
 	f, err := os.Open(acmeFile)
 	if err != nil {
 		return err
@@ -71,18 +76,18 @@ func dump(acmeFile, dumpPath string, crtExt, keyExt string, domainSubDir bool) e
 	}
 
 	privateKeyPem := extractPEMPrivateKey(data.Account)
-	err = ioutil.WriteFile(filepath.Join(dumpPath, keysSubDir, "letsencrypt"+keyExt), privateKeyPem, 0666)
+	err = ioutil.WriteFile(filepath.Join(dumpPath, keysSubDir, "letsencrypt"+keyInfo.Ext), privateKeyPem, 0666)
 	if err != nil {
 		return err
 	}
 
 	for _, cert := range data.Certificates {
-		err := writeCert(dumpPath, cert, crtExt, domainSubDir)
+		err := writeCert(dumpPath, cert, crtInfo, domainSubDir)
 		if err != nil {
 			return err
 		}
 
-		err = writeKey(dumpPath, cert, keyExt, domainSubDir)
+		err = writeKey(dumpPath, cert, keyInfo, domainSubDir)
 		if err != nil {
 			return err
 		}
@@ -91,10 +96,10 @@ func dump(acmeFile, dumpPath string, crtExt, keyExt string, domainSubDir bool) e
 	return nil
 }
 
-func writeCert(dumpPath string, cert *Certificate, ext string, domainSubDir bool) error {
-	certPath := filepath.Join(dumpPath, keysSubDir, cert.Domain.Main+ext)
+func writeCert(dumpPath string, cert *Certificate, info fileInfo, domainSubDir bool) error {
+	certPath := filepath.Join(dumpPath, keysSubDir, cert.Domain.Main+info.Ext)
 	if domainSubDir {
-		certPath = filepath.Join(dumpPath, cert.Domain.Main, "certificate"+ext)
+		certPath = filepath.Join(dumpPath, cert.Domain.Main, info.Name+info.Ext)
 		if err := os.MkdirAll(filepath.Join(dumpPath, cert.Domain.Main), 0755); err != nil {
 			return err
 		}
@@ -103,10 +108,10 @@ func writeCert(dumpPath string, cert *Certificate, ext string, domainSubDir bool
 	return ioutil.WriteFile(certPath, cert.Certificate, 0666)
 }
 
-func writeKey(dumpPath string, cert *Certificate, ext string, domainSubDir bool) error {
-	keyPath := filepath.Join(dumpPath, certsSubDir, cert.Domain.Main+ext)
+func writeKey(dumpPath string, cert *Certificate, info fileInfo, domainSubDir bool) error {
+	keyPath := filepath.Join(dumpPath, certsSubDir, cert.Domain.Main+info.Ext)
 	if domainSubDir {
-		keyPath = filepath.Join(dumpPath, cert.Domain.Main, "privatekey"+ext)
+		keyPath = filepath.Join(dumpPath, cert.Domain.Main, info.Name+info.Ext)
 		if err := os.MkdirAll(filepath.Join(dumpPath, cert.Domain.Main), 0755); err != nil {
 			return err
 		}

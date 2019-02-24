@@ -100,7 +100,7 @@ func writeCert(dumpPath string, cert *Certificate, ext string, domainSubDir bool
 		}
 	}
 
-	return ioutil.WriteFile(certPath, cert.Key, 0666)
+	return ioutil.WriteFile(certPath, cert.Certificate, 0666)
 }
 
 func writeKey(dumpPath string, cert *Certificate, ext string, domainSubDir bool) error {
@@ -112,7 +112,7 @@ func writeKey(dumpPath string, cert *Certificate, ext string, domainSubDir bool)
 		}
 	}
 
-	return ioutil.WriteFile(keyPath, cert.Certificate, 0666)
+	return ioutil.WriteFile(keyPath, cert.Key, 0666)
 }
 
 func extractPEMPrivateKey(account *Account) []byte {

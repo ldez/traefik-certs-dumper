@@ -55,7 +55,7 @@ dump
 
 ```
 
-#### Change source and destination
+### Change source and destination
 
 ```console
 $ traefik-certs-dumper dump --source ./acme.json --dest ./dump/test

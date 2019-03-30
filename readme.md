@@ -7,6 +7,24 @@
 
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/ldez)
 
+## Installation
+
+### From Binaries
+
+You can use pre-compiled binaries:
+
+* To get the binary just download the latest release for your OS/Arch from [the releases page](https://github.com/ldez/traefik-certs-dumper/releases/)
+* Unzip the archive.
+* Add `traefik-certs-dumper` in your `PATH`.
+
+### From Docker
+
+```bash
+docker run ldez/traefik-certs-dumper:<tag_name>
+```
+
+## Usage
+
 ```yaml
 Dump the content of the "acme.json" file from Traefik to certificates.
 

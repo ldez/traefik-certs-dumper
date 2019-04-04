@@ -9,6 +9,24 @@
 
 ## Installation
 
+### Download / CI Integration
+
+```bash
+curl -sfL https://raw.githubusercontent.com/ldez/traefik-certs-dumper/master/godownloader.sh | bash -s -- -b $GOPATH/bin v1.5.0
+```
+
+<!--
+To generate the script:
+
+```bash
+godownloader --repo=ldez/traefik-certs-dumper -o godownloader.sh
+
+# or
+
+godownloader --repo=ldez/traefik-certs-dumper > godownloader.sh
+```
+-->
+
 ### From Binaries
 
 You can use pre-compiled binaries:

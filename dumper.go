@@ -1,12 +1,17 @@
 package main
 
 import (
+	"bytes"
+	"compress/gzip"
 	"encoding/json"
 	"encoding/pem"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 
+	"github.com/hashicorp/consul/api"
+	consulwatch "github.com/hashicorp/consul/watch"
 	"github.com/xenolf/lego/certcrypto"
 	"github.com/xenolf/lego/registration"
 )
@@ -50,33 +55,24 @@ type fileInfo struct {
 	Ext  string
 }
 
-func dump(acmeFile, dumpPath string, crtInfo, keyInfo fileInfo, domainSubDir bool) error {
-	f, err := os.Open(acmeFile)
-	if err != nil {
-		return err
-	}
+func dump(data StoredData, dumpPath string, crtInfo, keyInfo fileInfo, domainSubDir bool) error {
 
-	data := StoredData{}
-	if err = json.NewDecoder(f).Decode(&data); err != nil {
-		return err
-	}
-
-	if err = os.RemoveAll(dumpPath); err != nil {
+	if err := os.RemoveAll(dumpPath); err != nil {
 		return err
 	}
 
 	if !domainSubDir {
-		if err = os.MkdirAll(filepath.Join(dumpPath, certsSubDir), 0755); err != nil {
+		if err := os.MkdirAll(filepath.Join(dumpPath, certsSubDir), 0755); err != nil {
 			return err
 		}
 	}
 
-	if err = os.MkdirAll(filepath.Join(dumpPath, keysSubDir), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Join(dumpPath, keysSubDir), 0755); err != nil {
 		return err
 	}
 
 	privateKeyPem := extractPEMPrivateKey(data.Account)
-	err = ioutil.WriteFile(filepath.Join(dumpPath, keysSubDir, "letsencrypt"+keyInfo.Ext), privateKeyPem, 0666)
+	err := ioutil.WriteFile(filepath.Join(dumpPath, keysSubDir, "letsencrypt"+keyInfo.Ext), privateKeyPem, 0666)
 	if err != nil {
 		return err
 	}
@@ -94,6 +90,63 @@ func dump(acmeFile, dumpPath string, crtInfo, keyInfo fileInfo, domainSubDir boo
 	}
 
 	return nil
+}
+
+func dumpFile(acmeFile string, dumpPath string, crtInfo, keyInfo fileInfo, domainSubDir bool) error {
+	f, err := os.Open(acmeFile)
+	if err != nil {
+		return err
+	}
+
+	data := StoredData{}
+	if err = json.NewDecoder(f).Decode(&data); err != nil {
+		return err
+	}
+
+	return dump(data, dumpPath, crtInfo, keyInfo, domainSubDir)
+}
+
+func dumpConsul(watch bool, dumpPath string, crtInfo, keyInfo fileInfo, domainSubDir bool) {
+
+	params := map[string]interface{}{
+		"type": "key",
+		"key":  "traefik/acme/account/object",
+	}
+	plan, _ := consulwatch.Parse(params)
+	plan.Handler = func(idx uint64, data interface{}) {
+
+		// TODO is here a better way?
+		var buf bytes.Buffer
+		json.NewEncoder(&buf).Encode(data)
+		kvpair := api.KVPair{}
+		json.Unmarshal(buf.Bytes(), &kvpair)
+
+		r, err := gzip.NewReader(bytes.NewBuffer(kvpair.Value))
+		defer r.Close()
+		if err != nil {
+			fmt.Printf("[ERR] %s", err)
+		}
+
+		acmeData, err := ioutil.ReadAll(r)
+		if err != nil {
+			fmt.Printf("[ERR] %s", err)
+		}
+
+		storedData := StoredData{}
+		json.Unmarshal(acmeData, &storedData)
+
+		dump(storedData, dumpPath, crtInfo, keyInfo, domainSubDir)
+		if err := tree(dumpPath, ""); err != nil {
+			fmt.Printf("[ERR] %s", err)
+		}
+		if !watch {
+			plan.Stop()
+		}
+	}
+
+	config := api.DefaultConfig()
+	fmt.Println("Start watching consul...")
+	plan.Run(config.Address)
 }
 
 func writeCert(dumpPath string, cert *Certificate, info fileInfo, domainSubDir bool) error {
@@ -138,4 +191,44 @@ func extractPEMPrivateKey(account *Account) []byte {
 	}
 
 	return pem.EncodeToMemory(block)
+}
+
+func tree(root, indent string) error {
+	fi, err := os.Stat(root)
+	if err != nil {
+		return fmt.Errorf("could not stat %s: %v", root, err)
+	}
+
+	fmt.Println(fi.Name())
+	if !fi.IsDir() {
+		return nil
+	}
+
+	fis, err := ioutil.ReadDir(root)
+	if err != nil {
+		return fmt.Errorf("could not read dir %s: %v", root, err)
+	}
+
+	var names []string
+	for _, fi := range fis {
+		if fi.Name()[0] != '.' {
+			names = append(names, fi.Name())
+		}
+	}
+
+	for i, name := range names {
+		add := "│  "
+		if i == len(names)-1 {
+			fmt.Printf(indent + "└──")
+			add = "   "
+		} else {
+			fmt.Printf(indent + "├──")
+		}
+
+		if err := tree(filepath.Join(root, name), indent+add); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

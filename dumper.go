@@ -97,7 +97,7 @@ func dump(acmeFile, dumpPath string, crtInfo, keyInfo fileInfo, domainSubDir boo
 }
 
 func writeCert(dumpPath string, cert *Certificate, info fileInfo, domainSubDir bool) error {
-	certPath := filepath.Join(dumpPath, keysSubDir, cert.Domain.Main+info.Ext)
+	certPath := filepath.Join(dumpPath, certsSubDir, cert.Domain.Main+info.Ext)
 	if domainSubDir {
 		certPath = filepath.Join(dumpPath, cert.Domain.Main, info.Name+info.Ext)
 		if err := os.MkdirAll(filepath.Join(dumpPath, cert.Domain.Main), 0755); err != nil {
@@ -109,7 +109,7 @@ func writeCert(dumpPath string, cert *Certificate, info fileInfo, domainSubDir b
 }
 
 func writeKey(dumpPath string, cert *Certificate, info fileInfo, domainSubDir bool) error {
-	keyPath := filepath.Join(dumpPath, certsSubDir, cert.Domain.Main+info.Ext)
+	keyPath := filepath.Join(dumpPath, keysSubDir, cert.Domain.Main+info.Ext)
 	if domainSubDir {
 		keyPath = filepath.Join(dumpPath, cert.Domain.Main, info.Name+info.Ext)
 		if err := os.MkdirAll(filepath.Join(dumpPath, cert.Domain.Main), 0755); err != nil {

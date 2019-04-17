@@ -10,8 +10,12 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/hashicorp/consul/api"
-	consulwatch "github.com/hashicorp/consul/watch"
+	"github.com/abronan/valkeyrie"
+	"github.com/abronan/valkeyrie/store"
+	"github.com/abronan/valkeyrie/store/boltdb"
+	"github.com/abronan/valkeyrie/store/consul"
+	etcdv3 "github.com/abronan/valkeyrie/store/etcd/v3"
+	"github.com/abronan/valkeyrie/store/zookeeper"
 	"github.com/xenolf/lego/certcrypto"
 	"github.com/xenolf/lego/registration"
 )
@@ -19,6 +23,7 @@ import (
 const (
 	certsSubDir = "certs"
 	keysSubDir  = "private"
+	storeKey    = "traefik/acme/account/object"
 )
 
 // StoredData represents the data managed by the Store
@@ -55,98 +60,153 @@ type fileInfo struct {
 	Ext  string
 }
 
-func dump(data StoredData, dumpPath string, crtInfo, keyInfo fileInfo, domainSubDir bool) error {
+// Backend represents a data source for ACME data
+type Backend string
 
-	if err := os.RemoveAll(dumpPath); err != nil {
+const (
+	// FILE backend
+	FILE Backend = "file"
+	// CONSUL backend
+	CONSUL Backend = "consul"
+	// ETCD backend
+	ETCD Backend = "etcd"
+	// ZK backend
+	ZK Backend = "zk"
+	// BOLTDB backend
+	BOLTDB Backend = "boltdb"
+)
+
+type dumpConfig struct {
+	Path         string
+	CertInfo     fileInfo
+	KeyInfo      fileInfo
+	DomainSubDir bool
+	Watch        bool
+}
+
+func getAcmeDataFromJSONFile(file string) (*StoredData, error) {
+	data := &StoredData{}
+
+	f, err := os.Open(file)
+	if err != nil {
+		return data, err
+	}
+	fmt.Println(data)
+
+	if err = json.NewDecoder(f).Decode(&data); err != nil {
+		return data, err
+	}
+
+	return data, nil
+}
+
+func getStoredDataFromGzip(value []byte) (*StoredData, error) {
+	data := &StoredData{}
+
+	r, err := gzip.NewReader(bytes.NewBuffer(value))
+	defer r.Close()
+	if err != nil {
+		return data, err
+	}
+
+	acmeData, err := ioutil.ReadAll(r)
+	if err != nil {
+		return data, err
+	}
+
+	storedData := &StoredData{}
+	json.Unmarshal(acmeData, &storedData)
+
+	return storedData, nil
+}
+
+func loop(config *dumpConfig, backend Backend) error {
+
+	// TODO change to env parameter
+	client := "localhost:8500"
+
+	var storeBackend store.Backend
+	switch backend {
+	case CONSUL:
+		storeBackend = store.CONSUL
+		consul.Register()
+	case ETCD:
+		storeBackend = store.ETCDV3
+		etcdv3.Register()
+	case ZK:
+		storeBackend = store.ZK
+		zookeeper.Register()
+	case BOLTDB:
+		storeBackend = store.BOLTDB
+		boltdb.Register()
+	}
+	kvstore, err := valkeyrie.NewStore(
+		storeBackend,
+		[]string{client},
+		&store.Config{},
+	)
+	if err != nil {
 		return err
 	}
 
-	if !domainSubDir {
-		if err := os.MkdirAll(filepath.Join(dumpPath, certsSubDir), 0755); err != nil {
+	stopCh := make(<-chan struct{})
+	events, _ := kvstore.Watch(storeKey, stopCh, nil)
+	for {
+		select {
+		case kvpair := <-events:
+			storedData, err := getStoredDataFromGzip(kvpair.Value)
+			if err != nil {
+				return err
+			}
+			if err := dump(config, storedData); err != nil {
+				return err
+			}
+			if !config.Watch {
+				return nil
+			}
+		}
+	}
+}
+
+func dump(config *dumpConfig, data *StoredData) error {
+
+	if err := os.RemoveAll(config.Path); err != nil {
+		return err
+	}
+
+	if !config.DomainSubDir {
+		if err := os.MkdirAll(filepath.Join(config.Path, certsSubDir), 0755); err != nil {
 			return err
 		}
 	}
 
-	if err := os.MkdirAll(filepath.Join(dumpPath, keysSubDir), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Join(config.Path, keysSubDir), 0755); err != nil {
 		return err
 	}
 
 	privateKeyPem := extractPEMPrivateKey(data.Account)
-	err := ioutil.WriteFile(filepath.Join(dumpPath, keysSubDir, "letsencrypt"+keyInfo.Ext), privateKeyPem, 0666)
+	err := ioutil.WriteFile(filepath.Join(config.Path, keysSubDir, "letsencrypt"+config.KeyInfo.Ext), privateKeyPem, 0666)
 	if err != nil {
 		return err
 	}
 
 	for _, cert := range data.Certificates {
-		err := writeCert(dumpPath, cert, crtInfo, domainSubDir)
+		err := writeCert(config.Path, cert, config.CertInfo, config.DomainSubDir)
 		if err != nil {
 			return err
 		}
 
-		err = writeKey(dumpPath, cert, keyInfo, domainSubDir)
+		err = writeKey(config.Path, cert, config.KeyInfo, config.DomainSubDir)
 		if err != nil {
 			return err
 		}
+	}
+
+	if err := tree(config.Path, ""); err != nil {
+		return err
 	}
 
 	return nil
-}
-
-func dumpFile(acmeFile string, dumpPath string, crtInfo, keyInfo fileInfo, domainSubDir bool) error {
-	f, err := os.Open(acmeFile)
-	if err != nil {
-		return err
-	}
-
-	data := StoredData{}
-	if err = json.NewDecoder(f).Decode(&data); err != nil {
-		return err
-	}
-
-	return dump(data, dumpPath, crtInfo, keyInfo, domainSubDir)
-}
-
-func dumpConsul(watch bool, dumpPath string, crtInfo, keyInfo fileInfo, domainSubDir bool) {
-
-	params := map[string]interface{}{
-		"type": "key",
-		"key":  "traefik/acme/account/object",
-	}
-	plan, _ := consulwatch.Parse(params)
-	plan.Handler = func(idx uint64, data interface{}) {
-
-		// TODO is here a better way?
-		var buf bytes.Buffer
-		json.NewEncoder(&buf).Encode(data)
-		kvpair := api.KVPair{}
-		json.Unmarshal(buf.Bytes(), &kvpair)
-
-		r, err := gzip.NewReader(bytes.NewBuffer(kvpair.Value))
-		defer r.Close()
-		if err != nil {
-			fmt.Printf("[ERR] %s", err)
-		}
-
-		acmeData, err := ioutil.ReadAll(r)
-		if err != nil {
-			fmt.Printf("[ERR] %s", err)
-		}
-
-		storedData := StoredData{}
-		json.Unmarshal(acmeData, &storedData)
-
-		dump(storedData, dumpPath, crtInfo, keyInfo, domainSubDir)
-		if err := tree(dumpPath, ""); err != nil {
-			fmt.Printf("[ERR] %s", err)
-		}
-		if !watch {
-			plan.Stop()
-		}
-	}
-
-	config := api.DefaultConfig()
-	fmt.Println("Start watching consul...")
-	plan.Run(config.Address)
 }
 
 func writeCert(dumpPath string, cert *Certificate, info fileInfo, domainSubDir bool) error {

@@ -78,6 +78,21 @@ Flags:
       --source string     Path to 'acme.json' file. (default "./acme.json")
 ```
 
+### Configuration of Key/Value stores
+
+#### Consul
+
+Consul connection parameters can be set via environment variables, see https://www.consul.io/docs/commands/index.html#environment-variables.
+
+#### Etcd
+
+Version 3 is not supported.
+
+#### Boltdb
+
+#### Zookeeper
+
+
 ## Examples
 
 ### Simple Dump

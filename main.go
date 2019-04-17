@@ -16,14 +16,21 @@ func main() {
 		Version: version,
 	}
 
+	dumpConfig := &dumpConfig{}
+
 	var dumpCmd = &cobra.Command{
 		Use:   "dump",
 		Short: "Dump Let's Encrypt certificates from Traefik",
 		Long:  `Dump the content of the "acme.json" file from Traefik to certificates.`,
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			source := cmd.Flag("source").Value.String()
-			if source != "file" && source != "consul" {
-				return fmt.Errorf("--source (%q) is not allowed, use one of 'file' or 'consul'", source)
+			sourceFile := cmd.Flag("source-file").Value.String()
+			if source == "file" {
+				if _, err := os.Stat(sourceFile); os.IsNotExist(err) {
+					return fmt.Errorf("--source-file (%q) does not exist", sourceFile)
+				}
+			} else if source != "consul" && source != "etcd" && source != "zookeeper" && source != "boltdb" {
+				return fmt.Errorf("--source (%q) is not allowed, use one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'", source)
 			}
 
 			crtExt := cmd.Flag("crt-ext").Value.String()
@@ -39,42 +46,63 @@ func main() {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			acmeFile := cmd.Flag("source-file").Value.String()
-			dumpPath := cmd.Flag("dest").Value.String()
 
-			crtInfo := fileInfo{
+			source := cmd.Flag("source").Value.String()
+			acmeFile := cmd.Flag("source-file").Value.String()
+
+			var backend Backend
+			switch source {
+			case "file":
+				backend = FILE
+			case "consul":
+				backend = CONSUL
+			case "etcd":
+				backend = ETCD
+			case "zookeeper":
+				backend = ZK
+			case "boltdb":
+				backend = BOLTDB
+			}
+
+			dumpConfig.Path = cmd.Flag("dest").Value.String()
+
+			dumpConfig.CertInfo = fileInfo{
 				Name: cmd.Flag("crt-name").Value.String(),
 				Ext:  cmd.Flag("crt-ext").Value.String(),
 			}
 
-			keyInfo := fileInfo{
+			dumpConfig.KeyInfo = fileInfo{
 				Name: cmd.Flag("key-name").Value.String(),
 				Ext:  cmd.Flag("key-ext").Value.String(),
 			}
 
-			subDir, _ := strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
-			watchConsul, _ := strconv.ParseBool(cmd.Flag("source-consul-watch").Value.String())
+			dumpConfig.DomainSubDir, _ = strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
+			dumpConfig.Watch, _ = strconv.ParseBool(cmd.Flag("watch").Value.String())
 
-			switch cmd.Flag("source").Value.String() {
+			fmt.Println(dumpConfig)
 
-			case "consul":
-				dumpConsul(watchConsul, dumpPath, crtInfo, keyInfo, subDir)
-
-			case "file":
-			default:
-				err := dumpFile(acmeFile, dumpPath, crtInfo, keyInfo, subDir)
+			if backend == FILE {
+				data, err := getAcmeDataFromJSONFile(acmeFile)
 				if err != nil {
+					return fmt.Errorf("[ERR] %v", err)
+				}
+				if err := dump(dumpConfig, data); err != nil {
 					return err
 				}
-				return tree(dumpPath, "")
+			} else {
+				if err := loop(dumpConfig, backend); err != nil {
+					return err
+				}
 			}
+
 			return nil
 		},
 	}
 
-	dumpCmd.Flags().String("source", "file", "Source type. One of 'file' or 'consul'. Consul connection parameters can be set via environment variables, see https://www.consul.io/docs/commands/index.html#environment-variables")
+	// TODO fill readme
+	dumpCmd.Flags().String("source", "file", "Source type. One of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'. For configuration options of the Key/Value stores see https://github.com/ldez/traefik-certs-dumper#configuration-of-key-value-stores.")
 	dumpCmd.Flags().String("source-file", "./acme.json", "Path to 'acme.json' file if source type is 'file'")
-	dumpCmd.Flags().Bool("source-consul-watch", true, "Enable watching changes in Consul.")
+	dumpCmd.Flags().Bool("watch", true, "Enable watching changes.")
 	dumpCmd.Flags().String("dest", "./dump", "Path to store the dump content.")
 	dumpCmd.Flags().String("crt-ext", ".crt", "The file extension of the generated certificates.")
 	dumpCmd.Flags().String("crt-name", "certificate", "The file name (without extension) of the generated certificates.")

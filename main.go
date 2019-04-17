@@ -89,10 +89,8 @@ func main() {
 				if err := dump(dumpConfig, data); err != nil {
 					return err
 				}
-			} else {
-				if err := loop(dumpConfig, backend); err != nil {
-					return err
-				}
+			} else if err := loop(dumpConfig, backend); err != nil {
+				return err
 			}
 
 			return nil

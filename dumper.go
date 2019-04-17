@@ -115,7 +115,9 @@ func getStoredDataFromGzip(value []byte) (*StoredData, error) {
 	}
 
 	storedData := &StoredData{}
-	json.Unmarshal(acmeData, &storedData)
+	if err := json.Unmarshal(acmeData, &storedData); err != nil {
+		return data, err
+	}
 
 	return storedData, nil
 }

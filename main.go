@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/abronan/valkeyrie/store"
 	"github.com/spf13/cobra"
 )
 
@@ -16,7 +17,7 @@ func main() {
 		Version: version,
 	}
 
-	dumpConfig := &dumpConfig{}
+	config := &Config{}
 
 	var dumpCmd = &cobra.Command{
 		Use:   "dump",
@@ -50,56 +51,78 @@ func main() {
 			source := cmd.Flag("source").Value.String()
 			acmeFile := cmd.Flag("source-file").Value.String()
 
-			var backend Backend
 			switch source {
 			case "file":
-				backend = FILE
+				config.BackendConfig = FileBackend{
+					Name: FILE,
+					Path: acmeFile,
+				}
 			case "consul":
-				backend = CONSUL
+				config.BackendConfig = KVBackend{
+					Name:   CONSUL,
+					Client: []string{"localhost:8500"},
+					Config: &store.Config{},
+				}
 			case "etcd":
-				backend = ETCD
+				config.BackendConfig = KVBackend{
+					Name:   ETCD,
+					Client: []string{"localhost:8500"},
+					Config: &store.Config{},
+				}
 			case "zookeeper":
-				backend = ZK
+				config.BackendConfig = KVBackend{
+					Name:   ZK,
+					Client: []string{"localhost:8500"},
+					Config: &store.Config{},
+				}
 			case "boltdb":
-				backend = BOLTDB
+				config.BackendConfig = KVBackend{
+					Name:   BOLTDB,
+					Client: []string{"localhost:8500"},
+					Config: &store.Config{},
+				}
 			}
 
-			dumpConfig.Path = cmd.Flag("dest").Value.String()
+			config.Path = cmd.Flag("dest").Value.String()
 
-			dumpConfig.CertInfo = fileInfo{
+			config.CertInfo = fileInfo{
 				Name: cmd.Flag("crt-name").Value.String(),
 				Ext:  cmd.Flag("crt-ext").Value.String(),
 			}
 
-			dumpConfig.KeyInfo = fileInfo{
+			config.KeyInfo = fileInfo{
 				Name: cmd.Flag("key-name").Value.String(),
 				Ext:  cmd.Flag("key-ext").Value.String(),
 			}
 
-			dumpConfig.DomainSubDir, _ = strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
-			dumpConfig.Watch, _ = strconv.ParseBool(cmd.Flag("watch").Value.String())
+			config.DomainSubDir, _ = strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
+			config.Watch, _ = strconv.ParseBool(cmd.Flag("watch").Value.String())
 
-			fmt.Println(dumpConfig)
-
-			if backend == FILE {
-				data, err := getAcmeDataFromJSONFile(acmeFile)
-				if err != nil {
-					return fmt.Errorf("[ERR] %v", err)
-				}
-				if err := dump(dumpConfig, data); err != nil {
-					return err
-				}
-			} else if err := loop(dumpConfig, backend); err != nil {
-				return err
+			if err := run(config); err != nil {
+				fmt.Println(err)
 			}
 
 			return nil
 		},
 	}
 
-	// TODO fill readme
-	dumpCmd.Flags().String("source", "file", "Source type. One of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'. For configuration options of the Key/Value stores see https://github.com/ldez/traefik-certs-dumper#configuration-of-key-value-stores.")
-	dumpCmd.Flags().String("source-file", "./acme.json", "Path to 'acme.json' file if source type is 'file'")
+	dumpCmd.Flags().String("source", "file", "Source type. One of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'.")
+	dumpCmd.Flags().String("file", "./acme.json", "Path to 'acme.json' file if source type is 'file'")
+
+	/* TODO implement this
+	dumpCmd.Flags().String("kv.client")
+	dumpCmd.Flags().String("kv.connection-timeout")
+	dumpCmd.Flags().String("kv.sync-period")
+	dumpCmd.Flags().String("kv.bucket")
+	dumpCmd.Flags().Bool("kv.persist-connection")
+	dumpCmd.Flags().String("kv.username")
+	dumpCmd.Flags().String("kv.password")
+	dumpCmd.Flags().String("kv.token")
+	dumpCmd.Flags().String("kv.tls-cert-file")
+	dumpCmd.Flags().String("kv.tls-key-file")
+	dumpCmd.Flags().String("kv.tls-ca-cert-file")
+	*/
+
 	dumpCmd.Flags().Bool("watch", true, "Enable watching changes.")
 	dumpCmd.Flags().String("dest", "./dump", "Path to store the dump content.")
 	dumpCmd.Flags().String("crt-ext", ".crt", "The file extension of the generated certificates.")

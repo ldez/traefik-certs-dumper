@@ -23,7 +23,6 @@ func getStoredDataFromGzip(value []byte) (*StoredData, error) {
 	data := &StoredData{}
 
 	r, err := gzip.NewReader(bytes.NewBuffer(value))
-	defer r.Close()
 	if err != nil {
 		return data, err
 	}
@@ -63,7 +62,7 @@ func register(backend string) (store.Backend, error) {
 		boltdb.Register()
 		return store.BOLTDB, nil
 	default:
-		return "", fmt.Errorf("No backend found for %v", backend)
+		return "", fmt.Errorf("no backend found for %v", backend)
 	}
 }
 
@@ -90,14 +89,12 @@ func (b KVBackend) loop(watch bool) (<-chan *StoredData, <-chan error) {
 		stopCh := make(<-chan struct{})
 		events, _ := kvstore.Watch(storeKey, stopCh, nil)
 		for {
-			select {
-			case kvpair := <-events:
-				storedData, err := getStoredDataFromGzip(kvpair.Value)
-				if err != nil {
-					errors <- err
-				}
-				dataCh <- storedData
+			kvpair := <-events
+			storedData, err := getStoredDataFromGzip(kvpair.Value)
+			if err != nil {
+				errors <- err
 			}
+			dataCh <- storedData
 			if !watch {
 				close(dataCh)
 				close(errors)

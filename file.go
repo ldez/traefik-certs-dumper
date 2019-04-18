@@ -58,17 +58,17 @@ func (b FileBackend) loop(watch bool) (<-chan *StoredData, <-chan error) {
 					return
 				}
 				if event.Op&fsnotify.Write == fsnotify.Write {
-					data, err := getStoredDataFromFile(b.Path)
-					if err != nil {
-						errCh <- err
+					data, err1 := getStoredDataFromFile(b.Path)
+					if err1 != nil {
+						errCh <- err1
 					}
 					dataCh <- data
 				}
-			case err, ok := <-watcher.Errors:
+			case err1, ok := <-watcher.Errors:
 				if !ok {
 					return
 				}
-				errCh <- err
+				errCh <- err1
 			}
 		}
 	}()

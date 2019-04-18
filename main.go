@@ -25,10 +25,10 @@ func main() {
 		Long:  `Dump the content of the "acme.json" file from Traefik to certificates.`,
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			source := cmd.Flag("source").Value.String()
-			sourceFile := cmd.Flag("source-file").Value.String()
+			sourceFile := cmd.Flag("file").Value.String()
 			if source == "file" {
 				if _, err := os.Stat(sourceFile); os.IsNotExist(err) {
-					return fmt.Errorf("--source-file (%q) does not exist", sourceFile)
+					return fmt.Errorf("--file (%q) does not exist", sourceFile)
 				}
 			} else if source != "consul" && source != "etcd" && source != "zookeeper" && source != "boltdb" {
 				return fmt.Errorf("--source (%q) is not allowed, use one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'", source)
@@ -49,7 +49,7 @@ func main() {
 		RunE: func(cmd *cobra.Command, _ []string) error {
 
 			source := cmd.Flag("source").Value.String()
-			acmeFile := cmd.Flag("source-file").Value.String()
+			acmeFile := cmd.Flag("file").Value.String()
 
 			switch source {
 			case "file":

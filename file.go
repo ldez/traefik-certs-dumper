@@ -25,16 +25,20 @@ func getStoredDataFromFile(path string) (*StoredData, error) {
 	return data, nil
 }
 
+func sendStoredData(path string, dataCh chan *StoredData, errCh chan error) {
+	data, err := getStoredDataFromFile(path)
+	if err != nil {
+		errCh <- err
+	}
+	dataCh <- data
+}
+
 func (b FileBackend) loop(watch bool) (<-chan *StoredData, <-chan error) {
 
 	dataCh := make(chan *StoredData)
 	errCh := make(chan error)
 	go func() {
-		data, err := getStoredDataFromFile(b.Path)
-		if err != nil {
-			errCh <- err
-		}
-		dataCh <- data
+		sendStoredData(b.Path, dataCh, errCh)
 		if !watch {
 			close(dataCh)
 			close(errCh)
@@ -58,11 +62,7 @@ func (b FileBackend) loop(watch bool) (<-chan *StoredData, <-chan error) {
 					return
 				}
 				if event.Op&fsnotify.Write == fsnotify.Write {
-					data, err1 := getStoredDataFromFile(b.Path)
-					if err1 != nil {
-						errCh <- err1
-					}
-					dataCh <- data
+					sendStoredData(b.Path, dataCh, errCh)
 				}
 			case err1, ok := <-watcher.Errors:
 				if !ok {

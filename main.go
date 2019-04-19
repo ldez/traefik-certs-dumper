@@ -23,134 +23,12 @@ func main() {
 		Version: version,
 	}
 
-	config := &Config{}
-
 	var dumpCmd = &cobra.Command{
-		Use:   "dump",
-		Short: "Dump Let's Encrypt certificates from Traefik",
-		Long:  `Dump ACME data from Traefik of different storage backends to certificates.`,
-		PreRunE: func(cmd *cobra.Command, args []string) error {
-			source := cmd.Flag("source").Value.String()
-			sourceFile := cmd.Flag("source.file").Value.String()
-			watch, _ := strconv.ParseBool(cmd.Flag("watch").Value.String())
-
-			switch source {
-			case FILE:
-				if _, err := os.Stat(sourceFile); os.IsNotExist(err) {
-					return fmt.Errorf("--source.file (%q) does not exist", sourceFile)
-				}
-			case BOLTDB:
-				if watch {
-					return fmt.Errorf("--watch=true is not supported for boltdb")
-				}
-			case CONSUL:
-			case ETCD:
-			case ZOOKEEPER:
-			default:
-				return fmt.Errorf("--source (%q) is not allowed, use one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'", source)
-			}
-
-			crtExt := cmd.Flag("crt-ext").Value.String()
-			keyExt := cmd.Flag("key-ext").Value.String()
-
-			subDir, _ := strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
-			if !subDir {
-				if crtExt == keyExt {
-					return fmt.Errorf("--crt-ext (%q) and --key-ext (%q) are identical, in this case --domain-subdir is required", crtExt, keyExt)
-				}
-			}
-
-			return nil
-		},
-		RunE: func(cmd *cobra.Command, _ []string) error {
-
-			source := cmd.Flag("source").Value.String()
-			acmeFile := cmd.Flag("source.file").Value.String()
-
-			endpoints := strings.Split(cmd.Flag("source.kv.endpoints").Value.String(), ",")
-
-			storeConfig := &store.Config{}
-
-			timeout, _ := strconv.Atoi(cmd.Flag("source.kv.connection-timeout").Value.String())
-			storeConfig.ConnectionTimeout = time.Second * time.Duration(timeout)
-			storeConfig.Username = cmd.Flag("source.kv.username").Value.String()
-			storeConfig.Password = cmd.Flag("source.kv.password").Value.String()
-
-			enableTLS, _ := strconv.ParseBool(cmd.Flag("source.kv.tls.enable").Value.String())
-
-			if enableTLS {
-				tlsConfig := &tls.Config{}
-				insecureSkipVerify, _ := strconv.ParseBool(cmd.Flag("source.kv.tls.insecureskipverify").Value.String())
-				tlsConfig.InsecureSkipVerify = insecureSkipVerify
-				if cmd.Flag("source.kv.tls.ca-cert-file").Value.String() != "" {
-					caFile := cmd.Flag("source.kv.tls.ca-cert-file").Value.String()
-					caCert, err := ioutil.ReadFile(caFile)
-					if err != nil {
-						log.Fatal(err)
-					}
-					roots := x509.NewCertPool()
-					ok := roots.AppendCertsFromPEM(caCert)
-					if !ok {
-						log.Fatalf("failed to parse root certificate")
-					}
-					tlsConfig.RootCAs = roots
-				}
-				storeConfig.TLS = tlsConfig
-			}
-
-			// Special parameters for etcd
-			timeout, _ = strconv.Atoi(cmd.Flag("source.kv.etcd.sync-period").Value.String())
-			storeConfig.SyncPeriod = time.Second * time.Duration(timeout)
-			// Special parameters for boltdb
-			persistConnection, _ := strconv.ParseBool(cmd.Flag("source.kv.boltdb.persist-connection").Value.String())
-			storeConfig.PersistConnection = persistConnection
-			storeConfig.Bucket = cmd.Flag("source.kv.boltdb.bucket").Value.String()
-			// Special parameters for consul
-			storeConfig.Token = cmd.Flag("source.kv.consul.token").Value.String()
-
-			switch source {
-			case FILE:
-				config.BackendConfig = FileBackend{
-					Name: FILE,
-					Path: acmeFile,
-				}
-			case CONSUL:
-				fallthrough
-			case ETCD:
-				fallthrough
-			case ZOOKEEPER:
-				fallthrough
-			case BOLTDB:
-				fallthrough
-			default:
-				config.BackendConfig = KVBackend{
-					Name:   source,
-					Client: endpoints,
-					Config: storeConfig,
-				}
-			}
-
-			config.Path = cmd.Flag("dest").Value.String()
-
-			config.CertInfo = fileInfo{
-				Name: cmd.Flag("crt-name").Value.String(),
-				Ext:  cmd.Flag("crt-ext").Value.String(),
-			}
-
-			config.KeyInfo = fileInfo{
-				Name: cmd.Flag("key-name").Value.String(),
-				Ext:  cmd.Flag("key-ext").Value.String(),
-			}
-
-			config.DomainSubDir, _ = strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
-			config.Watch, _ = strconv.ParseBool(cmd.Flag("watch").Value.String())
-
-			if err := run(config); err != nil {
-				fmt.Println(err)
-			}
-
-			return nil
-		},
+		Use:     "dump",
+		Short:   "Dump Let's Encrypt certificates from Traefik",
+		Long:    `Dump ACME data from Traefik of different storage backends to certificates.`,
+		PreRunE: commandPreRun,
+		RunE:    commandRun,
 	}
 
 	dumpCmd.Flags().String("source", "file", "Source type, one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'. Options for each source type are prefixed with `source.<type>.`")
@@ -195,4 +73,130 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func commandPreRun(cmd *cobra.Command, args []string) error {
+	source := cmd.Flag("source").Value.String()
+	sourceFile := cmd.Flag("source.file").Value.String()
+	watch, _ := strconv.ParseBool(cmd.Flag("watch").Value.String())
+
+	switch source {
+	case FILE:
+		if _, err := os.Stat(sourceFile); os.IsNotExist(err) {
+			return fmt.Errorf("--source.file (%q) does not exist", sourceFile)
+		}
+	case BOLTDB:
+		if watch {
+			return fmt.Errorf("--watch=true is not supported for boltdb")
+		}
+	case CONSUL:
+	case ETCD:
+	case ZOOKEEPER:
+	default:
+		return fmt.Errorf("--source (%q) is not allowed, use one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'", source)
+	}
+
+	crtExt := cmd.Flag("crt-ext").Value.String()
+	keyExt := cmd.Flag("key-ext").Value.String()
+
+	subDir, _ := strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
+	if !subDir {
+		if crtExt == keyExt {
+			return fmt.Errorf("--crt-ext (%q) and --key-ext (%q) are identical, in this case --domain-subdir is required", crtExt, keyExt)
+		}
+	}
+
+	return nil
+}
+
+func commandRun(cmd *cobra.Command, _ []string) error {
+
+	config := &Config{}
+
+	source := cmd.Flag("source").Value.String()
+	acmeFile := cmd.Flag("source.file").Value.String()
+
+	endpoints := strings.Split(cmd.Flag("source.kv.endpoints").Value.String(), ",")
+
+	storeConfig := &store.Config{}
+
+	timeout, _ := strconv.Atoi(cmd.Flag("source.kv.connection-timeout").Value.String())
+	storeConfig.ConnectionTimeout = time.Second * time.Duration(timeout)
+	storeConfig.Username = cmd.Flag("source.kv.username").Value.String()
+	storeConfig.Password = cmd.Flag("source.kv.password").Value.String()
+
+	enableTLS, _ := strconv.ParseBool(cmd.Flag("source.kv.tls.enable").Value.String())
+
+	if enableTLS {
+		tlsConfig := &tls.Config{}
+		insecureSkipVerify, _ := strconv.ParseBool(cmd.Flag("source.kv.tls.insecureskipverify").Value.String())
+		tlsConfig.InsecureSkipVerify = insecureSkipVerify
+		if cmd.Flag("source.kv.tls.ca-cert-file").Value.String() != "" {
+			caFile := cmd.Flag("source.kv.tls.ca-cert-file").Value.String()
+			caCert, err := ioutil.ReadFile(caFile)
+			if err != nil {
+				log.Fatal(err)
+			}
+			roots := x509.NewCertPool()
+			ok := roots.AppendCertsFromPEM(caCert)
+			if !ok {
+				log.Fatalf("failed to parse root certificate")
+			}
+			tlsConfig.RootCAs = roots
+		}
+		storeConfig.TLS = tlsConfig
+	}
+
+	// Special parameters for etcd
+	timeout, _ = strconv.Atoi(cmd.Flag("source.kv.etcd.sync-period").Value.String())
+	storeConfig.SyncPeriod = time.Second * time.Duration(timeout)
+	// Special parameters for boltdb
+	persistConnection, _ := strconv.ParseBool(cmd.Flag("source.kv.boltdb.persist-connection").Value.String())
+	storeConfig.PersistConnection = persistConnection
+	storeConfig.Bucket = cmd.Flag("source.kv.boltdb.bucket").Value.String()
+	// Special parameters for consul
+	storeConfig.Token = cmd.Flag("source.kv.consul.token").Value.String()
+
+	switch source {
+	case FILE:
+		config.BackendConfig = FileBackend{
+			Name: FILE,
+			Path: acmeFile,
+		}
+	case CONSUL:
+		fallthrough
+	case ETCD:
+		fallthrough
+	case ZOOKEEPER:
+		fallthrough
+	case BOLTDB:
+		fallthrough
+	default:
+		config.BackendConfig = KVBackend{
+			Name:   source,
+			Client: endpoints,
+			Config: storeConfig,
+		}
+	}
+
+	config.Path = cmd.Flag("dest").Value.String()
+
+	config.CertInfo = fileInfo{
+		Name: cmd.Flag("crt-name").Value.String(),
+		Ext:  cmd.Flag("crt-ext").Value.String(),
+	}
+
+	config.KeyInfo = fileInfo{
+		Name: cmd.Flag("key-name").Value.String(),
+		Ext:  cmd.Flag("key-ext").Value.String(),
+	}
+
+	config.DomainSubDir, _ = strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
+	config.Watch, _ = strconv.ParseBool(cmd.Flag("watch").Value.String())
+
+	if err := run(config); err != nil {
+		fmt.Println(err)
+	}
+
+	return nil
 }

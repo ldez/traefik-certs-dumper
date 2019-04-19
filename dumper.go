@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 const (
 	// FILE backend
 	FILE string = "file"
@@ -9,8 +7,8 @@ const (
 	CONSUL string = "consul"
 	// ETCD backend
 	ETCD string = "etcd"
-	// ZK backend
-	ZK string = "zk"
+	// ZOOKEEPER backend
+	ZOOKEEPER string = "zookeeper"
 	// BOLTDB backend
 	BOLTDB string = "boltdb"
 )
@@ -27,15 +25,14 @@ type Config struct {
 
 // Backend represents an object storage of ACME data
 type Backend interface {
-	loop(watch bool) (<-chan *StoredData, <-chan error)
+	getStoredData(watch bool) (<-chan *StoredData, <-chan error)
 }
 
 func run(config *Config) error {
-	data, errors := config.BackendConfig.(Backend).loop(config.Watch)
+	data, errors := config.BackendConfig.(Backend).getStoredData(config.Watch)
 	for {
 		select {
 		case err := <-errors:
-			fmt.Println(err)
 			return err
 		case acmeData, ok := <-data:
 			if !ok {

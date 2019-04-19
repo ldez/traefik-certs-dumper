@@ -1,9 +1,15 @@
 package main
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
 	"strconv"
+	"strings"
+	"time"
 
 	"github.com/abronan/valkeyrie/store"
 	"github.com/spf13/cobra"
@@ -13,7 +19,7 @@ func main() {
 	var rootCmd = &cobra.Command{
 		Use:     "traefik-certs-dumper",
 		Short:   "Dump Let's Encrypt certificates from Traefik",
-		Long:    `Dump the content of the "acme.json" file from Traefik to certificates.`,
+		Long:    `Dump ACME data from Traefik of different storage backends to certificates.`,
 		Version: version,
 	}
 
@@ -22,15 +28,18 @@ func main() {
 	var dumpCmd = &cobra.Command{
 		Use:   "dump",
 		Short: "Dump Let's Encrypt certificates from Traefik",
-		Long:  `Dump the content of the "acme.json" file from Traefik to certificates.`,
+		Long:  `Dump ACME data from Traefik of different storage backends to certificates.`,
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			source := cmd.Flag("source").Value.String()
-			sourceFile := cmd.Flag("file").Value.String()
-			if source == "file" {
+			sourceFile := cmd.Flag("source.file").Value.String()
+			watch, _ := strconv.ParseBool(cmd.Flag("watch").Value.String())
+			if source == FILE {
 				if _, err := os.Stat(sourceFile); os.IsNotExist(err) {
-					return fmt.Errorf("--file (%q) does not exist", sourceFile)
+					return fmt.Errorf("--source.file (%q) does not exist", sourceFile)
 				}
-			} else if source != "consul" && source != "etcd" && source != "zookeeper" && source != "boltdb" {
+			} else if source == BOLTDB && watch {
+				return fmt.Errorf("--watch=true is not supported for boltdb")
+			} else if source != CONSUL && source != ETCD && source != ZOOKEEPER && source != BOLTDB {
 				return fmt.Errorf("--source (%q) is not allowed, use one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'", source)
 			}
 
@@ -49,7 +58,57 @@ func main() {
 		RunE: func(cmd *cobra.Command, _ []string) error {
 
 			source := cmd.Flag("source").Value.String()
-			acmeFile := cmd.Flag("file").Value.String()
+			acmeFile := cmd.Flag("source.file").Value.String()
+
+			endpoints := strings.Split(cmd.Flag("source.kv.endpoints").Value.String(), ",")
+
+			storeConfig := &store.Config{}
+
+			timeout, _ := strconv.Atoi(cmd.Flag("source.kv.connection-timeout").Value.String())
+			storeConfig.ConnectionTimeout = time.Second * time.Duration(timeout)
+			storeConfig.Username = cmd.Flag("source.kv.username").Value.String()
+			storeConfig.Password = cmd.Flag("source.kv.password").Value.String()
+
+			enableTLS, err := strconv.ParseBool(cmd.Flag("source.kv.tls.enable").Value.String())
+			if err != nil {
+				return err
+			}
+
+			if enableTLS {
+				tlsConfig := &tls.Config{}
+				insecureSkipVerify, err := strconv.ParseBool(cmd.Flag("source.kv.tls.insecureskipverify").Value.String())
+				if err != nil {
+					return err
+				}
+				tlsConfig.InsecureSkipVerify = insecureSkipVerify
+				if cmd.Flag("source.kv.tls.ca-cert-file").Value.String() != "" {
+					caFile := cmd.Flag("source.kv.tls.ca-cert-file").Value.String()
+					caCert, err := ioutil.ReadFile(caFile)
+					if err != nil {
+						log.Fatal(err)
+					}
+					roots := x509.NewCertPool()
+					ok := roots.AppendCertsFromPEM(caCert)
+					if !ok {
+						log.Fatalf("failed to parse root certificate")
+					}
+					tlsConfig.RootCAs = roots
+				}
+				storeConfig.TLS = tlsConfig
+			}
+
+			// Special parameters for etcd
+			timeout, _ = strconv.Atoi(cmd.Flag("source.kv.etcd.sync-period").Value.String())
+			storeConfig.SyncPeriod = time.Second * time.Duration(timeout)
+			// Special parameters for boltdb
+			persistConnection, err := strconv.ParseBool(cmd.Flag("source.kv.boltdb.persist-connection").Value.String())
+			if err != nil {
+				return err
+			}
+			storeConfig.PersistConnection = persistConnection
+			storeConfig.Bucket = cmd.Flag("source.kv.boltdb.bucket").Value.String()
+			// Special parameters for consul
+			storeConfig.Token = cmd.Flag("source.kv.consul.token").Value.String()
 
 			switch source {
 			case "file":
@@ -58,28 +117,18 @@ func main() {
 					Path: acmeFile,
 				}
 			case "consul":
-				config.BackendConfig = KVBackend{
-					Name:   CONSUL,
-					Client: []string{"localhost:8500"},
-					Config: &store.Config{},
-				}
+				fallthrough
 			case "etcd":
-				config.BackendConfig = KVBackend{
-					Name:   ETCD,
-					Client: []string{"localhost:8500"},
-					Config: &store.Config{},
-				}
+				fallthrough
 			case "zookeeper":
-				config.BackendConfig = KVBackend{
-					Name:   ZK,
-					Client: []string{"localhost:8500"},
-					Config: &store.Config{},
-				}
+				fallthrough
 			case "boltdb":
+				fallthrough
+			default:
 				config.BackendConfig = KVBackend{
-					Name:   BOLTDB,
-					Client: []string{"localhost:8500"},
-					Config: &store.Config{},
+					Name:   source,
+					Client: endpoints,
+					Config: storeConfig,
 				}
 			}
 
@@ -106,24 +155,26 @@ func main() {
 		},
 	}
 
-	dumpCmd.Flags().String("source", "file", "Source type. One of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'.")
-	dumpCmd.Flags().String("file", "./acme.json", "Path to 'acme.json' file if source type is 'file'")
+	dumpCmd.Flags().String("source", "file", "Source type, one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'. Options for each source type are prefixed with `source.<type>.`")
+	dumpCmd.Flags().String("source.file", "./acme.json", "Path to 'acme.json' for file source.")
 
-	/* TODO implement this
-	dumpCmd.Flags().String("kv.client")
-	dumpCmd.Flags().String("kv.connection-timeout")
-	dumpCmd.Flags().String("kv.sync-period")
-	dumpCmd.Flags().String("kv.bucket")
-	dumpCmd.Flags().Bool("kv.persist-connection")
-	dumpCmd.Flags().String("kv.username")
-	dumpCmd.Flags().String("kv.password")
-	dumpCmd.Flags().String("kv.token")
-	dumpCmd.Flags().String("kv.tls-cert-file")
-	dumpCmd.Flags().String("kv.tls-key-file")
-	dumpCmd.Flags().String("kv.tls-ca-cert-file")
-	*/
+	// Generic parameters for Key/Value backends
+	dumpCmd.Flags().String("source.kv.endpoints", "localhost:8500", "Comma seperated list of endpoints.")
+	dumpCmd.Flags().Int("source.kv.connection-timeout", 0, "Connection timeout in seconds.")
+	dumpCmd.Flags().String("source.kv.password", "", "Password for connection.")
+	dumpCmd.Flags().String("source.kv.username", "", "Username for connection.")
+	dumpCmd.Flags().Bool("source.kv.tls.enable", false, "Enable TLS encryption.")
+	dumpCmd.Flags().Bool("source.kv.tls.insecureskipverify", false, "Trust unverified certificates if TLS is enabled.")
+	dumpCmd.Flags().String("source.kv.tls.ca-cert-file", "", "Root CA file for certificate verification if TLS is enabled.")
+	// Special parameters for etcd
+	dumpCmd.Flags().Int("source.kv.etcd.sync-period", 0, "Sync period for etcd in seconds.")
+	// Special parameters for boltdb
+	dumpCmd.Flags().Bool("source.kv.boltdb.persist-connection", false, "Persist connection for boltdb.")
+	dumpCmd.Flags().String("source.kv.boltdb.bucket", "traefik", "Bucket for boltdb.")
+	// Special parameters for consul
+	dumpCmd.Flags().String("source.kv.consul.token", "", "Token for consul.")
 
-	dumpCmd.Flags().Bool("watch", true, "Enable watching changes.")
+	dumpCmd.Flags().Bool("watch", false, "Enable watching changes.")
 	dumpCmd.Flags().String("dest", "./dump", "Path to store the dump content.")
 	dumpCmd.Flags().String("crt-ext", ".crt", "The file extension of the generated certificates.")
 	dumpCmd.Flags().String("crt-name", "certificate", "The file name (without extension) of the generated certificates.")

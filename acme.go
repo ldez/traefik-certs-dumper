@@ -4,6 +4,7 @@ import (
 	"encoding/pem"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -82,6 +83,10 @@ func dump(config *Config, data *StoredData) error {
 		if err != nil {
 			return err
 		}
+	}
+
+	if config.Watch {
+		log.Println("wrote new configuration")
 	}
 
 	if err := tree(config.Path, ""); err != nil {

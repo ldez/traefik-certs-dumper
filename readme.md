@@ -44,7 +44,7 @@ docker run ldez/traefik-certs-dumper:<tag_name>
 ## Usage
 
 ```yaml
-Dump the content of the "acme.json" file from Traefik to certificates.
+Dump ACME data from Traefik of different storage backends to certificates.
 
 Usage:
   traefik-certs-dumper [command]
@@ -55,27 +55,40 @@ Available Commands:
   version     Display version
 
 Flags:
-  -h, --help      help for certs-dumper
-      --version   version for certs-dumper
+  -h, --help      help for traefik-certs-dumper
+      --version   version for traefik-certs-dumper
 
 Use "traefik-certs-dumper [command] --help" for more information about a command.
 ```
 
 ```yaml
-Dump the content of the "acme.json" file from Traefik to certificates.
+Dump ACME data from Traefik of different storage backends to certificates.
 
 Usage:
   traefik-certs-dumper dump [flags]
 
 Flags:
-      --crt-ext string    The file extension of the generated certificates. (default ".crt")
-      --crt-name string   The file name (without extension) of the generated certificates. (default "certificate")
-      --dest string       Path to store the dump content. (default "./dump")
-      --domain-subdir     Use domain as sub-directory.
-  -h, --help              help for dump
-      --key-ext string    The file extension of the generated private keys. (default ".key")
-      --key-name string   The file name (without extension) of the generated private keys. (default "privatekey")
-      --source string     Path to 'acme.json' file. (default "./acme.json")
+      --crt-ext string                        The file extension of the generated certificates. (default ".crt")
+      --crt-name string                       The file name (without extension) of the generated certificates. (default "certificate")
+      --dest string                           Path to store the dump content. (default "./dump")
+      --domain-subdir                         Use domain as sub-directory.
+  -h, --help                                  help for dump
+      --key-ext string                        The file extension of the generated private keys. (default ".key")
+      --key-name string                       The file name (without extension) of the generated private keys. (default "privatekey")
+      --source source.<type>.                 Source type, one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'. Options for each source type are prefixed with source.<type>. (default "file")
+      --source.file string                    Path to 'acme.json' for file source. (default "./acme.json")
+      --source.kv.boltdb.bucket string        Bucket for boltdb. (default "traefik")
+      --source.kv.boltdb.persist-connection   Persist connection for boltdb.
+      --source.kv.connection-timeout int      Connection timeout in seconds.
+      --source.kv.consul.token string         Token for consul.
+      --source.kv.endpoints string            Comma seperated list of endpoints. (default "localhost:8500")
+      --source.kv.etcd.sync-period int        Sync period for etcd in seconds.
+      --source.kv.password string             Password for connection.
+      --source.kv.tls.ca-cert-file string     Root CA file for certificate verification if TLS is enabled.
+      --source.kv.tls.enable                  Enable TLS encryption.
+      --source.kv.tls.insecureskipverify      Trust unverified certificates if TLS is enabled.
+      --source.kv.username string             Username for connection.
+      --watch                                 Enable watching changes.
 ```
 
 ## Examples
@@ -91,6 +104,51 @@ dump
    ├──my.domain.com.crt
    └──letsencrypt.key
 
+```
+
+### Enabled watching
+
+```console
+$ traefik-certs-dumper dump --watch
+2019/04/19 16:56:34 wrote new configuration
+dump
+├──certs
+│  └──my.domain.com.key
+└──private
+   ├──my.domain.com.crt
+   └──letsencrypt.key
+2019/04/19 16:57:14 wrote new configuration
+dump
+├──certs
+│  └──my.domain.com.key
+└──private
+   ├──my.domain.com.crt
+   └──letsencrypt.key
+
+```
+
+### Consul backend
+
+```console
+$ traefik-certs-dumper dump --source consul --source.kv.endpoints=localhost:8500
+```
+
+### Etcd backend
+
+```console
+$ traefik-certs-dumper dump --source etcd --source.kv.endpoints=localhost:2379
+```
+
+### Boltdb backend
+
+```console
+$ traefik-certs-dumper dump --source boltdb --source.kv.endpoints=/tmp/my.db
+```
+
+### Zookeeper backend
+
+```console
+$ traefik-certs-dumper dump --source zookeeper --source.kv.endpoints=localhost:2181
 ```
 
 ### Change source and destination

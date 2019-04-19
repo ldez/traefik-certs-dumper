@@ -55,7 +55,7 @@ func register(backend string) (store.Backend, error) {
 	case ETCD:
 		etcdv3.Register()
 		return store.ETCDV3, nil
-	case ZK:
+	case ZOOKEEPER:
 		zookeeper.Register()
 		return store.ZK, nil
 	case BOLTDB:
@@ -66,42 +66,81 @@ func register(backend string) (store.Backend, error) {
 	}
 }
 
-func (b KVBackend) loop(watch bool) (<-chan *StoredData, <-chan error) {
+func loopKV(watch bool, kvstore store.Store, dataCh chan *StoredData, errCh chan error) {
+	stopCh := make(<-chan struct{})
+	events, err := kvstore.Watch(storeKey, stopCh, nil)
+	if err != nil {
+		errCh <- err
+	}
+	for {
+		kvpair := <-events
+		if kvpair == nil {
+			errCh <- fmt.Errorf("could not fetch Key/Value pair for key %v", storeKey)
+			return
+		}
+		dataCh <- extractStoredData(kvpair, errCh)
+		if !watch {
+			close(dataCh)
+			close(errCh)
+		}
+	}
+}
+
+func extractStoredData(kvpair *store.KVPair, errCh chan error) *StoredData {
+	storedData, err := getStoredDataFromGzip(kvpair.Value)
+	if err != nil {
+		errCh <- err
+	}
+	return storedData
+}
+
+func getSingleData(kvstore store.Store, dataCh chan *StoredData, errCh chan error) {
+	kvpair, err := kvstore.Get(storeKey, nil)
+	if err != nil {
+		errCh <- err
+		return
+	}
+	if kvpair == nil {
+		errCh <- fmt.Errorf("could not fetch Key/Value pair for key %v", storeKey)
+		return
+	}
+	dataCh <- extractStoredData(kvpair, errCh)
+	close(dataCh)
+	close(errCh)
+}
+
+func (b KVBackend) getStoredData(watch bool) (<-chan *StoredData, <-chan error) {
 
 	dataCh := make(chan *StoredData)
-	errors := make(chan error)
+	errCh := make(chan error)
 
 	backend, err := register(b.Name)
 	if err != nil {
-		errors <- err
+		go func() {
+			errCh <- err
+		}()
+		return dataCh, errCh
 	}
-
 	kvstore, err := valkeyrie.NewStore(
 		backend,
 		b.Client,
 		b.Config,
 	)
+
 	if err != nil {
-		errors <- err
+		go func() {
+			errCh <- err
+		}()
+		return dataCh, errCh
 	}
 
-	go func() {
-		stopCh := make(<-chan struct{})
-		events, _ := kvstore.Watch(storeKey, stopCh, nil)
-		for {
-			kvpair := <-events
-			storedData, err := getStoredDataFromGzip(kvpair.Value)
-			if err != nil {
-				errors <- err
-			}
-			dataCh <- storedData
-			if !watch {
-				close(dataCh)
-				close(errors)
-			}
-		}
-	}()
+	if !watch {
+		go getSingleData(kvstore, dataCh, errCh)
+		return dataCh, errCh
+	}
 
-	return dataCh, errors
+	go loopKV(watch, kvstore, dataCh, errCh)
+
+	return dataCh, errCh
 
 }

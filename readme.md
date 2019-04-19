@@ -75,7 +75,7 @@ Flags:
   -h, --help                                  help for dump
       --key-ext string                        The file extension of the generated private keys. (default ".key")
       --key-name string                       The file name (without extension) of the generated private keys. (default "privatekey")
-      --source source.<type>.                 Source type, one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'. Options for each source type are prefixed with source.<type>. (default "file")
+      --source string                         Source type, one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'. Options for each source type are prefixed with 'source.<type>'. (default "file")
       --source.file string                    Path to 'acme.json' for file source. (default "./acme.json")
       --source.kv.boltdb.bucket string        Bucket for boltdb. (default "traefik")
       --source.kv.boltdb.persist-connection   Persist connection for boltdb.

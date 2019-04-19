@@ -31,7 +31,7 @@ func main() {
 		RunE:    commandRun,
 	}
 
-	dumpCmd.Flags().String("source", "file", "Source type, one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'. Options for each source type are prefixed with `source.<type>.`")
+	dumpCmd.Flags().String("source", "file", "Source type, one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'. Options for each source type are prefixed with 'source.<type>'.")
 	dumpCmd.Flags().String("source.file", "./acme.json", "Path to 'acme.json' for file source.")
 
 	// Generic parameters for Key/Value backends

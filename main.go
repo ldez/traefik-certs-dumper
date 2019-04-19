@@ -33,13 +33,20 @@ func main() {
 			source := cmd.Flag("source").Value.String()
 			sourceFile := cmd.Flag("source.file").Value.String()
 			watch, _ := strconv.ParseBool(cmd.Flag("watch").Value.String())
-			if source == FILE {
+
+			switch source {
+			case FILE:
 				if _, err := os.Stat(sourceFile); os.IsNotExist(err) {
 					return fmt.Errorf("--source.file (%q) does not exist", sourceFile)
 				}
-			} else if source == BOLTDB && watch {
-				return fmt.Errorf("--watch=true is not supported for boltdb")
-			} else if source != CONSUL && source != ETCD && source != ZOOKEEPER && source != BOLTDB {
+			case BOLTDB:
+				if watch {
+					return fmt.Errorf("--watch=true is not supported for boltdb")
+				}
+			case CONSUL:
+			case ETCD:
+			case ZOOKEEPER:
+			default:
 				return fmt.Errorf("--source (%q) is not allowed, use one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'", source)
 			}
 
@@ -69,17 +76,11 @@ func main() {
 			storeConfig.Username = cmd.Flag("source.kv.username").Value.String()
 			storeConfig.Password = cmd.Flag("source.kv.password").Value.String()
 
-			enableTLS, err := strconv.ParseBool(cmd.Flag("source.kv.tls.enable").Value.String())
-			if err != nil {
-				return err
-			}
+			enableTLS, _ := strconv.ParseBool(cmd.Flag("source.kv.tls.enable").Value.String())
 
 			if enableTLS {
 				tlsConfig := &tls.Config{}
-				insecureSkipVerify, err := strconv.ParseBool(cmd.Flag("source.kv.tls.insecureskipverify").Value.String())
-				if err != nil {
-					return err
-				}
+				insecureSkipVerify, _ := strconv.ParseBool(cmd.Flag("source.kv.tls.insecureskipverify").Value.String())
 				tlsConfig.InsecureSkipVerify = insecureSkipVerify
 				if cmd.Flag("source.kv.tls.ca-cert-file").Value.String() != "" {
 					caFile := cmd.Flag("source.kv.tls.ca-cert-file").Value.String()
@@ -101,10 +102,7 @@ func main() {
 			timeout, _ = strconv.Atoi(cmd.Flag("source.kv.etcd.sync-period").Value.String())
 			storeConfig.SyncPeriod = time.Second * time.Duration(timeout)
 			// Special parameters for boltdb
-			persistConnection, err := strconv.ParseBool(cmd.Flag("source.kv.boltdb.persist-connection").Value.String())
-			if err != nil {
-				return err
-			}
+			persistConnection, _ := strconv.ParseBool(cmd.Flag("source.kv.boltdb.persist-connection").Value.String())
 			storeConfig.PersistConnection = persistConnection
 			storeConfig.Bucket = cmd.Flag("source.kv.boltdb.bucket").Value.String()
 			// Special parameters for consul

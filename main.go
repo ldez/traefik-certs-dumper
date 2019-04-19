@@ -109,18 +109,18 @@ func main() {
 			storeConfig.Token = cmd.Flag("source.kv.consul.token").Value.String()
 
 			switch source {
-			case "file":
+			case FILE:
 				config.BackendConfig = FileBackend{
 					Name: FILE,
 					Path: acmeFile,
 				}
-			case "consul":
+			case CONSUL:
 				fallthrough
-			case "etcd":
+			case ETCD:
 				fallthrough
-			case "zookeeper":
+			case ZOOKEEPER:
 				fallthrough
-			case "boltdb":
+			case BOLTDB:
 				fallthrough
 			default:
 				config.BackendConfig = KVBackend{

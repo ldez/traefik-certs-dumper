@@ -40,4 +40,7 @@ require (
 	gopkg.in/square/go-jose.v2 v2.3.1 // indirect
 )
 
-replace github.com/ugorji/go => github.com/ugorji/go/codec v0.0.0-20190204201341-e444a5086c43
+replace (
+	github.com/ugorji/go => github.com/ugorji/go v1.1.2-0.20181022190402-e5e69e061d4f
+	github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8 => github.com/ugorji/go/codec v1.1.2-0.20181022190402-e5e69e061d4f
+)

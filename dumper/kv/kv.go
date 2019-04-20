@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 
 	"github.com/abronan/valkeyrie"
 	"github.com/abronan/valkeyrie/store"
@@ -53,6 +54,8 @@ func watch(kvStore store.Store, storeKey string, baseConfig *dumper.BaseConfig) 
 		if err != nil {
 			return err
 		}
+
+		log.Println("Dumped new certificate data.")
 	}
 }
 

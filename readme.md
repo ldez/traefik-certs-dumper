@@ -43,47 +43,16 @@ docker run ldez/traefik-certs-dumper:<tag_name>
 
 ## Usage
 
-```yaml
-Dump the content of the "acme.json" file from Traefik to certificates.
-
-Usage:
-  traefik-certs-dumper [command]
-
-Available Commands:
-  dump        Dump Let's Encrypt certificates from Traefik
-  help        Help about any command
-  version     Display version
-
-Flags:
-  -h, --help      help for certs-dumper
-      --version   version for certs-dumper
-
-Use "traefik-certs-dumper [command] --help" for more information about a command.
-```
-
-```yaml
-Dump the content of the "acme.json" file from Traefik to certificates.
-
-Usage:
-  traefik-certs-dumper dump [flags]
-
-Flags:
-      --crt-ext string    The file extension of the generated certificates. (default ".crt")
-      --crt-name string   The file name (without extension) of the generated certificates. (default "certificate")
-      --dest string       Path to store the dump content. (default "./dump")
-      --domain-subdir     Use domain as sub-directory.
-  -h, --help              help for dump
-      --key-ext string    The file extension of the generated private keys. (default ".key")
-      --key-name string   The file name (without extension) of the generated private keys. (default "privatekey")
-      --source string     Path to 'acme.json' file. (default "./acme.json")
-```
+- [traefik-certs-dumper](docs/traefik-certs-dumper.md)
+- [traefik-certs-dumper file](docs/traefik-certs-dumper_file.md)
+- [traefik-certs-dumper kv](docs/traefik-certs-dumper_kv.md)
 
 ## Examples
 
 ### Simple Dump
 
 ```console
-$ traefik-certs-dumper dump
+$ traefik-certs-dumper file
 dump
 ├──certs
 │  └──my.domain.com.key
@@ -96,7 +65,7 @@ dump
 ### Change source and destination
 
 ```console
-$ traefik-certs-dumper dump --source ./acme.json --dest ./dump/test
+$ traefik-certs-dumper file --source ./acme.json --dest ./dump/test
 test
 ├──certs
 │  └──my.domain.com.key
@@ -109,7 +78,7 @@ test
 ### Use domain as sub-directory
 
 ```console
-$ traefik-certs-dumper dump --domain-subdir=true
+$ traefik-certs-dumper file --domain-subdir=true
 dump
 ├──my.domain.com
 │  ├──certificate.crt
@@ -121,7 +90,7 @@ dump
 #### Change file extension
 
 ```console
-$ traefik-certs-dumper dump --domain-subdir=true --crt-ext=.pem --key-ext=.pem
+$ traefik-certs-dumper file --domain-subdir=true --crt-ext=.pem --key-ext=.pem
 dump
 ├──my.domain.com
 │  ├──certificate.pem
@@ -133,7 +102,7 @@ dump
 #### Change file name
 
 ```console
-$ traefik-certs-dumper dump --domain-subdir=true --crt-name=fullchain --key-name=privkey
+$ traefik-certs-dumper file --domain-subdir=true --crt-name=fullchain --key-name=privkey
 dump
 ├──my.domain.com
 │  ├──fullchain.crt
@@ -141,3 +110,31 @@ dump
 └──private
    └──letsencrypt.key
 ```
+
+### KV store
+
+#### Consul
+
+```console
+$ traefik-certs-dumper kv consul --endpoints localhost:8500
+```
+
+#### Etcd
+
+```console
+$ traefik-certs-dumper kv etcd --endpoints localhost:2379
+```
+
+#### Boltdb
+
+```console
+$ traefik-certs-dumper kv boltdb --endpoints /the/path/to/mydb.db
+```
+
+#### Zookeeper
+
+```console
+$ traefik-certs-dumper kv zookeeper --endpoints localhost:2181
+```
+
+

@@ -7,7 +7,7 @@ import (
 	"github.com/ldez/traefik-certs-dumper/dumper"
 )
 
-// Dump FIXME
+// Dump Dumps "acme.json" file to certificates.
 func Dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	data, err := readFile(acmeFile)
 	if err != nil {

@@ -1,6 +1,6 @@
 package dumper
 
-// BaseConfig FIXME
+// BaseConfig Base dump command configuration.
 type BaseConfig struct {
 	DumpPath     string
 	CrtInfo      FileInfo

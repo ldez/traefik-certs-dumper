@@ -14,13 +14,13 @@ const (
 	keysSubDir  = "private"
 )
 
-// FileInfo FIXME
+// FileInfo File information.
 type FileInfo struct {
 	Name string
 	Ext  string
 }
 
-// Dump FIXME
+// Dump Dumps data to certificates.
 func Dump(data *StoredData, baseConfig *BaseConfig) error {
 	if err := os.RemoveAll(baseConfig.DumpPath); err != nil {
 		return err

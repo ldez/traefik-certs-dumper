@@ -2,7 +2,7 @@ package kv
 
 import "github.com/abronan/valkeyrie/store"
 
-// Config FIXME
+// Config KV configuration.
 type Config struct {
 	Backend   store.Backend
 	Prefix    string

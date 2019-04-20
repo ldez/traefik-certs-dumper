@@ -14,7 +14,7 @@ import (
 
 const storeKeySuffix = "/acme/account/object"
 
-// Dump FIXME
+// Dump Dumps KV content to certificates.
 func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
 	kvStore, err := valkeyrie.NewStore(config.Backend, config.Endpoints, config.Options)
 	if err != nil {

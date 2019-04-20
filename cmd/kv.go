@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/abronan/valkeyrie/store"
@@ -42,6 +43,8 @@ func getKvConfig(cmd *cobra.Command) (*kv.Config, error) {
 		return nil, err
 	}
 
+	watch, _ := strconv.ParseBool(cmd.Flag("watch").Value.String())
+
 	return &kv.Config{
 		Endpoints: endpoints,
 		Prefix:    cmd.Flag("prefix").Value.String(),
@@ -50,5 +53,6 @@ func getKvConfig(cmd *cobra.Command) (*kv.Config, error) {
 			Username:          cmd.Flag("password").Value.String(),
 			Password:          cmd.Flag("username").Value.String(),
 		},
+		Watch: watch,
 	}, nil
 }

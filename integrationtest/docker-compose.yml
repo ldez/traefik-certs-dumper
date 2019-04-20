@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  consul-kv:
+    image: consul
+    ports:
+      - "8500:8500"
+
+  zookeeper-kv:
+    image: zookeeper
+    ports:
+      - "2181:2181"
+
+  etcd-kv:
+    image: quay.io/coreos/etcd:v3.3.12
+    command: etcd --listen-client-urls http://0.0.0.0:2379 --advertise-client-urls http://0.0.0.0:2380
+    ports:
+      - "2379:2379"

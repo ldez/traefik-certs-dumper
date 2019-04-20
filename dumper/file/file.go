@@ -7,6 +7,7 @@ import (
 	"github.com/ldez/traefik-certs-dumper/dumper"
 )
 
+// Dump FIXME
 func Dump(acmeFile, dumpPath string, crtInfo, keyInfo dumper.FileInfo, domainSubDir bool) error {
 	data, err := readFile(acmeFile)
 	if err != nil {

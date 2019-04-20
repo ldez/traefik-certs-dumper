@@ -39,3 +39,7 @@
   [[issues.exclude-rules]]
     path = "version.go"
     text = "`(version|commit|date)` is a global variable"
+
+  [[issues.exclude-rules]] ## FIXME temporary for dev
+    path = "cmd/"
+    linters = ["gochecknoglobals", "gochecknoinits"]

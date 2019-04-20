@@ -39,7 +39,7 @@ type Account struct {
 	KeyType      certcrypto.KeyType
 }
 
-// FIXME move
+// Tree FIXME move
 func Tree(root, indent string) error {
 	fi, err := os.Stat(root)
 	if err != nil {

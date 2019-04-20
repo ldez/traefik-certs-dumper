@@ -14,12 +14,14 @@ import (
 // FIXME prefix
 const storeKey = "traefik/acme/account/object"
 
+// BaseConfig FIXME
 type BaseConfig struct {
 	Backend   store.Backend
 	Endpoints []string
 	Options   *store.Config
 }
 
+// Dump FIXME
 func Dump(config *BaseConfig, dumpPath string, crtInfo, keyInfo dumper.FileInfo, domainSubDir bool) error {
 	kvStore, err := valkeyrie.NewStore(config.Backend, config.Endpoints, config.Options)
 	if err != nil {

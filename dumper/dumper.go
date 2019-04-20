@@ -14,11 +14,13 @@ const (
 	keysSubDir  = "private"
 )
 
+// FileInfo FIXME
 type FileInfo struct {
 	Name string
 	Ext  string
 }
 
+// Dump FIXME
 func Dump(data *StoredData, dumpPath string, crtInfo, keyInfo FileInfo, domainSubDir bool) error {
 	if err := os.RemoveAll(dumpPath); err != nil {
 		return err

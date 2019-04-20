@@ -6,4 +6,5 @@ type BaseConfig struct {
 	CrtInfo      FileInfo
 	KeyInfo      FileInfo
 	DomainSubDir bool
+	Clean        bool
 }

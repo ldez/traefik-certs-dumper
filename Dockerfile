@@ -14,8 +14,7 @@ RUN make build
 
 FROM alpine:3.9
 RUN apk --update upgrade \
-    && apk --no-cache --no-progress add ca-certificates \
-    && update-ca-certificates
+    && apk --no-cache --no-progress add ca-certificates
 
 COPY --from=builder /go/src/github.com/ldez/traefik-certs-dumper/traefik-certs-dumper /usr/bin/traefik-certs-dumper
 

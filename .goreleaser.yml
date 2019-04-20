@@ -2,12 +2,14 @@ project_name: traefik-certs-dumper
 
 builds:
   - binary: traefik-certs-dumper
+    ldflags:
+      - -s -w -X github.com/ldez/traefik-certs-dumper/cmd.version={{.Version}} -X github.com/ldez/traefik-certs-dumper/cmd.commit={{.ShortCommit}} -X github.com/ldez/traefik-certs-dumper/cmd.date={{.Date}}
     env:
       - GO111MODULE=on
     goos:
-      - windows
-      - darwin
       - linux
+      - darwin
+      - windows
       - freebsd
       - openbsd
     goarch:

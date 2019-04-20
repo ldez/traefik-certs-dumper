@@ -48,8 +48,8 @@ func consulRun(cmd *cobra.Command, _ []string) error {
 	}
 
 	config.Options.Token = cmd.Flag("token").Value.String()
-	config.Backend = store.CONSUL
 
+	config.Backend = store.CONSUL
 	consul.Register()
 
 	return kv.Dump(config, dumpPath, crtInfo, keyInfo, subDir)

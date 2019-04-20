@@ -59,6 +59,7 @@ func init() {
 	rootCmd.PersistentFlags().String("key-ext", ".key", "The file extension of the generated private keys.")
 	rootCmd.PersistentFlags().String("key-name", "privatekey", "The file name (without extension) of the generated private keys.")
 	rootCmd.PersistentFlags().Bool("domain-subdir", false, "Use domain as sub-directory.")
+	rootCmd.PersistentFlags().Bool("clean", true, "Clean destination folder before dumping content.")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -93,6 +94,11 @@ func getBaseConfig(cmd *cobra.Command) (*dumper.BaseConfig, error) {
 		return nil, err
 	}
 
+	clean, err := strconv.ParseBool(cmd.Flag("clean").Value.String())
+	if err != nil {
+		return nil, err
+	}
+
 	return &dumper.BaseConfig{
 		DumpPath: cmd.Flag("dest").Value.String(),
 		CrtInfo: dumper.FileInfo{
@@ -104,6 +110,7 @@ func getBaseConfig(cmd *cobra.Command) (*dumper.BaseConfig, error) {
 			Ext:  cmd.Flag("key-ext").Value.String(),
 		},
 		DomainSubDir: subDir,
+		Clean:        clean,
 	}, nil
 }
 

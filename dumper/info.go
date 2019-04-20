@@ -39,6 +39,64 @@ type Account struct {
 	KeyType      certcrypto.KeyType
 }
 
+// CertificateV1 is used to store certificate info
+type CertificateV1 struct {
+	Domain        string
+	CertURL       string
+	CertStableURL string
+	PrivateKey    []byte
+	Certificate   []byte
+}
+
+// AccountV1 is used to store lets encrypt registration info
+type AccountV1 struct {
+	Email              string
+	Registration       *registration.Resource
+	PrivateKey         []byte
+	KeyType            certcrypto.KeyType
+	DomainsCertificate DomainsCertificates
+	ChallengeCerts     map[string]*ChallengeCert
+	HTTPChallenge      map[string]map[string][]byte
+}
+
+// DomainsCertificates stores a certificate for multiple domains
+type DomainsCertificates struct {
+	Certs []*DomainsCertificate
+}
+
+// ChallengeCert stores a challenge certificate
+type ChallengeCert struct {
+	Certificate []byte
+	PrivateKey  []byte
+}
+
+// DomainsCertificate contains a certificate for multiple domains
+type DomainsCertificate struct {
+	Domains     Domain
+	Certificate *CertificateV1
+}
+
+// ConvertAccountV1ToV2 converts account information from version 1 to 2
+func ConvertAccountV1ToV2(account *AccountV1) *StoredData {
+	storedData := &StoredData{}
+	storedData.Account = &Account{
+		PrivateKey:   account.PrivateKey,
+		Registration: account.Registration,
+		Email:        account.Email,
+		KeyType:      account.KeyType,
+	}
+	var certs []*Certificate
+	for _, oldCert := range account.DomainsCertificate.Certs {
+		certs = append(certs, &Certificate{
+			Certificate: oldCert.Certificate.Certificate,
+			Domain:      oldCert.Domains,
+			Key:         oldCert.Certificate.PrivateKey,
+		})
+	}
+	storedData.Certificates = certs
+	return storedData
+}
+
 // Tree FIXME move
 func Tree(root, indent string) error {
 	fi, err := os.Stat(root)

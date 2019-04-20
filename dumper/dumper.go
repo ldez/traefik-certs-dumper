@@ -3,6 +3,7 @@ package dumper
 import (
 	"encoding/pem"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -53,6 +54,8 @@ func Dump(data *StoredData, baseConfig *BaseConfig) error {
 			return err
 		}
 	}
+
+	log.Println("dumped new certificate data")
 
 	return nil
 }

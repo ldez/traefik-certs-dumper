@@ -13,8 +13,8 @@ import (
 // etcdCmd represents the etcd command
 var etcdCmd = &cobra.Command{
 	Use:   "etcd",
-	Short: "TODO",
-	Long:  `TODO`,
+	Short: "Dump the content of etcd.",
+	Long:  `Dump the content of etcd.`,
 	RunE:  runE(etcdRun),
 }
 

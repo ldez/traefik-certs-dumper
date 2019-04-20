@@ -16,8 +16,8 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "traefik-certs-dumper",
-	Short: "Dump Let's Encrypt certificates from Traefik",
-	Long:  `TODO`,
+	Short: "Dump Let's Encrypt certificates from Traefik.",
+	Long:  `Dump Let's Encrypt certificates from Traefik.`,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		if cmd.Name() == "version" {
 			return nil

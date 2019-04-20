@@ -11,8 +11,8 @@ import (
 // zookeeperCmd represents the zookeeper command
 var zookeeperCmd = &cobra.Command{
 	Use:   "zookeeper",
-	Short: "TODO",
-	Long:  `TODO`,
+	Short: "Dump the content of zookeeper.",
+	Long:  `Dump the content of zookeeper.`,
 	RunE:  runE(zookeeperRun),
 }
 

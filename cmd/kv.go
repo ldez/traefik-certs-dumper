@@ -11,8 +11,8 @@ import (
 // kvCmd represents the kv command
 var kvCmd = &cobra.Command{
 	Use:   "kv",
-	Short: "TODO",
-	Long:  `TODO`,
+	Short: `Dump the content of a KV store.`,
+	Long:  `Dump the content of a KV store.`,
 }
 
 func init() {

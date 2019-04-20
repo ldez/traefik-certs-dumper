@@ -11,8 +11,8 @@ import (
 // boltdbCmd represents the boltdb command
 var boltdbCmd = &cobra.Command{
 	Use:   "boltdb",
-	Short: "TODO",
-	Long:  `TODO`,
+	Short: "Dump the content of BoltDB.",
+	Long:  `Dump the content of BoltDB.`,
 	RunE:  runE(boltdbRun),
 }
 

@@ -11,8 +11,8 @@ import (
 // consulCmd represents the consul command
 var consulCmd = &cobra.Command{
 	Use:   "consul",
-	Short: "TODO",
-	Long:  `TODO`,
+	Short: "Dump the content of Consul.",
+	Long:  `Dump the content of Consul.`,
 	RunE:  runE(consulRun),
 }
 

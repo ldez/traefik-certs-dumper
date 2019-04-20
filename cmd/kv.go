@@ -1,5 +1,3 @@
-// Copyright © 2019 ldez <lfernandez.dev@gmail.com>
-
 package cmd
 
 import (
@@ -16,13 +14,13 @@ var kvCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(kvCmd)
 
-	// Here you will define your flags and configuration settings.
+	kvCmd.PersistentFlags().StringSlice("endpoints", []string{"localhost:8500"}, "Comma separated list of endpoints.")
+	kvCmd.PersistentFlags().Int("connection-timeout", 0, "Connection timeout in seconds.")
+	kvCmd.PersistentFlags().String("password", "", "Password for connection.")
+	kvCmd.PersistentFlags().String("username", "", "Username for connection.")
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// kvCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// kvCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// FIXME review TLS parts
+	kvCmd.PersistentFlags().Bool("tls.enable", false, "Enable TLS encryption.")
+	kvCmd.PersistentFlags().Bool("tls.insecureskipverify", false, "Trust unverified certificates if TLS is enabled.")
+	kvCmd.PersistentFlags().String("tls.ca-cert-file", "", "Root CA file for certificate verification if TLS is enabled.")
 }

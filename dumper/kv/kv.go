@@ -11,8 +11,7 @@ import (
 	"github.com/ldez/traefik-certs-dumper/dumper"
 )
 
-// FIXME prefix
-const storeKey = "traefik/acme/account/object"
+const storeKey = "/acme/account/object"
 
 // Dump FIXME
 func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
@@ -21,7 +20,7 @@ func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
 		return err
 	}
 
-	pair, err := kvStore.Get(storeKey, nil)
+	pair, err := kvStore.Get(config.Prefix+storeKey, nil)
 	if err != nil {
 		return err
 	}

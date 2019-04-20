@@ -20,6 +20,7 @@ func init() {
 
 	kvCmd.PersistentFlags().StringSlice("endpoints", []string{"localhost:8500"}, "Comma separated list of endpoints.")
 	kvCmd.PersistentFlags().Int("connection-timeout", 0, "Connection timeout in seconds.")
+	kvCmd.PersistentFlags().String("prefix", "traefik", "Prefix used for KV store.")
 	kvCmd.PersistentFlags().String("password", "", "Password for connection.")
 	kvCmd.PersistentFlags().String("username", "", "Username for connection.")
 
@@ -40,28 +41,13 @@ func getKvConfig(cmd *cobra.Command) (*kv.Config, error) {
 		return nil, err
 	}
 
-	password, err := cmd.Flags().GetString("password")
-	if err != nil {
-		return nil, err
-	}
-
-	username, err := cmd.Flags().GetString("username")
-	if err != nil {
-		return nil, err
-	}
-
 	return &kv.Config{
 		Endpoints: endpoints,
+		Prefix:    cmd.Flag("prefix").Value.String(),
 		Options: &store.Config{
-			ClientTLS:         nil,
-			TLS:               nil,
 			ConnectionTimeout: time.Duration(connectionTimeout) * time.Second,
-			SyncPeriod:        0,
-			Bucket:            "",
-			PersistConnection: false,
-			Username:          username,
-			Password:          password,
-			Token:             "",
+			Username:          cmd.Flag("password").Value.String(),
+			Password:          cmd.Flag("username").Value.String(),
 		},
 	}, nil
 }

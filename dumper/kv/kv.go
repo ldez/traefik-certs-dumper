@@ -18,7 +18,7 @@ const storeKeySuffix = "/acme/account/object"
 func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
 	kvStore, err := valkeyrie.NewStore(config.Backend, config.Endpoints, config.Options)
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to create client of the store: %v", err)
 	}
 
 	storeKey := config.Prefix + storeKeySuffix
@@ -29,7 +29,7 @@ func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
 
 	pair, err := kvStore.Get(storeKey, nil)
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to retrieve %s value: %v", storeKey, err)
 	}
 
 	return dumpPair(pair, baseConfig)
@@ -66,21 +66,19 @@ func dumpPair(pair *store.KVPair, baseConfig *dumper.BaseConfig) error {
 }
 
 func getStoredDataFromGzip(pair *store.KVPair) (*dumper.StoredData, error) {
-	data := &dumper.StoredData{}
-
 	reader, err := gzip.NewReader(bytes.NewBuffer(pair.Value))
 	if err != nil {
-		return data, err
+		return nil, fmt.Errorf("fail to create GZip reader: %v", err)
 	}
 
 	acmeData, err := ioutil.ReadAll(reader)
 	if err != nil {
-		return data, err
+		return nil, fmt.Errorf("unable to read the pair content: %v", err)
 	}
 
 	account := &AccountV1{}
 	if err := json.Unmarshal(acmeData, &account); err != nil {
-		return data, err
+		return nil, fmt.Errorf("unable marshal AccountV1: %v", err)
 	}
 
 	return convertAccountV1ToV2(account), nil

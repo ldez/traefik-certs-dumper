@@ -19,7 +19,7 @@ var kvCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(kvCmd)
 
-	kvCmd.PersistentFlags().StringSlice("endpoints", []string{"localhost:8500"}, "Comma separated list of endpoints.")
+	kvCmd.PersistentFlags().StringSlice("endpoints", []string{"localhost:8500"}, "List of endpoints.")
 	kvCmd.PersistentFlags().Int("connection-timeout", 0, "Connection timeout in seconds.")
 	kvCmd.PersistentFlags().String("prefix", "traefik", "Prefix used for KV store.")
 	kvCmd.PersistentFlags().String("password", "", "Password for connection.")

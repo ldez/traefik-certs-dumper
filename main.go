@@ -16,14 +16,14 @@ import (
 )
 
 func main() {
-	var rootCmd = &cobra.Command{
+	rootCmd := &cobra.Command{
 		Use:     "traefik-certs-dumper",
 		Short:   "Dump Let's Encrypt certificates from Traefik",
 		Long:    `Dump ACME data from Traefik of different storage backends to certificates.`,
 		Version: version,
 	}
 
-	var dumpCmd = &cobra.Command{
+	dumpCmd := &cobra.Command{
 		Use:     "dump",
 		Short:   "Dump Let's Encrypt certificates from Traefik",
 		Long:    `Dump ACME data from Traefik of different storage backends to certificates.`,
@@ -75,23 +75,22 @@ func main() {
 	}
 }
 
-func commandPreRun(cmd *cobra.Command, args []string) error {
+func commandPreRun(cmd *cobra.Command, _ []string) error {
 	source := cmd.Flag("source").Value.String()
 	sourceFile := cmd.Flag("source.file").Value.String()
 	watch, _ := strconv.ParseBool(cmd.Flag("watch").Value.String())
 
 	switch source {
-	case FILE:
+	case File:
 		if _, err := os.Stat(sourceFile); os.IsNotExist(err) {
 			return fmt.Errorf("--source.file (%q) does not exist", sourceFile)
 		}
-	case BOLTDB:
+	case BoldDB:
 		if watch {
 			return fmt.Errorf("--watch=true is not supported for boltdb")
 		}
-	case CONSUL:
-	case ETCD:
-	case ZOOKEEPER:
+	case Consul, Etcd, Zookeeper:
+		// noop
 	default:
 		return fmt.Errorf("--source (%q) is not allowed, use one of 'file', 'consul', 'etcd', 'zookeeper', 'boltdb'", source)
 	}
@@ -110,7 +109,6 @@ func commandPreRun(cmd *cobra.Command, args []string) error {
 }
 
 func commandRun(cmd *cobra.Command, _ []string) error {
-
 	config := &Config{}
 
 	source := cmd.Flag("source").Value.String()
@@ -158,25 +156,19 @@ func commandRun(cmd *cobra.Command, _ []string) error {
 	storeConfig.Token = cmd.Flag("source.kv.consul.token").Value.String()
 
 	switch source {
-	case FILE:
+	case File:
 		config.BackendConfig = FileBackend{
-			Name: FILE,
+			Name: File,
 			Path: acmeFile,
 		}
-	case CONSUL:
-		fallthrough
-	case ETCD:
-		fallthrough
-	case ZOOKEEPER:
-		fallthrough
-	case BOLTDB:
-		fallthrough
-	default:
+	case Consul, Etcd, Zookeeper, BoldDB:
 		config.BackendConfig = KVBackend{
 			Name:   source,
 			Client: endpoints,
 			Config: storeConfig,
 		}
+	default:
+		return fmt.Errorf("unsuported source: %s", source)
 	}
 
 	config.Path = cmd.Flag("dest").Value.String()

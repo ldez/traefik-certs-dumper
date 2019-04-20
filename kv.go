@@ -15,9 +15,7 @@ import (
 	"github.com/abronan/valkeyrie/store/zookeeper"
 )
 
-const (
-	storeKey = "traefik/acme/account/object"
-)
+const storeKey = "traefik/acme/account/object"
 
 func getStoredDataFromGzip(value []byte) (*StoredData, error) {
 	data := &StoredData{}
@@ -49,16 +47,16 @@ type KVBackend struct {
 
 func register(backend string) (store.Backend, error) {
 	switch backend {
-	case CONSUL:
+	case Consul:
 		consul.Register()
 		return store.CONSUL, nil
-	case ETCD:
+	case Etcd:
 		etcdv3.Register()
 		return store.ETCDV3, nil
-	case ZOOKEEPER:
+	case Zookeeper:
 		zookeeper.Register()
 		return store.ZK, nil
-	case BOLTDB:
+	case BoldDB:
 		boltdb.Register()
 		return store.BOLTDB, nil
 	default:
@@ -66,19 +64,20 @@ func register(backend string) (store.Backend, error) {
 	}
 }
 
-func loopKV(watch bool, kvstore store.Store, dataCh chan *StoredData, errCh chan error) {
+func loopKV(watch bool, kvStore store.Store, dataCh chan *StoredData, errCh chan error) {
 	stopCh := make(<-chan struct{})
-	events, err := kvstore.Watch(storeKey, stopCh, nil)
+	events, err := kvStore.Watch(storeKey, stopCh, nil)
 	if err != nil {
 		errCh <- err
 	}
+
 	for {
-		kvpair := <-events
-		if kvpair == nil {
+		kvPair := <-events
+		if kvPair == nil {
 			errCh <- fmt.Errorf("could not fetch Key/Value pair for key %v", storeKey)
 			return
 		}
-		dataCh <- extractStoredData(kvpair, errCh)
+		dataCh <- extractStoredData(kvPair, errCh)
 		if !watch {
 			close(dataCh)
 			close(errCh)
@@ -86,31 +85,31 @@ func loopKV(watch bool, kvstore store.Store, dataCh chan *StoredData, errCh chan
 	}
 }
 
-func extractStoredData(kvpair *store.KVPair, errCh chan error) *StoredData {
-	storedData, err := getStoredDataFromGzip(kvpair.Value)
+func extractStoredData(kvPair *store.KVPair, errCh chan error) *StoredData {
+	storedData, err := getStoredDataFromGzip(kvPair.Value)
 	if err != nil {
 		errCh <- err
 	}
 	return storedData
 }
 
-func getSingleData(kvstore store.Store, dataCh chan *StoredData, errCh chan error) {
-	kvpair, err := kvstore.Get(storeKey, nil)
+func getSingleData(kvStore store.Store, dataCh chan *StoredData, errCh chan error) {
+	kvPair, err := kvStore.Get(storeKey, nil)
 	if err != nil {
 		errCh <- err
 		return
 	}
-	if kvpair == nil {
+	if kvPair == nil {
 		errCh <- fmt.Errorf("could not fetch Key/Value pair for key %v", storeKey)
 		return
 	}
-	dataCh <- extractStoredData(kvpair, errCh)
+
+	dataCh <- extractStoredData(kvPair, errCh)
 	close(dataCh)
 	close(errCh)
 }
 
 func (b KVBackend) getStoredData(watch bool) (<-chan *StoredData, <-chan error) {
-
 	dataCh := make(chan *StoredData)
 	errCh := make(chan error)
 
@@ -121,7 +120,7 @@ func (b KVBackend) getStoredData(watch bool) (<-chan *StoredData, <-chan error) 
 		}()
 		return dataCh, errCh
 	}
-	kvstore, err := valkeyrie.NewStore(
+	kvStore, err := valkeyrie.NewStore(
 		backend,
 		b.Client,
 		b.Config,
@@ -135,11 +134,11 @@ func (b KVBackend) getStoredData(watch bool) (<-chan *StoredData, <-chan error) 
 	}
 
 	if !watch {
-		go getSingleData(kvstore, dataCh, errCh)
+		go getSingleData(kvStore, dataCh, errCh)
 		return dataCh, errCh
 	}
 
-	go loopKV(watch, kvstore, dataCh, errCh)
+	go loopKV(watch, kvStore, dataCh, errCh)
 
 	return dataCh, errCh
 

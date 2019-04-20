@@ -1,19 +1,15 @@
 package main
 
+// Certificates Data Sources.
 const (
-	// FILE backend
-	FILE string = "file"
-	// CONSUL backend
-	CONSUL string = "consul"
-	// ETCD backend
-	ETCD string = "etcd"
-	// ZOOKEEPER backend
-	ZOOKEEPER string = "zookeeper"
-	// BOLTDB backend
-	BOLTDB string = "boltdb"
+	File      = "file"
+	Consul    = "consul"
+	Etcd      = "etcd"
+	Zookeeper = "zookeeper"
+	BoldDB    = "boltdb"
 )
 
-// Config represents a configuration for dumping cerificates
+// Config represents a configuration for dumping certificates
 type Config struct {
 	Path          string
 	CertInfo      fileInfo

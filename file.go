@@ -18,6 +18,7 @@ func getStoredDataFromFile(path string) (*StoredData, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	data := &StoredData{}
 	if err = json.NewDecoder(f).Decode(&data); err != nil {
 		return nil, err
@@ -55,7 +56,6 @@ func loopFile(path string, watcher *fsnotify.Watcher, dataCh chan *StoredData, e
 }
 
 func (b FileBackend) getStoredData(watch bool) (<-chan *StoredData, <-chan error) {
-
 	dataCh := make(chan *StoredData)
 	errCh := make(chan error)
 	go func() {

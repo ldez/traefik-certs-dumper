@@ -3,8 +3,8 @@ package cmd
 import (
 	"github.com/abronan/valkeyrie/store"
 	"github.com/abronan/valkeyrie/store/consul"
-	"github.com/ldez/traefik-certs-dumper/dumper"
-	"github.com/ldez/traefik-certs-dumper/dumper/kv"
+	"github.com/ldez/traefik-certs-dumper/v2/dumper"
+	"github.com/ldez/traefik-certs-dumper/v2/dumper/kv"
 	"github.com/spf13/cobra"
 )
 

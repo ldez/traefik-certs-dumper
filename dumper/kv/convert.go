@@ -3,7 +3,7 @@ package kv
 import (
 	"github.com/go-acme/lego/certcrypto"
 	"github.com/go-acme/lego/registration"
-	"github.com/ldez/traefik-certs-dumper/dumper"
+	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 )
 
 // CertificateV1 is used to store certificate info

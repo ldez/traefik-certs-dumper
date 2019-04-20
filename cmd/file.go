@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/ldez/traefik-certs-dumper/dumper"
-	"github.com/ldez/traefik-certs-dumper/dumper/file"
+	"github.com/ldez/traefik-certs-dumper/v2/dumper"
+	"github.com/ldez/traefik-certs-dumper/v2/dumper/file"
 	"github.com/spf13/cobra"
 )
 

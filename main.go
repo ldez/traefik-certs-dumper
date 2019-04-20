@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/ldez/traefik-certs-dumper/cmd"
+	"github.com/ldez/traefik-certs-dumper/v2/cmd"
 )
 
 func main() {

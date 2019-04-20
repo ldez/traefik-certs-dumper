@@ -10,7 +10,7 @@ import (
 
 	"github.com/abronan/valkeyrie"
 	"github.com/abronan/valkeyrie/store"
-	"github.com/ldez/traefik-certs-dumper/dumper"
+	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 )
 
 const storeKeySuffix = "/acme/account/object"

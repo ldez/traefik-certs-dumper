@@ -1,4 +1,4 @@
-module github.com/ldez/traefik-certs-dumper
+module github.com/ldez/traefik-certs-dumper/v2
 
 go 1.12
 

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/ldez/traefik-certs-dumper/dumper"
+	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

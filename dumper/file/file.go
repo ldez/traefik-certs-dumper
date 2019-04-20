@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/ldez/traefik-certs-dumper/dumper"
+	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 )
 
 // Dump Dumps "acme.json" file to certificates.

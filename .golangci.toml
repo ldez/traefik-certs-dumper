@@ -39,3 +39,6 @@
   [[issues.exclude-rules]]
     path = "version.go"
     text = "`(version|commit|date)` is a global variable"
+  [[issues.exclude-rules]]
+    path = "cmd/"
+    linters = ["gochecknoglobals", "gochecknoinits"]

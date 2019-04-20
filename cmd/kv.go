@@ -23,11 +23,12 @@ func init() {
 	kvCmd.PersistentFlags().String("prefix", "traefik", "Prefix used for KV store.")
 	kvCmd.PersistentFlags().String("password", "", "Password for connection.")
 	kvCmd.PersistentFlags().String("username", "", "Username for connection.")
+	kvCmd.PersistentFlags().Bool("watch", false, "Enable watching changes.")
 
 	// FIXME review TLS parts
-	kvCmd.PersistentFlags().Bool("tls.enable", false, "Enable TLS encryption.")
-	kvCmd.PersistentFlags().Bool("tls.insecureskipverify", false, "Trust unverified certificates if TLS is enabled.")
-	kvCmd.PersistentFlags().String("tls.ca-cert-file", "", "Root CA file for certificate verification if TLS is enabled.")
+	// kvCmd.PersistentFlags().Bool("tls.enable", false, "Enable TLS encryption.")
+	// kvCmd.PersistentFlags().Bool("tls.insecureskipverify", false, "Trust unverified certificates if TLS is enabled.")
+	// kvCmd.PersistentFlags().String("tls.ca-cert-file", "", "Root CA file for certificate verification if TLS is enabled.")
 }
 
 func getKvConfig(cmd *cobra.Command) (*kv.Config, error) {

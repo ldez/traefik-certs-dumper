@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 
 	"github.com/abronan/valkeyrie"
@@ -11,7 +12,7 @@ import (
 	"github.com/ldez/traefik-certs-dumper/dumper"
 )
 
-const storeKey = "/acme/account/object"
+const storeKeySuffix = "/acme/account/object"
 
 // Dump FIXME
 func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
@@ -20,11 +21,42 @@ func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
 		return err
 	}
 
-	pair, err := kvStore.Get(config.Prefix+storeKey, nil)
+	storeKey := config.Prefix + storeKeySuffix
+
+	if config.Watch {
+		return watch(kvStore, storeKey, baseConfig)
+	}
+
+	pair, err := kvStore.Get(storeKey, nil)
 	if err != nil {
 		return err
 	}
 
+	return dumpPair(pair, baseConfig)
+}
+
+func watch(kvStore store.Store, storeKey string, baseConfig *dumper.BaseConfig) error {
+	stopCh := make(<-chan struct{})
+
+	pairs, err := kvStore.Watch(storeKey, stopCh, nil)
+	if err != nil {
+		return err
+	}
+
+	for {
+		pair := <-pairs
+		if pair == nil {
+			return fmt.Errorf("could not fetch Key/Value pair for key %v", storeKey)
+		}
+
+		err = dumpPair(pair, baseConfig)
+		if err != nil {
+			return err
+		}
+	}
+}
+
+func dumpPair(pair *store.KVPair, baseConfig *dumper.BaseConfig) error {
 	data, err := getStoredDataFromGzip(pair)
 	if err != nil {
 		return err

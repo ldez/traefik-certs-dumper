@@ -78,10 +78,10 @@ func getStoredDataFromGzip(pair *store.KVPair) (*dumper.StoredData, error) {
 		return data, err
 	}
 
-	storedData := &dumper.StoredData{}
-	if err := json.Unmarshal(acmeData, &storedData); err != nil {
+	account := &AccountV1{}
+	if err := json.Unmarshal(acmeData, &account); err != nil {
 		return data, err
 	}
 
-	return storedData, nil
+	return convertAccountV1ToV2(account), nil
 }

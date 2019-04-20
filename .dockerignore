@@ -1,0 +1,8 @@
+.idea/
+vendor/
+dist/
+dump/
+dumpcerts.sh
+acme.json
+acme-backup.json
+traefik-certs-dumper

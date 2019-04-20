@@ -1,6 +1,10 @@
 package cmd
 
 import (
+	"time"
+
+	"github.com/abronan/valkeyrie/store"
+	"github.com/ldez/traefik-certs-dumper/dumper/kv"
 	"github.com/spf13/cobra"
 )
 
@@ -23,4 +27,41 @@ func init() {
 	kvCmd.PersistentFlags().Bool("tls.enable", false, "Enable TLS encryption.")
 	kvCmd.PersistentFlags().Bool("tls.insecureskipverify", false, "Trust unverified certificates if TLS is enabled.")
 	kvCmd.PersistentFlags().String("tls.ca-cert-file", "", "Root CA file for certificate verification if TLS is enabled.")
+}
+
+func getBaseConfig(cmd *cobra.Command) (*kv.BaseConfig, error) {
+	endpoints, err := cmd.Flags().GetStringSlice("endpoints")
+	if err != nil {
+		return nil, err
+	}
+
+	connectionTimeout, err := cmd.Flags().GetInt("connection-timeout")
+	if err != nil {
+		return nil, err
+	}
+
+	password, err := cmd.Flags().GetString("password")
+	if err != nil {
+		return nil, err
+	}
+
+	username, err := cmd.Flags().GetString("username")
+	if err != nil {
+		return nil, err
+	}
+
+	return &kv.BaseConfig{
+		Endpoints: endpoints,
+		Options: &store.Config{
+			ClientTLS:         nil,
+			TLS:               nil,
+			ConnectionTimeout: time.Duration(connectionTimeout) * time.Second,
+			SyncPeriod:        0,
+			Bucket:            "",
+			PersistConnection: false,
+			Username:          username,
+			Password:          password,
+			Token:             "",
+		},
+	}, nil
 }

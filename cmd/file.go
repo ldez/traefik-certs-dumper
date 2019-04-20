@@ -14,7 +14,7 @@ var fileCmd = &cobra.Command{
 	Short: `Dump the content of the "acme.json" file.`,
 	Long:  `Dump the content of the "acme.json" file from Traefik to certificates.`,
 	RunE: func(cmd *cobra.Command, _ []string) error {
-		acmeFile := cmd.Flag("source").Value.String()
+		// FIXME shared with KV
 		dumpPath := cmd.Flag("dest").Value.String()
 
 		crtInfo := dumper.FileInfo{
@@ -28,6 +28,10 @@ var fileCmd = &cobra.Command{
 		}
 
 		subDir, _ := strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
+
+		// ---
+
+		acmeFile := cmd.Flag("source").Value.String()
 
 		err := file.Dump(acmeFile, dumpPath, crtInfo, keyInfo, subDir)
 		if err != nil {

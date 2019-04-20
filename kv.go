@@ -17,6 +17,48 @@ import (
 
 const storeKey = "traefik/acme/account/object"
 
+// KVBackend represents a Key/Value pair backend
+type KVBackend struct {
+	Name   string
+	Client []string
+	Config *store.Config
+}
+
+func (b KVBackend) getStoredData(watch bool) (<-chan *StoredData, <-chan error) {
+	dataCh := make(chan *StoredData)
+	errCh := make(chan error)
+
+	backend, err := register(b.Name)
+	if err != nil {
+		go func() {
+			errCh <- err
+		}()
+		return dataCh, errCh
+	}
+	kvStore, err := valkeyrie.NewStore(
+		backend,
+		b.Client,
+		b.Config,
+	)
+
+	if err != nil {
+		go func() {
+			errCh <- err
+		}()
+		return dataCh, errCh
+	}
+
+	if !watch {
+		go getSingleData(kvStore, dataCh, errCh)
+		return dataCh, errCh
+	}
+
+	go loopKV(watch, kvStore, dataCh, errCh)
+
+	return dataCh, errCh
+
+}
+
 func getStoredDataFromGzip(value []byte) (*StoredData, error) {
 	data := &StoredData{}
 
@@ -36,13 +78,6 @@ func getStoredDataFromGzip(value []byte) (*StoredData, error) {
 	}
 
 	return storedData, nil
-}
-
-// KVBackend represents a Key/Value pair backend
-type KVBackend struct {
-	Name   string
-	Client []string
-	Config *store.Config
 }
 
 func register(backend string) (store.Backend, error) {
@@ -107,39 +142,4 @@ func getSingleData(kvStore store.Store, dataCh chan *StoredData, errCh chan erro
 	dataCh <- extractStoredData(kvPair, errCh)
 	close(dataCh)
 	close(errCh)
-}
-
-func (b KVBackend) getStoredData(watch bool) (<-chan *StoredData, <-chan error) {
-	dataCh := make(chan *StoredData)
-	errCh := make(chan error)
-
-	backend, err := register(b.Name)
-	if err != nil {
-		go func() {
-			errCh <- err
-		}()
-		return dataCh, errCh
-	}
-	kvStore, err := valkeyrie.NewStore(
-		backend,
-		b.Client,
-		b.Config,
-	)
-
-	if err != nil {
-		go func() {
-			errCh <- err
-		}()
-		return dataCh, errCh
-	}
-
-	if !watch {
-		go getSingleData(kvStore, dataCh, errCh)
-		return dataCh, errCh
-	}
-
-	go loopKV(watch, kvStore, dataCh, errCh)
-
-	return dataCh, errCh
-
 }

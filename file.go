@@ -13,6 +13,36 @@ type FileBackend struct {
 	Path string
 }
 
+func (b FileBackend) getStoredData(watch bool) (<-chan *StoredData, <-chan error) {
+	dataCh := make(chan *StoredData)
+	errCh := make(chan error)
+	go func() {
+		sendStoredData(b.Path, dataCh, errCh)
+		if !watch {
+			close(dataCh)
+			close(errCh)
+		}
+	}()
+
+	if !watch {
+		return dataCh, errCh
+	}
+
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		errCh <- err
+	}
+
+	go loopFile(b.Path, watcher, dataCh, errCh)
+
+	err = watcher.Add(b.Path)
+	if err != nil {
+		errCh <- err
+	}
+
+	return dataCh, errCh
+}
+
 func getStoredDataFromFile(path string) (*StoredData, error) {
 	f, err := os.Open(path)
 	if err != nil {
@@ -53,34 +83,4 @@ func loopFile(path string, watcher *fsnotify.Watcher, dataCh chan *StoredData, e
 			}
 		}
 	}()
-}
-
-func (b FileBackend) getStoredData(watch bool) (<-chan *StoredData, <-chan error) {
-	dataCh := make(chan *StoredData)
-	errCh := make(chan error)
-	go func() {
-		sendStoredData(b.Path, dataCh, errCh)
-		if !watch {
-			close(dataCh)
-			close(errCh)
-		}
-	}()
-
-	if !watch {
-		return dataCh, errCh
-	}
-
-	watcher, err := fsnotify.NewWatcher()
-	if err != nil {
-		errCh <- err
-	}
-
-	go loopFile(b.Path, watcher, dataCh, errCh)
-
-	err = watcher.Add(b.Path)
-	if err != nil {
-		errCh <- err
-	}
-
-	return dataCh, errCh
 }

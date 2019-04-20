@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/ldez/traefik-certs-dumper/dumper"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -80,5 +81,41 @@ func initConfig() {
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	}
+}
+
+func getBaseConfig(cmd *cobra.Command) (*dumper.BaseConfig, error) {
+	subDir, err := strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
+	if err != nil {
+		return nil, err
+	}
+
+	return &dumper.BaseConfig{
+		DumpPath: cmd.Flag("dest").Value.String(),
+		CrtInfo: dumper.FileInfo{
+			Name: cmd.Flag("crt-name").Value.String(),
+			Ext:  cmd.Flag("crt-ext").Value.String(),
+		},
+		KeyInfo: dumper.FileInfo{
+			Name: cmd.Flag("key-name").Value.String(),
+			Ext:  cmd.Flag("key-ext").Value.String(),
+		},
+		DomainSubDir: subDir,
+	}, nil
+}
+
+func runE(apply func(*dumper.BaseConfig, *cobra.Command) error) func(*cobra.Command, []string) error {
+	return func(cmd *cobra.Command, _ []string) error {
+		baseConfig, err := getBaseConfig(cmd)
+		if err != nil {
+			return err
+		}
+
+		err = apply(baseConfig, cmd)
+		if err != nil {
+			return err
+		}
+
+		return dumper.Tree(baseConfig.DumpPath, "")
 	}
 }

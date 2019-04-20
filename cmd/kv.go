@@ -29,7 +29,7 @@ func init() {
 	kvCmd.PersistentFlags().String("tls.ca-cert-file", "", "Root CA file for certificate verification if TLS is enabled.")
 }
 
-func getBaseConfig(cmd *cobra.Command) (*kv.BaseConfig, error) {
+func getKvConfig(cmd *cobra.Command) (*kv.Config, error) {
 	endpoints, err := cmd.Flags().GetStringSlice("endpoints")
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func getBaseConfig(cmd *cobra.Command) (*kv.BaseConfig, error) {
 		return nil, err
 	}
 
-	return &kv.BaseConfig{
+	return &kv.Config{
 		Endpoints: endpoints,
 		Options: &store.Config{
 			ClientTLS:         nil,

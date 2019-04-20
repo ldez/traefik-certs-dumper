@@ -8,13 +8,13 @@ import (
 )
 
 // Dump FIXME
-func Dump(acmeFile, dumpPath string, crtInfo, keyInfo dumper.FileInfo, domainSubDir bool) error {
+func Dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	data, err := readFile(acmeFile)
 	if err != nil {
 		return err
 	}
 
-	return dumper.Dump(data, dumpPath, crtInfo, keyInfo, domainSubDir)
+	return dumper.Dump(data, baseConfig)
 }
 
 func readFile(acmeFile string) (*dumper.StoredData, error) {

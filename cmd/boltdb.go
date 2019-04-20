@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"strconv"
-
 	"github.com/abronan/valkeyrie/store"
 	"github.com/abronan/valkeyrie/store/boltdb"
 	"github.com/ldez/traefik-certs-dumper/dumper"
@@ -15,7 +13,7 @@ var boltdbCmd = &cobra.Command{
 	Use:   "boltdb",
 	Short: "TODO",
 	Long:  `TODO`,
-	RunE:  boltdbRun,
+	RunE:  runE(boltdbRun),
 }
 
 func init() {
@@ -25,25 +23,8 @@ func init() {
 	boltdbCmd.Flags().String("bucket", "traefik", "Bucket for boltdb.")
 }
 
-func boltdbRun(cmd *cobra.Command, _ []string) error {
-	// FIXME shared with file and all KVs
-	dumpPath := cmd.Flag("dest").Value.String()
-
-	crtInfo := dumper.FileInfo{
-		Name: cmd.Flag("crt-name").Value.String(),
-		Ext:  cmd.Flag("crt-ext").Value.String(),
-	}
-
-	keyInfo := dumper.FileInfo{
-		Name: cmd.Flag("key-name").Value.String(),
-		Ext:  cmd.Flag("key-ext").Value.String(),
-	}
-
-	subDir, _ := strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
-
-	// ---
-
-	config, err := getBaseConfig(cmd)
+func boltdbRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
+	config, err := getKvConfig(cmd)
 	if err != nil {
 		return err
 	}
@@ -54,5 +35,5 @@ func boltdbRun(cmd *cobra.Command, _ []string) error {
 	config.Backend = store.BOLTDB
 	boltdb.Register()
 
-	return kv.Dump(config, dumpPath, crtInfo, keyInfo, subDir)
+	return kv.Dump(config, baseConfig)
 }

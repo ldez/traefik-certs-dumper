@@ -14,15 +14,8 @@ import (
 // FIXME prefix
 const storeKey = "traefik/acme/account/object"
 
-// BaseConfig FIXME
-type BaseConfig struct {
-	Backend   store.Backend
-	Endpoints []string
-	Options   *store.Config
-}
-
 // Dump FIXME
-func Dump(config *BaseConfig, dumpPath string, crtInfo, keyInfo dumper.FileInfo, domainSubDir bool) error {
+func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
 	kvStore, err := valkeyrie.NewStore(config.Backend, config.Endpoints, config.Options)
 	if err != nil {
 		return err
@@ -38,7 +31,7 @@ func Dump(config *BaseConfig, dumpPath string, crtInfo, keyInfo dumper.FileInfo,
 		return err
 	}
 
-	return dumper.Dump(data, dumpPath, crtInfo, keyInfo, domainSubDir)
+	return dumper.Dump(data, baseConfig)
 }
 
 func getStoredDataFromGzip(pair *store.KVPair) (*dumper.StoredData, error) {

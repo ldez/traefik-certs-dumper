@@ -21,34 +21,34 @@ type FileInfo struct {
 }
 
 // Dump FIXME
-func Dump(data *StoredData, dumpPath string, crtInfo, keyInfo FileInfo, domainSubDir bool) error {
-	if err := os.RemoveAll(dumpPath); err != nil {
+func Dump(data *StoredData, baseConfig *BaseConfig) error {
+	if err := os.RemoveAll(baseConfig.DumpPath); err != nil {
 		return err
 	}
 
-	if !domainSubDir {
-		if err := os.MkdirAll(filepath.Join(dumpPath, certsSubDir), 0755); err != nil {
+	if !baseConfig.DomainSubDir {
+		if err := os.MkdirAll(filepath.Join(baseConfig.DumpPath, certsSubDir), 0755); err != nil {
 			return err
 		}
 	}
 
-	if err := os.MkdirAll(filepath.Join(dumpPath, keysSubDir), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Join(baseConfig.DumpPath, keysSubDir), 0755); err != nil {
 		return err
 	}
 
 	privateKeyPem := extractPEMPrivateKey(data.Account)
-	err := ioutil.WriteFile(filepath.Join(dumpPath, keysSubDir, "letsencrypt"+keyInfo.Ext), privateKeyPem, 0666)
+	err := ioutil.WriteFile(filepath.Join(baseConfig.DumpPath, keysSubDir, "letsencrypt"+baseConfig.KeyInfo.Ext), privateKeyPem, 0666)
 	if err != nil {
 		return err
 	}
 
 	for _, cert := range data.Certificates {
-		err := writeCert(dumpPath, cert, crtInfo, domainSubDir)
+		err := writeCert(baseConfig.DumpPath, cert, baseConfig.CrtInfo, baseConfig.DomainSubDir)
 		if err != nil {
 			return err
 		}
 
-		err = writeKey(dumpPath, cert, keyInfo, domainSubDir)
+		err = writeKey(baseConfig.DumpPath, cert, baseConfig.KeyInfo, baseConfig.DomainSubDir)
 		if err != nil {
 			return err
 		}

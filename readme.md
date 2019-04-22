@@ -7,6 +7,18 @@
 
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/ldez)
 
+## Features
+
+- Supported sources:
+    - file ("acme.json")
+    - KV stores (Consul, Etcd, Zookeeper, Boltdb)
+- Watch changes:
+    - from file ("acme.json")
+    - from KV stores (Consul, Etcd, Zookeeper)
+- Output formats:
+    - use domain as sub-directory (allow custom names and extensions)
+    - flat (domain as filename)
+
 ## Installation
 
 ### Download / CI Integration

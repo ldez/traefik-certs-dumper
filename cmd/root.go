@@ -60,6 +60,7 @@ func init() {
 	rootCmd.PersistentFlags().String("key-name", "privatekey", "The file name (without extension) of the generated private keys.")
 	rootCmd.PersistentFlags().Bool("domain-subdir", false, "Use domain as sub-directory.")
 	rootCmd.PersistentFlags().Bool("clean", true, "Clean destination folder before dumping content.")
+	rootCmd.PersistentFlags().Bool("watch", false, "Enable watching changes.")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -86,32 +87,6 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
-}
-
-func getBaseConfig(cmd *cobra.Command) (*dumper.BaseConfig, error) {
-	subDir, err := strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
-	if err != nil {
-		return nil, err
-	}
-
-	clean, err := strconv.ParseBool(cmd.Flag("clean").Value.String())
-	if err != nil {
-		return nil, err
-	}
-
-	return &dumper.BaseConfig{
-		DumpPath: cmd.Flag("dest").Value.String(),
-		CrtInfo: dumper.FileInfo{
-			Name: cmd.Flag("crt-name").Value.String(),
-			Ext:  cmd.Flag("crt-ext").Value.String(),
-		},
-		KeyInfo: dumper.FileInfo{
-			Name: cmd.Flag("key-name").Value.String(),
-			Ext:  cmd.Flag("key-ext").Value.String(),
-		},
-		DomainSubDir: subDir,
-		Clean:        clean,
-	}, nil
 }
 
 func runE(apply func(*dumper.BaseConfig, *cobra.Command) error) func(*cobra.Command, []string) error {
@@ -168,4 +143,36 @@ func tree(root, indent string) error {
 	}
 
 	return nil
+}
+
+func getBaseConfig(cmd *cobra.Command) (*dumper.BaseConfig, error) {
+	subDir, err := strconv.ParseBool(cmd.Flag("domain-subdir").Value.String())
+	if err != nil {
+		return nil, err
+	}
+
+	clean, err := strconv.ParseBool(cmd.Flag("clean").Value.String())
+	if err != nil {
+		return nil, err
+	}
+
+	watch, err := strconv.ParseBool(cmd.Flag("watch").Value.String())
+	if err != nil {
+		return nil, err
+	}
+
+	return &dumper.BaseConfig{
+		DumpPath: cmd.Flag("dest").Value.String(),
+		CrtInfo: dumper.FileInfo{
+			Name: cmd.Flag("crt-name").Value.String(),
+			Ext:  cmd.Flag("crt-ext").Value.String(),
+		},
+		KeyInfo: dumper.FileInfo{
+			Name: cmd.Flag("key-name").Value.String(),
+			Ext:  cmd.Flag("key-ext").Value.String(),
+		},
+		DomainSubDir: subDir,
+		Clean:        clean,
+		Watch:        watch,
+	}, nil
 }

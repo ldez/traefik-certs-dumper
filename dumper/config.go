@@ -7,4 +7,5 @@ type BaseConfig struct {
 	KeyInfo      FileInfo
 	DomainSubDir bool
 	Clean        bool
+	Watch        bool
 }

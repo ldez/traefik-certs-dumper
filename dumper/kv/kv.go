@@ -24,7 +24,7 @@ func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
 
 	storeKey := config.Prefix + storeKeySuffix
 
-	if config.Watch {
+	if baseConfig.Watch {
 		return watch(kvStore, storeKey, baseConfig)
 	}
 

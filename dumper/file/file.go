@@ -104,16 +104,9 @@ func watch(acmeFile string, baseConfig *dumper.BaseConfig) error {
 }
 
 func manageEvent(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile string, previousHash []byte, baseConfig *dumper.BaseConfig) ([]byte, error) {
-	if event.Op&fsnotify.Rename == fsnotify.Rename {
-		err := watcher.Remove(acmeFile)
-		if err != nil {
-			return nil, err
-		}
-
-		err = watcher.Add(acmeFile)
-		if err != nil {
-			return nil, err
-		}
+	err := manageRename(watcher, event, acmeFile)
+	if err != nil {
+		return nil, err
 	}
 
 	hash, err := calculateHash(acmeFile)
@@ -134,6 +127,22 @@ func manageEvent(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile strin
 	}
 
 	return hash, nil
+}
+
+func manageRename(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile string) error {
+	if event.Op&fsnotify.Rename == fsnotify.Rename {
+		err := watcher.Remove(acmeFile)
+		if err != nil {
+			return err
+		}
+
+		err = watcher.Add(acmeFile)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func calculateHash(acmeFile string) ([]byte, error) {

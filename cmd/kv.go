@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"strconv"
 	"time"
 
 	"github.com/abronan/valkeyrie/store"
@@ -24,7 +23,6 @@ func init() {
 	kvCmd.PersistentFlags().String("prefix", "traefik", "Prefix used for KV store.")
 	kvCmd.PersistentFlags().String("password", "", "Password for connection.")
 	kvCmd.PersistentFlags().String("username", "", "Username for connection.")
-	kvCmd.PersistentFlags().Bool("watch", false, "Enable watching changes.")
 
 	// FIXME review TLS parts
 	// kvCmd.PersistentFlags().Bool("tls.enable", false, "Enable TLS encryption.")
@@ -43,8 +41,6 @@ func getKvConfig(cmd *cobra.Command) (*kv.Config, error) {
 		return nil, err
 	}
 
-	watch, _ := strconv.ParseBool(cmd.Flag("watch").Value.String())
-
 	return &kv.Config{
 		Endpoints: endpoints,
 		Prefix:    cmd.Flag("prefix").Value.String(),
@@ -53,6 +49,5 @@ func getKvConfig(cmd *cobra.Command) (*kv.Config, error) {
 			Username:          cmd.Flag("password").Value.String(),
 			Password:          cmd.Flag("username").Value.String(),
 		},
-		Watch: watch,
 	}, nil
 }

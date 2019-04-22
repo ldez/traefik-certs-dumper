@@ -14,6 +14,12 @@ Dump the content of a KV store.
   -h, --help                     help for kv
       --password string          Password for connection.
       --prefix string            Prefix used for KV store. (default "traefik")
+      --tls                      Enable TLS encryption.
+      --tls.ca string            Root CA for certificate verification if TLS is enabled
+      --tls.ca.optional          
+      --tls.cert string          TLS cert
+      --tls.insecureskipverify   Trust unverified certificates if TLS is enabled.
+      --tls.key string           TLS key
       --username string          Username for connection.
 ```
 

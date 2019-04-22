@@ -72,51 +72,20 @@ func watch(acmeFile string, baseConfig *dumper.BaseConfig) error {
 					log.Println("event:", event)
 				}
 
-				switch {
-				case event.Op&fsnotify.Rename == fsnotify.Rename:
-					errW := watcher.Remove(acmeFile)
-					if errW != nil {
-						log.Println("error:", errW)
-						done <- true
-						return
-					}
-
-					errW = watcher.Add(acmeFile)
-					if errW != nil {
-						log.Println("error:", errW)
-						done <- true
-						return
-					}
-					fallthrough
-				case event.Op&fsnotify.Write == fsnotify.Write:
-					hash, errH := calculateHash(acmeFile)
-					if err != nil {
-						log.Println("error:", errH)
-						done <- true
-						return
-					}
-
-					if !bytes.Equal(previousHash, hash) {
-						previousHash = hash
-
-						if strings.EqualFold(os.Getenv("TCD_DEBUG"), "true") {
-							log.Println("detected changes on file:", event.Name)
-						}
-
-						if errD := dump(acmeFile, baseConfig); errD != nil {
-							log.Println("error:", errD)
-							done <- true
-							return
-						}
-
-						log.Println("Dumped new certificate data.")
-					}
-
+				hash, errW := manageEvent(watcher, event, acmeFile, previousHash, baseConfig)
+				if errW != nil {
+					log.Println("error:", errW)
+					done <- true
+					return
 				}
+
+				previousHash = hash
+
 			case errW, ok := <-watcher.Errors:
 				if !ok {
 					return
 				}
+
 				log.Println("error:", errW)
 				done <- true
 				return
@@ -132,6 +101,39 @@ func watch(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	<-done
 
 	return nil
+}
+
+func manageEvent(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile string, previousHash []byte, baseConfig *dumper.BaseConfig) ([]byte, error) {
+	if event.Op&fsnotify.Rename == fsnotify.Rename {
+		err := watcher.Remove(acmeFile)
+		if err != nil {
+			return nil, err
+		}
+
+		err = watcher.Add(acmeFile)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	hash, err := calculateHash(acmeFile)
+	if err != nil {
+		return nil, err
+	}
+
+	if !bytes.Equal(previousHash, hash) {
+		if strings.EqualFold(os.Getenv("TCD_DEBUG"), "true") {
+			log.Println("detected changes on file:", event.Name)
+		}
+
+		if errD := dump(acmeFile, baseConfig); errD != nil {
+			return nil, errD
+		}
+
+		log.Println("Dumped new certificate data.")
+	}
+
+	return hash, nil
 }
 
 func calculateHash(acmeFile string) ([]byte, error) {

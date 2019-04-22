@@ -130,19 +130,15 @@ func manageEvent(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile strin
 }
 
 func manageRename(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile string) error {
-	if event.Op&fsnotify.Rename == fsnotify.Rename {
-		err := watcher.Remove(acmeFile)
-		if err != nil {
-			return err
-		}
-
-		err = watcher.Add(acmeFile)
-		if err != nil {
-			return err
-		}
+	if event.Op&fsnotify.Rename != fsnotify.Rename {
+		return nil
 	}
 
-	return nil
+	if err := watcher.Remove(acmeFile); err != nil {
+		return err
+	}
+
+	return watcher.Add(acmeFile)
 }
 
 func calculateHash(acmeFile string) ([]byte, error) {

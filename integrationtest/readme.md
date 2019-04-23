@@ -31,7 +31,7 @@ traefik-certs-dumper kv zookeeper --endpoints localhost:2181
 
 ## Run certs dumper with watching
 
-While watching is enabled, run `loader.go` again for KV backends or manipulate `/tmp/acme.json` for file backend that change events are triggered.
+While watching is enabled, run `loader.go` again for KV backends or manipulate `./acme.json` for file backend that change events are triggered.
 
 ```bash
 traefik-certs-dumper kv consul --watch --endpoints localhost:8500

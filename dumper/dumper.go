@@ -22,17 +22,10 @@ type FileInfo struct {
 
 // Dump Dumps data to certificates.
 func Dump(data *StoredData, baseConfig *BaseConfig) error {
-	_, errExists := os.Stat(baseConfig.DumpPath)
-
-	if baseConfig.Clean && !os.IsNotExist(errExists) {
-		dir, err := ioutil.ReadDir(baseConfig.DumpPath)
+	if baseConfig.Clean {
+		err := clean(baseConfig.DumpPath)
 		if err != nil {
 			return err
-		}
-		for _, f := range dir {
-			if err := os.RemoveAll(filepath.Join(baseConfig.DumpPath, f.Name())); err != nil {
-				return err
-			}
 		}
 	}
 
@@ -109,4 +102,28 @@ func extractPEMPrivateKey(account *Account) []byte {
 	}
 
 	return pem.EncodeToMemory(block)
+}
+
+func clean(dumpPath string) error {
+	_, errExists := os.Stat(dumpPath)
+	if os.IsNotExist(errExists) {
+		return nil
+	}
+
+	if errExists != nil {
+		return errExists
+	}
+
+	dir, err := ioutil.ReadDir(dumpPath)
+	if err != nil {
+		return err
+	}
+
+	for _, f := range dir {
+		if err := os.RemoveAll(filepath.Join(dumpPath, f.Name())); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

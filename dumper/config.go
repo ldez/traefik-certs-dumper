@@ -8,4 +8,5 @@ type BaseConfig struct {
 	DomainSubDir bool
 	Clean        bool
 	Watch        bool
+	Hook         string
 }

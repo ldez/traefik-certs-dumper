@@ -7,10 +7,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
+	"strings"
 
 	"github.com/abronan/valkeyrie"
 	"github.com/abronan/valkeyrie/store"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
+	"github.com/ldez/traefik-certs-dumper/v2/hook"
 )
 
 const storeKeySuffix = "/acme/account/object"
@@ -55,7 +58,11 @@ func watch(kvStore store.Store, storeKey string, baseConfig *dumper.BaseConfig) 
 			return err
 		}
 
-		log.Println("Dumped new certificate data.")
+		if isDebug() {
+			log.Println("Dumped new certificate data.")
+		}
+
+		hook.Exec(baseConfig.Hook)
 	}
 }
 
@@ -85,4 +92,8 @@ func getStoredDataFromGzip(pair *store.KVPair) (*dumper.StoredData, error) {
 	}
 
 	return convertAccountV1ToV2(account), nil
+}
+
+func isDebug() bool {
+	return strings.EqualFold(os.Getenv("TCD_DEBUG"), "true")
 }

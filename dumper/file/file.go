@@ -11,6 +11,7 @@ import (
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
+	"github.com/ldez/traefik-certs-dumper/v2/hook"
 )
 
 // Dump Dumps "acme.json" file to certificates.
@@ -68,7 +69,7 @@ func watch(acmeFile string, baseConfig *dumper.BaseConfig) error {
 					return
 				}
 
-				if strings.EqualFold(os.Getenv("TCD_DEBUG"), "true") {
+				if isDebug() {
 					log.Println("event:", event)
 				}
 
@@ -115,7 +116,7 @@ func manageEvent(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile strin
 	}
 
 	if !bytes.Equal(previousHash, hash) {
-		if strings.EqualFold(os.Getenv("TCD_DEBUG"), "true") {
+		if isDebug() {
 			log.Println("detected changes on file:", event.Name)
 		}
 
@@ -123,7 +124,11 @@ func manageEvent(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile strin
 			return nil, errD
 		}
 
-		log.Println("Dumped new certificate data.")
+		if isDebug() {
+			log.Println("Dumped new certificate data.")
+		}
+
+		hook.Exec(baseConfig.Hook)
 	}
 
 	return hash, nil
@@ -155,4 +160,8 @@ func calculateHash(acmeFile string) ([]byte, error) {
 	}
 
 	return h.Sum(nil), nil
+}
+
+func isDebug() bool {
+	return strings.EqualFold(os.Getenv("TCD_DEBUG"), "true")
 }

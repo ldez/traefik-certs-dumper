@@ -18,6 +18,7 @@
 - Output formats:
     - use domain as sub-directory (allow custom names and extensions)
     - flat (domain as filename)
+- Hook (only with watch mode and if the data source changes)
 
 ## Installation
 
@@ -71,7 +72,6 @@ dump
 └──private
    ├──my.domain.com.crt
    └──letsencrypt.key
-
 ```
 
 ### Change source and destination
@@ -84,7 +84,6 @@ test
 └──private
    ├──my.domain.com.crt
    └──letsencrypt.key
-
 ```
 
 ### Use domain as sub-directory
@@ -102,7 +101,7 @@ dump
 #### Change file extension
 
 ```console
-$ traefik-certs-dumper file --domain-subdir=true --crt-ext=.pem --key-ext=.pem
+$ traefik-certs-dumper file --domain-subdir --crt-ext=.pem --key-ext=.pem
 dump
 ├──my.domain.com
 │  ├──certificate.pem
@@ -114,7 +113,7 @@ dump
 #### Change file name
 
 ```console
-$ traefik-certs-dumper file --domain-subdir=true --crt-name=fullchain --key-name=privkey
+$ traefik-certs-dumper file --domain-subdir --crt-name=fullchain --key-name=privkey
 dump
 ├──my.domain.com
 │  ├──fullchain.crt

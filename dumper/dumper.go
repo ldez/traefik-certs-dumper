@@ -23,7 +23,7 @@ type FileInfo struct {
 // Dump Dumps data to certificates.
 func Dump(data *StoredData, baseConfig *BaseConfig) error {
 	if baseConfig.Clean {
-		err := clean(baseConfig.DumpPath)
+		err := cleanDir(baseConfig.DumpPath)
 		if err != nil {
 			return err
 		}
@@ -61,10 +61,10 @@ func Dump(data *StoredData, baseConfig *BaseConfig) error {
 }
 
 func writeCert(dumpPath string, cert *Certificate, info FileInfo, domainSubDir bool) error {
-	certPath := filepath.Join(dumpPath, certsSubDir, cert.Domain.Main+info.Ext)
+	certPath := filepath.Join(dumpPath, certsSubDir, safeName(cert.Domain.Main+info.Ext))
 	if domainSubDir {
-		certPath = filepath.Join(dumpPath, cert.Domain.Main, info.Name+info.Ext)
-		if err := os.MkdirAll(filepath.Join(dumpPath, cert.Domain.Main), 0755); err != nil {
+		certPath = filepath.Join(dumpPath, safeName(cert.Domain.Main), info.Name+info.Ext)
+		if err := os.MkdirAll(filepath.Join(dumpPath, safeName(cert.Domain.Main)), 0755); err != nil {
 			return err
 		}
 	}
@@ -73,10 +73,10 @@ func writeCert(dumpPath string, cert *Certificate, info FileInfo, domainSubDir b
 }
 
 func writeKey(dumpPath string, cert *Certificate, info FileInfo, domainSubDir bool) error {
-	keyPath := filepath.Join(dumpPath, keysSubDir, cert.Domain.Main+info.Ext)
+	keyPath := filepath.Join(dumpPath, keysSubDir, safeName(cert.Domain.Main+info.Ext))
 	if domainSubDir {
-		keyPath = filepath.Join(dumpPath, cert.Domain.Main, info.Name+info.Ext)
-		if err := os.MkdirAll(filepath.Join(dumpPath, cert.Domain.Main), 0755); err != nil {
+		keyPath = filepath.Join(dumpPath, safeName(cert.Domain.Main), info.Name+info.Ext)
+		if err := os.MkdirAll(filepath.Join(dumpPath, safeName(cert.Domain.Main)), 0755); err != nil {
 			return err
 		}
 	}
@@ -104,7 +104,7 @@ func extractPEMPrivateKey(account *Account) []byte {
 	return pem.EncodeToMemory(block)
 }
 
-func clean(dumpPath string) error {
+func cleanDir(dumpPath string) error {
 	_, errExists := os.Stat(dumpPath)
 	if os.IsNotExist(errExists) {
 		return nil

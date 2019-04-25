@@ -22,10 +22,17 @@ type FileInfo struct {
 
 // Dump Dumps data to certificates.
 func Dump(data *StoredData, baseConfig *BaseConfig) error {
+	_, errExists := os.Stat(baseConfig.DumpPath)
 
-	if baseConfig.Clean {
-		if err := os.RemoveAll(baseConfig.DumpPath); err != nil {
+	if baseConfig.Clean && !os.IsNotExist(errExists) {
+		dir, err := ioutil.ReadDir(baseConfig.DumpPath)
+		if err != nil {
 			return err
+		}
+		for _, f := range dir {
+			if err := os.RemoveAll(filepath.Join(baseConfig.DumpPath, f.Name())); err != nil {
+				return err
+			}
 		}
 	}
 

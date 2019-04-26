@@ -6,3 +6,4 @@ dumpcerts.sh
 acme.json
 acme-backup.json
 traefik-certs-dumper
+build-docker.sh

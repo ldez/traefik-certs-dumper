@@ -11,7 +11,7 @@ OS=linux
 declare -a PLATFORMS=( "amd64" "arm.v6" )
 
 # images from Dockerfile
-IMAGE=$(grep "FROM alpine" < Dockerfile | sed "s/FROM //" | sed 's/\$.*//')
+IMAGE=$(grep "{RUNTIME_HASH}" < Dockerfile | sed "s/FROM //" | sed 's/\$.*//')
 
 # manifest cache file
 MANIFEST_FILE=/tmp/manifest.$IMAGE.json

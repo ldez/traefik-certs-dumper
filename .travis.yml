@@ -30,3 +30,9 @@ deploy:
     on:
       tags: true
       condition: $TRAVIS_GO_VERSION =~ ^1\.x$
+  - provider: script
+    skip_cleanup: true
+    script: make publish-images
+    on:
+      tags: true
+      condition: $TRAVIS_GO_VERSION =~ ^1\.x$

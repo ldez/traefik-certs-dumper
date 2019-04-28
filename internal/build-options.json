@@ -1,0 +1,33 @@
+{
+  "386": {
+    "os": "linux",
+    "go_arch": "386"
+  },
+  "amd64": {
+    "os": "linux",
+    "go_arch": "amd64"
+  },
+  "arm.v5": {
+    "os": "linux",
+    "go_arch": "arm",
+    "go_arm": "5",
+    "variant": "v5"
+  },
+  "arm.v6": {
+    "os": "linux",
+    "go_arch": "arm",
+    "go_arm": "6",
+    "variant": "v6"
+  },
+  "arm.v7": {
+    "os": "linux",
+    "go_arch": "arm",
+    "go_arm": "7",
+    "variant": "v7"
+  },
+  "arm.v8": {
+    "os": "linux",
+    "go_arch": "arm64",
+    "variant": "v8"
+  }
+}

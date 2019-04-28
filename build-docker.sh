@@ -3,13 +3,15 @@
 set -o errexit
 set -o pipefail
 
+VERSION=v666
+
 # safe guard
-if [ -n "$TRAVIS_TAG" ] && [ -n "$VERSION" ]; then
-  echo "Deploying..."
-else
-  echo "Skipping deploy"
-  exit 0
-fi
+#if [ -n "$TRAVIS_TAG" ] && [ -n "$VERSION" ]; then
+#  echo "Deploying..."
+#else
+#  echo "Skipping deploy"
+#  exit 0
+#fi
 
 # base docker image name
 IMAGE_NAME="ldez/traefik-certs-dumper"
@@ -18,7 +20,7 @@ IMAGE_NAME="ldez/traefik-certs-dumper"
 OS=linux
 
 # target platforms in docker manifest notation
-declare -a PLATFORMS=( "amd64" "arm.v6" "arm.v7")
+declare -a PLATFORMS=( "amd64" "arm.v6" "arm.v7" "arm64")
 
 # images from Dockerfile
 FROM_IMAGE=$(grep "{RUNTIME_HASH}" < Dockerfile | sed "s/FROM //" | sed 's/\$.*//')
@@ -43,6 +45,7 @@ function platformHash () {
 # get manifest
 if [ ! -f "$MANIFEST_FILE" ]; then
     docker pull "$FROM_IMAGE"
+    echo "docker manifest inspect $FROM_IMAGE"
     DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect "$FROM_IMAGE" > "$MANIFEST_FILE"
 fi
 
@@ -58,28 +61,28 @@ for platform in "${PLATFORMS[@]}"; do
     GOARM=${VARIANT:1}
 
     # build for target runtime image and architecture
+#    echo "docker build --build-arg=RUNTIME_HASH=@${RUNTIME_HASH} --build-arg=GOARCH=${ARCHITECTURE} --build-arg=GOARM=${GOARM} -t $IMAGE_NAME:${VERSION}-$platform" .
     docker build --build-arg="RUNTIME_HASH=@${RUNTIME_HASH}" --build-arg="GOARCH=${ARCHITECTURE}" --build-arg="GOARM=${GOARM}" -t "$IMAGE_NAME:${VERSION}-$platform" .
 
     # push images
-    docker push "$IMAGE_NAME:${VERSION}-$platform"
+    echo "docker push $IMAGE_NAME:${VERSION}-$platform"
+#    docker push "$IMAGE_NAME:${VERSION}-$platform"
 done
 
 # create manifest
 TAG_LIST=$(printf "$IMAGE_NAME:${VERSION}-%s " "${PLATFORMS[@]}")
 # shellcheck disable=SC2086
-DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create --amend "$IMAGE_NAME:${VERSION}" $TAG_LIST
+echo "docker manifest create --amend $IMAGE_NAME:${VERSION} $TAG_LIST"
+#DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create --amend "$IMAGE_NAME:${VERSION}" $TAG_LIST
 
 for platform in "${PLATFORMS[@]}"; do
     # split architecture.version
     IFS='.' read -r ARCHITECTURE VARIANT <<< "$platform"
 
-    # docker and go architectures don't match
-    if [ "arm" == "$ARCHITECTURE" ] && [ -n "$VARIANT" ]; then
-        VARIANT="$ARCHITECTURE$VARIANT"
-    fi
-
-    DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate "$IMAGE_NAME:${VERSION}" "$IMAGE_NAME:${VERSION}-$platform" --os "$OS" --arch "$ARCHITECTURE" --variant "$VARIANT"
+    echo "docker manifest annotate $IMAGE_NAME:${VERSION} $IMAGE_NAME:${VERSION}-$platform --os $OS --arch $ARCHITECTURE --variant $VARIANT"
+#    DOCKER_CLI_EXPERIMENTAL=enabled docker manifest annotate "$IMAGE_NAME:${VERSION}" "$IMAGE_NAME:${VERSION}-$platform" --os "$OS" --arch "$ARCHITECTURE" --variant "$VARIANT"
 done
 
 # push manifest
-DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push "$IMAGE_NAME:${VERSION}"
+echo "docker manifest push $IMAGE_NAME:${VERSION}"
+#DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push "$IMAGE_NAME:${VERSION}"

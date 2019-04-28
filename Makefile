@@ -22,5 +22,7 @@ checks:
 	golangci-lint run
 
 publish-images:
-	VERSION=$(TAG_NAME) ./build-docker.sh
-	VERSION="latest" ./build-docker.sh
+	go run ./internal/multiarch.go --version="$(TAG_NAME)"
+	go run ./internal/multiarch.go --version="latest"
+#	VERSION=$(TAG_NAME) ./build-docker.sh
+#	VERSION="latest" ./build-docker.sh

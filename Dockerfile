@@ -1,10 +1,5 @@
 FROM golang:1-alpine as builder
 
-ARG RUNTIME_HASH
-ARG GOARCH
-ARG GOARM
-ARG GOOS
-
 RUN apk --update upgrade \
     && apk --no-cache --no-progress add git make gcc musl-dev
 
@@ -15,9 +10,9 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN GOARCH=${GOARCH} GOARM=${GOARM} GOOS=${GOOS} make build
+RUN make build
 
-FROM alpine:3.9${RUNTIME_HASH}
+FROM alpine:3.9
 RUN apk --update upgrade \
     && apk --no-cache --no-progress add ca-certificates
 

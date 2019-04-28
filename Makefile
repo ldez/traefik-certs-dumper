@@ -16,11 +16,7 @@ clean:
 
 build: clean
 	@echo Version: $(VERSION) $(BUILD_DATE)
-	go build -v -ldflags '-X "github.com/ldez/traefik-certs-dumper/cmd.version=${VERSION}" -X "github.com/ldez/traefik-certs-dumper/cmd.commit=${SHA}" -X "github.com/ldez/traefik-certs-dumper/cmd.date=${BUILD_DATE}"' -o traefik-certs-dumper
+	go build -v -ldflags '-X "github.com/ldez/traefik-certs-dumper/cmd.version=${VERSION}" -X "github.com/ldez/traefik-certs-dumper/cmd.commit=${SHA}" -X "github.com/ldez/traefik-certs-dumper/cmd.date=${BUILD_DATE}"'
 
 checks:
 	golangci-lint run
-
-publish-images:
-	VERSION=$(TAG_NAME) ./build-docker.sh
-	VERSION="latest" ./build-docker.sh

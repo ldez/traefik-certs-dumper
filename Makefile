@@ -22,6 +22,6 @@ checks:
 	golangci-lint run
 
 publish-images:
-	go run ./internal/multiarch.go --version="$(TAG_NAME)" --dry-run=false
-	go run ./internal/multiarch.go --version="latest" --dry-run=false
+	go run ./internal/ --version="$(TAG_NAME)" --dry-run=false
+	go run ./internal/ --version="latest" --dry-run=false
 	rm -f *.Dockerfile

@@ -13,13 +13,15 @@ import (
 	"github.com/docker/distribution/manifest/manifestlist"
 )
 
+const envDockerExperimental = "DOCKER_CLI_EXPERIMENTAL=enabled"
+
 // Publisher Publish multi-arch image.
 type Publisher struct {
-	Builds           [][]string
-	Push             [][]string
-	ManifestAnnotate [][]string
-	ManifestCreate   []string
-	ManifestPush     []string
+	Builds           []*exec.Cmd
+	Push             []*exec.Cmd
+	ManifestAnnotate []*exec.Cmd
+	ManifestCreate   *exec.Cmd
+	ManifestPush     *exec.Cmd
 }
 
 func newPublisher(imageName, version, baseImageName string, targets []string) (Publisher, error) {
@@ -36,28 +38,31 @@ func newPublisher(imageName, version, baseImageName string, targets []string) (P
 	publisher := Publisher{}
 
 	for _, target := range targets {
-		option := buildOptions[target]
+		option, ok := buildOptions[target]
+		if !ok {
+			return Publisher{}, fmt.Errorf("unsupported platform: %s", target)
+		}
 
 		descriptor, err := findManifestDescriptor(option, manifest.Manifests)
 		if err != nil {
-			log.Fatal(err)
+			return Publisher{}, err
 		}
 
 		dockerfile := fmt.Sprintf("%s-%s-%s.Dockerfile", option.OS, option.GoARCH, option.GoARM)
 
-		publisher.Builds = append(publisher.Builds, []string{
-			"build",
-			"-t", fmt.Sprintf("%s:%s-%s", imageName, version, target),
-			"-f", dockerfile,
-			".",
-		})
-
 		err = createDockerfile(dockerfile, option, descriptor, baseImageName)
 		if err != nil {
-			log.Fatal(err)
+			return Publisher{}, err
 		}
 
-		publisher.Push = append(publisher.Push, []string{"push", fmt.Sprintf(`%s:%s-%s`, imageName, version, target)})
+		dBuild := exec.Command("docker", "build",
+			"-t", fmt.Sprintf("%s:%s-%s", imageName, version, target),
+			"-f", dockerfile,
+			".")
+		publisher.Builds = append(publisher.Builds, dBuild)
+
+		dPush := exec.Command("docker", "push", fmt.Sprintf(`%s:%s-%s`, imageName, version, target))
+		publisher.Push = append(publisher.Push, dPush)
 
 		ma := []string{
 			"manifest", "annotate",
@@ -69,52 +74,80 @@ func newPublisher(imageName, version, baseImageName string, targets []string) (P
 		if option.Variant != "" {
 			ma = append(ma, fmt.Sprintf("--variant=%s", option.Variant))
 		}
-		publisher.ManifestAnnotate = append(publisher.ManifestAnnotate, ma)
+
+		cmdMA := exec.Command("docker", ma...)
+		cmdMA.Env = append(cmdMA.Env, envDockerExperimental)
+		publisher.ManifestAnnotate = append(publisher.ManifestAnnotate, cmdMA)
 	}
 
-	publisher.ManifestCreate = []string{
+	mc := []string{
 		"manifest", "create", "--amend", fmt.Sprintf("%s:%s", imageName, version),
 	}
-
 	for _, target := range targets {
-		publisher.ManifestCreate = append(publisher.ManifestCreate, fmt.Sprintf("%s:%s-%s", imageName, version, target))
+		mc = append(mc, fmt.Sprintf("%s:%s-%s", imageName, version, target))
 	}
 
-	publisher.ManifestPush = []string{
-		"manifest", "push", fmt.Sprintf("%s:%s", imageName, version),
-	}
+	cmdMC := exec.Command("docker", mc...)
+	cmdMC.Env = append(cmdMC.Env, envDockerExperimental)
+	publisher.ManifestCreate = cmdMC
+
+	cmdMP := exec.Command("docker", "manifest", "push", fmt.Sprintf("%s:%s", imageName, version))
+	cmdMP.Env = append(cmdMP.Env, envDockerExperimental)
+	publisher.ManifestPush = cmdMP
 
 	return publisher, nil
 }
 
 func (b Publisher) execute(dryRun bool) error {
-	for _, args := range b.Builds {
-		if err := execDocker(args, dryRun); err != nil {
-			return fmt.Errorf("failed to build: %v: %v", args, err)
+	for _, cmd := range b.Builds {
+		if err := execCmd(cmd, dryRun); err != nil {
+			return fmt.Errorf("failed to build: %v: %v", cmd, err)
 		}
 	}
 
-	for _, args := range b.Push {
-		if err := execDocker(args, dryRun); err != nil {
-			return fmt.Errorf("failed to push: %v: %v", args, err)
+	for _, cmd := range b.Push {
+		if err := execCmd(cmd, dryRun); err != nil {
+			return fmt.Errorf("failed to push: %v: %v", cmd, err)
 		}
 	}
 
-	if err := execDocker(b.ManifestCreate, dryRun); err != nil {
+	if err := execCmd(b.ManifestCreate, dryRun); err != nil {
 		return fmt.Errorf("failed to create manifest: %v: %v", b.ManifestCreate, err)
 	}
 
-	for _, args := range b.ManifestAnnotate {
-		if err := execDocker(args, dryRun); err != nil {
-			return fmt.Errorf("failed to annotate manifest: %v: %v", args, err)
+	for _, cmd := range b.ManifestAnnotate {
+		if err := execCmd(cmd, dryRun); err != nil {
+			return fmt.Errorf("failed to annotate manifest: %v: %v", cmd, err)
 		}
 	}
 
-	if err := execDocker(b.ManifestPush, dryRun); err != nil {
+	if err := execCmd(b.ManifestPush, dryRun); err != nil {
 		return fmt.Errorf("failed to push manifest: %v: %v", b.ManifestPush, err)
 	}
 
 	return nil
+}
+
+func createDockerfile(dockerfile string, option buildOption, descriptor manifestlist.ManifestDescriptor, baseImageName string) error {
+	base := template.New("tmpl.Dockerfile")
+	parse, err := base.ParseFiles("./internal/tmpl.Dockerfile")
+	if err != nil {
+		return err
+	}
+
+	data := map[string]interface{}{
+		"GoOS":         option.OS,
+		"GoARCH":       option.GoARCH,
+		"GoARM":        option.GoARM,
+		"RuntimeImage": fmt.Sprintf("%s@%s", baseImageName, descriptor.Digest),
+	}
+
+	file, err := os.Create(dockerfile)
+	if err != nil {
+		return err
+	}
+
+	return parse.Execute(file, data)
 }
 
 func getBuildOptions(source string) (map[string]buildOption, error) {
@@ -131,28 +164,6 @@ func getBuildOptions(source string) (map[string]buildOption, error) {
 	}
 
 	return buildOptions, nil
-}
-
-func createDockerfile(dockerfile string, buildOption buildOption, descriptor manifestlist.ManifestDescriptor, baseImageName string) error {
-	base := template.New("tmpl.Dockerfile")
-	parse, err := base.ParseFiles("./internal/tmpl.Dockerfile")
-	if err != nil {
-		return err
-	}
-
-	data := map[string]interface{}{
-		"GoOS":         buildOption.OS,
-		"GoARCH":       buildOption.GoARCH,
-		"GoARM":        buildOption.GoARM,
-		"RuntimeImage": fmt.Sprintf("%s@%s", baseImageName, descriptor.Digest),
-	}
-
-	file, err := os.Create(dockerfile)
-	if err != nil {
-		return err
-	}
-
-	return parse.Execute(file, data)
 }
 
 func getManifest(baseImageName string) (*manifestlist.ManifestList, error) {
@@ -201,14 +212,11 @@ func findManifestDescriptor(criterion buildOption, descriptors []manifestlist.Ma
 	return manifestlist.ManifestDescriptor{}, fmt.Errorf("not supported: %v", criterion)
 }
 
-func execDocker(args []string, dryRun bool) error {
+func execCmd(cmd *exec.Cmd, dryRun bool) error {
 	if dryRun {
-		fmt.Println("docker", strings.Join(args, " "))
+		fmt.Println(cmd.Path, strings.Join(cmd.Args, " "))
 		return nil
 	}
-
-	cmd := exec.Command("docker", args...)
-	cmd.Env = append(cmd.Env, "DOCKER_CLI_EXPERIMENTAL=enabled")
 
 	output, err := cmd.CombinedOutput()
 

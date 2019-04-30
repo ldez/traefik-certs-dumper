@@ -22,6 +22,5 @@ checks:
 	golangci-lint run
 
 publish-images:
-	go run ./internal/ --version="$(TAG_NAME)" --dry-run=false
-	go run ./internal/ --version="latest" --dry-run=false
-	rm -f *.Dockerfile
+	seihon publish --version="$(TAG_NAME)" --image-name ldez/traefik-certs-dumper --dry-run=false
+	seihon publish --version="latest" --image-name ldez/traefik-certs-dumper --dry-run=false

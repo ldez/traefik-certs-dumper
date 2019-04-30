@@ -7,4 +7,4 @@ acme.json
 acme-backup.json
 traefik-certs-dumper
 manifest.json
-/*.Dockerfile
+/linux-*.Dockerfile

@@ -22,5 +22,4 @@ checks:
 	golangci-lint run
 
 publish-images:
-	seihon publish --version="$(TAG_NAME)" --image-name ldez/traefik-certs-dumper --dry-run=false
-	seihon publish --version="latest" --image-name ldez/traefik-certs-dumper --dry-run=false
+	seihon publish -v "$(TAG_NAME)" -v "latest" --image-name ldez/traefik-certs-dumper --dry-run=false

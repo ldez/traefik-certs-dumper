@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 	"time"
@@ -27,7 +28,7 @@ func execute(command string) error {
 	ctxCmd, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	parts := strings.Fields(command)
+	parts := strings.Fields(os.ExpandEnv(command))
 	output, err := exec.CommandContext(ctxCmd, parts[0], parts[1:]...).CombinedOutput()
 	if len(output) > 0 {
 		fmt.Println(string(output))

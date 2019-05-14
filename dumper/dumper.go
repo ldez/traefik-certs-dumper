@@ -40,7 +40,7 @@ func Dump(data *StoredData, baseConfig *BaseConfig) error {
 	}
 
 	privateKeyPem := extractPEMPrivateKey(data.Account)
-	err := ioutil.WriteFile(filepath.Join(baseConfig.DumpPath, keysSubDir, "letsencrypt"+baseConfig.KeyInfo.Ext), privateKeyPem, 0666)
+	err := ioutil.WriteFile(filepath.Join(baseConfig.DumpPath, keysSubDir, "letsencrypt"+baseConfig.KeyInfo.Ext), privateKeyPem, 0600)
 	if err != nil {
 		return err
 	}
@@ -81,7 +81,7 @@ func writeKey(dumpPath string, cert *Certificate, info FileInfo, domainSubDir bo
 		}
 	}
 
-	return ioutil.WriteFile(keyPath, cert.Key, 0666)
+	return ioutil.WriteFile(keyPath, cert.Key, 0600)
 }
 
 func extractPEMPrivateKey(account *Account) []byte {

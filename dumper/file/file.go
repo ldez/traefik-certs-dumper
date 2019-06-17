@@ -16,15 +16,11 @@ import (
 
 // Dump Dumps "acme.json" file to certificates.
 func Dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
-	err := dump(acmeFile, baseConfig)
-	if err != nil {
-		return err
-	}
-
 	if baseConfig.Watch {
 		return watch(acmeFile, baseConfig)
 	}
-	return nil
+
+	return dump(acmeFile, baseConfig)
 }
 
 func dump(acmeFile string, baseConfig *dumper.BaseConfig) error {

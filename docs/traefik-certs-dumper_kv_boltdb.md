@@ -32,7 +32,7 @@ traefik-certs-dumper kv boltdb [flags]
       --key-ext string           The file extension of the generated private keys. (default ".key")
       --key-name string          The file name (without extension) of the generated private keys. (default "privatekey")
       --password string          Password for connection.
-      --post-hook string         Execute a command only if changes occurs on the data source. (works only with the watch mode)
+      --post-hook string         Execute a command only if changes occurs on the data source.
       --prefix string            Prefix used for KV store. (default "traefik")
       --tls                      Enable TLS encryption.
       --tls.ca string            Root CA for certificate verification if TLS is enabled

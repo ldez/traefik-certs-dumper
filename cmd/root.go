@@ -61,7 +61,7 @@ func init() {
 	rootCmd.PersistentFlags().Bool("domain-subdir", false, "Use domain as sub-directory.")
 	rootCmd.PersistentFlags().Bool("clean", true, "Clean destination folder before dumping content.")
 	rootCmd.PersistentFlags().Bool("watch", false, "Enable watching changes.")
-	rootCmd.PersistentFlags().String("post-hook", "", "Execute a command only if changes occurs on the data source. (works only with the watch mode)")
+	rootCmd.PersistentFlags().String("post-hook", "", "Execute a command only if changes occurs on the data source.")
 }
 
 // initConfig reads in config file and ENV variables if set.

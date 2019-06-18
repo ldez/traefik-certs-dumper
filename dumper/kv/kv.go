@@ -61,8 +61,6 @@ func watch(kvStore store.Store, storeKey string, baseConfig *dumper.BaseConfig) 
 		if isDebug() {
 			log.Println("Dumped new certificate data.")
 		}
-
-		hook.Exec(baseConfig.Hook)
 	}
 }
 
@@ -72,7 +70,13 @@ func dumpPair(pair *store.KVPair, baseConfig *dumper.BaseConfig) error {
 		return err
 	}
 
-	return dumper.Dump(data, baseConfig)
+	err = dumper.Dump(data, baseConfig)
+	if err != nil {
+		return err
+	}
+
+	hook.Exec(baseConfig.Hook)
+	return nil	
 }
 
 func getStoredDataFromGzip(pair *store.KVPair) (*dumper.StoredData, error) {

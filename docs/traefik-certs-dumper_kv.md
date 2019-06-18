@@ -34,7 +34,7 @@ Dump the content of a KV store.
       --domain-subdir      Use domain as sub-directory.
       --key-ext string     The file extension of the generated private keys. (default ".key")
       --key-name string    The file name (without extension) of the generated private keys. (default "privatekey")
-      --post-hook string   Execute a command only if changes occurs on the data source. (works only with the watch mode)
+      --post-hook string   Execute a command only if changes occurs on the data source.
       --watch              Enable watching changes.
 ```
 

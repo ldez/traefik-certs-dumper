@@ -33,7 +33,13 @@ func dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
 		return err
 	}
 
-	return dumper.Dump(data, baseConfig)
+	err = dumper.Dump(data, baseConfig)
+	if err != nil {
+		return err
+	}
+
+	hook.Exec(baseConfig.Hook)
+	return nil
 }
 
 func readFile(acmeFile string) (*dumper.StoredData, error) {
@@ -127,8 +133,6 @@ func manageEvent(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile strin
 		if isDebug() {
 			log.Println("Dumped new certificate data.")
 		}
-
-		hook.Exec(baseConfig.Hook)
 	}
 
 	return hash, nil

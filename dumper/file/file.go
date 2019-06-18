@@ -22,6 +22,8 @@ func Dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	}
 
 	if baseConfig.Watch {
+		hook.Exec(baseConfig.Hook)
+
 		return watch(acmeFile, baseConfig)
 	}
 	return nil

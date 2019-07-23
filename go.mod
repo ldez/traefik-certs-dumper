@@ -12,7 +12,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/docker/distribution v2.7.1+incompatible
 	github.com/fsnotify/fsnotify v1.4.7
-	github.com/go-acme/lego v2.6.0+incompatible
+	github.com/go-acme/lego v2.7.1+incompatible
 	github.com/golang/groupcache v0.0.0-20190129154638-5b532d6fd5ef // indirect
 	github.com/google/btree v1.0.0 // indirect
 	github.com/gorilla/websocket v1.4.0 // indirect

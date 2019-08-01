@@ -33,17 +33,16 @@ changelog:
       - '^docs:'
       - '^doc:'
       - '^chore:'
+      - '^chore\(deps\):'
       - '^test:'
       - '^tests:'
 
-archive:
-  name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
-  format: tar.gz
-  format_overrides:
-    - goos: windows
-      format: zip
-  files:
-    - LICENSE
-
-#release:
-#  disable: true
+archives:
+  - id: tcd
+    name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE

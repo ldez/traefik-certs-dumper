@@ -1,8 +1,8 @@
 package kv
 
 import (
-	"github.com/go-acme/lego/certcrypto"
-	"github.com/go-acme/lego/registration"
+	"github.com/go-acme/lego/v3/certcrypto"
+	"github.com/go-acme/lego/v3/registration"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 )
 

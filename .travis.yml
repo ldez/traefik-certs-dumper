@@ -1,21 +1,32 @@
 language: go
 
-go:
-  - 1.12.x
-  - 1.x
-
 dist: xenial
-
-services:
-  - docker
-
-env:
-  - GO111MODULE=on
 
 notifications:
   email:
     on_success: never
     on_failure: change
+
+cache:
+  directories:
+    - $GOPATH/pkg/mod
+
+matrix:
+  fast_finish: true
+  include:
+    - go: 1.12.x
+      env: STABLE=true
+    - go: 1.x
+    - go: tip
+  allow_failures:
+    - go: tip
+
+env:
+  global:
+    - GO111MODULE=on
+
+services:
+  - docker
 
 before_install:
   # Install linters and misspell
@@ -26,7 +37,9 @@ before_install:
   - seihon --version
 
 install:
-  - echo "TRAVIS_GO_VERSION=$TRAVIS_GO_VERSION"
+  - go mod tidy
+  - git diff --exit-code go.mod
+  - git diff --exit-code go.sum
   - go mod download
 
 before_deploy:
@@ -42,10 +55,10 @@ deploy:
     script: curl -sL https://git.io/goreleaser | bash
     on:
       tags: true
-      condition: $TRAVIS_GO_VERSION =~ ^1\.x$
+      condition: $STABLE = true
   - provider: script
     skip_cleanup: true
     script: make publish-images
     on:
       tags: true
-      condition: $TRAVIS_GO_VERSION =~ ^1\.x$
+      condition: $STABLE = true

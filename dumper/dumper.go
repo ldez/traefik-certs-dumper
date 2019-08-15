@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/go-acme/lego/certcrypto"
+	"github.com/go-acme/lego/v3/certcrypto"
 )
 
 const (

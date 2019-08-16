@@ -83,8 +83,8 @@ github.com/fsnotify/fsnotify v1.4.8-0.20190312181446-1485a34d5d57 h1:r+AdyYQnMjC
 github.com/fsnotify/fsnotify v1.4.8-0.20190312181446-1485a34d5d57/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/ghodss/yaml v1.0.0 h1:wQHKEahhL6wmXdzwWG11gIVCkOv05bNOh+Rxn0yngAk=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
-github.com/go-acme/lego/v3 v3.0.1-1 h1:cHLBI1yz4mg2k8Zr6NPskHxqEI8GvLmKPEW9d4qw3vk=
-github.com/go-acme/lego/v3 v3.0.1-1/go.mod h1:sMoLjf8BUo4Jexg+6Xw5KeFx98KVZ7Nfczh9tzLyhJU=
+github.com/go-acme/lego/v3 v3.0.2 h1:cnS+URiPzkt2pd7I2WlZtFyt2ihQ762nouBybY4djjw=
+github.com/go-acme/lego/v3 v3.0.2/go.mod h1:sMoLjf8BUo4Jexg+6Xw5KeFx98KVZ7Nfczh9tzLyhJU=
 github.com/go-errors/errors v1.0.1/go.mod h1:f4zRHt4oKfwPJE5k8C9vpYG+aDHdBFUsgrm6/TyX73Q=
 github.com/go-ini/ini v1.44.0/go.mod h1:ByCAeIL28uOIIG0E3PJtZPDL8WnHpFKFOtgjp+3Ies8=
 github.com/go-kit/kit v0.8.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2as=

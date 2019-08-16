@@ -1,5 +1,7 @@
 .PHONY: default clean checks test build
 
+export GO111MODULE=on
+
 TAG_NAME := $(shell git tag -l --contains HEAD)
 SHA := $(shell git rev-parse --short HEAD)
 VERSION := $(if $(TAG_NAME),$(TAG_NAME),$(SHA))

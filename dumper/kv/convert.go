@@ -6,8 +6,8 @@ import (
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 )
 
-// CertificateV1 is used to store certificate info
-type CertificateV1 struct {
+// CertificateOld is used to store certificate info
+type CertificateOld struct {
 	Domain        string
 	CertURL       string
 	CertStableURL string
@@ -15,8 +15,8 @@ type CertificateV1 struct {
 	Certificate   []byte
 }
 
-// AccountV1 is used to store lets encrypt registration info
-type AccountV1 struct {
+// AccountOld is used to store lets encrypt registration info
+type AccountOld struct {
 	Email              string
 	Registration       *registration.Resource
 	PrivateKey         []byte
@@ -40,11 +40,11 @@ type ChallengeCert struct {
 // DomainsCertificate contains a certificate for multiple domains
 type DomainsCertificate struct {
 	Domains     dumper.Domain
-	Certificate *CertificateV1
+	Certificate *CertificateOld
 }
 
-// convertAccountV1ToV2 converts account information from version 1 to 2
-func convertAccountV1ToV2(account *AccountV1) *dumper.StoredData {
+// convertOldAccount converts account information from old account format.
+func convertOldAccount(account *AccountOld) *dumper.StoredData {
 	storedData := &dumper.StoredData{}
 	storedData.Account = &dumper.Account{
 		PrivateKey:   account.PrivateKey,

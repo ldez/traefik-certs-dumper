@@ -86,12 +86,12 @@ func getStoredDataFromGzip(pair *store.KVPair) (*dumper.StoredData, error) {
 		return nil, fmt.Errorf("unable to read the pair content: %v", err)
 	}
 
-	account := &AccountV1{}
+	account := &AccountOld{}
 	if err := json.Unmarshal(acmeData, &account); err != nil {
-		return nil, fmt.Errorf("unable marshal AccountV1: %v", err)
+		return nil, fmt.Errorf("unable marshal AccountOld: %v", err)
 	}
 
-	return convertAccountV1ToV2(account), nil
+	return convertOldAccount(account), nil
 }
 
 func isDebug() bool {

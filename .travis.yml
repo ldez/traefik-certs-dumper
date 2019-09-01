@@ -38,9 +38,8 @@ before_install:
 
 install:
   - go mod tidy
-  #  Comment because go1.13 don't generate the same go.mod as go1.12
-  #  - git diff --exit-code go.mod
-  #  - git diff --exit-code go.sum
+  - git diff --exit-code go.mod
+  - git diff --exit-code go.sum
   - go mod download
 
 before_deploy:

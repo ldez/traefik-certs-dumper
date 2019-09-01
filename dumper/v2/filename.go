@@ -1,6 +1,6 @@
 // +build !windows
 
-package dumper
+package v2
 
 func safeName(filename string) string {
 	return filename

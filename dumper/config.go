@@ -9,6 +9,7 @@ type BaseConfig struct {
 	Clean        bool
 	Watch        bool
 	Hook         string
+	Version      string
 }
 
 // FileInfo File information.

@@ -1,4 +1,4 @@
-package dumper
+package v1
 
 import (
 	"encoding/pem"
@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/go-acme/lego/v3/certcrypto"
+	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 )
 
 const (
@@ -15,7 +16,7 @@ const (
 )
 
 // Dump Dumps data to certificates.
-func Dump(data *StoredData, baseConfig *BaseConfig) error {
+func Dump(data *StoredData, baseConfig *dumper.BaseConfig) error {
 	if baseConfig.Clean {
 		err := cleanDir(baseConfig.DumpPath)
 		if err != nil {
@@ -54,7 +55,7 @@ func Dump(data *StoredData, baseConfig *BaseConfig) error {
 	return nil
 }
 
-func writeCert(dumpPath string, cert *Certificate, info FileInfo, domainSubDir bool) error {
+func writeCert(dumpPath string, cert *Certificate, info dumper.FileInfo, domainSubDir bool) error {
 	certPath := filepath.Join(dumpPath, certsSubDir, safeName(cert.Domain.Main+info.Ext))
 	if domainSubDir {
 		certPath = filepath.Join(dumpPath, safeName(cert.Domain.Main), info.Name+info.Ext)
@@ -66,7 +67,7 @@ func writeCert(dumpPath string, cert *Certificate, info FileInfo, domainSubDir b
 	return ioutil.WriteFile(certPath, cert.Certificate, 0666)
 }
 
-func writeKey(dumpPath string, cert *Certificate, info FileInfo, domainSubDir bool) error {
+func writeKey(dumpPath string, cert *Certificate, info dumper.FileInfo, domainSubDir bool) error {
 	keyPath := filepath.Join(dumpPath, keysSubDir, safeName(cert.Domain.Main+info.Ext))
 	if domainSubDir {
 		keyPath = filepath.Join(dumpPath, safeName(cert.Domain.Main), info.Name+info.Ext)

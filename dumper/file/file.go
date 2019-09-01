@@ -9,8 +9,11 @@ import (
 	"os"
 	"strings"
 
+	"github.com/containous/traefik/v2/pkg/provider/acme"
 	"github.com/fsnotify/fsnotify"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
+	v1 "github.com/ldez/traefik-certs-dumper/v2/dumper/v1"
+	v2 "github.com/ldez/traefik-certs-dumper/v2/dumper/v2"
 	"github.com/ldez/traefik-certs-dumper/v2/hook"
 )
 
@@ -30,26 +33,39 @@ func Dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
 }
 
 func dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
-	data, err := readFile(acmeFile)
+	if baseConfig.Version == "v2" {
+		return dumpV2(acmeFile, baseConfig)
+	}
+
+	return dumpV1(acmeFile, baseConfig)
+}
+
+func dumpV1(acmeFile string, baseConfig *dumper.BaseConfig) error {
+	source, err := os.Open(acmeFile)
 	if err != nil {
 		return err
 	}
 
-	return dumper.Dump(data, baseConfig)
+	data := &v1.StoredData{}
+	if err = json.NewDecoder(source).Decode(data); err != nil {
+		return err
+	}
+
+	return v1.Dump(data, baseConfig)
 }
 
-func readFile(acmeFile string) (*dumper.StoredData, error) {
+func dumpV2(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	source, err := os.Open(acmeFile)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	data := &dumper.StoredData{}
+	data := &acme.StoredData{}
 	if err = json.NewDecoder(source).Decode(data); err != nil {
-		return nil, err
+		return err
 	}
 
-	return data, nil
+	return v2.Dump(data, baseConfig)
 }
 
 func watch(acmeFile string, baseConfig *dumper.BaseConfig) error {

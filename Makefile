@@ -23,5 +23,8 @@ build: clean
 checks:
 	golangci-lint run
 
+doc:
+	go run . doc
+
 publish-images:
 	seihon publish -v "$(TAG_NAME)" -v "latest" --image-name ldez/traefik-certs-dumper --dry-run=false

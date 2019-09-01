@@ -3,7 +3,7 @@ package kv
 import (
 	"github.com/go-acme/lego/v3/certcrypto"
 	"github.com/go-acme/lego/v3/registration"
-	"github.com/ldez/traefik-certs-dumper/v2/dumper"
+	v1 "github.com/ldez/traefik-certs-dumper/v2/dumper/v1"
 )
 
 // CertificateOld is used to store certificate info
@@ -39,22 +39,22 @@ type ChallengeCert struct {
 
 // DomainsCertificate contains a certificate for multiple domains
 type DomainsCertificate struct {
-	Domains     dumper.Domain
+	Domains     v1.Domain
 	Certificate *CertificateOld
 }
 
 // convertOldAccount converts account information from old account format.
-func convertOldAccount(account *AccountOld) *dumper.StoredData {
-	storedData := &dumper.StoredData{}
-	storedData.Account = &dumper.Account{
+func convertOldAccount(account *AccountOld) *v1.StoredData {
+	storedData := &v1.StoredData{}
+	storedData.Account = &v1.Account{
 		PrivateKey:   account.PrivateKey,
 		Registration: account.Registration,
 		Email:        account.Email,
 		KeyType:      account.KeyType,
 	}
-	var certs []*dumper.Certificate
+	var certs []*v1.Certificate
 	for _, oldCert := range account.DomainsCertificate.Certs {
-		certs = append(certs, &dumper.Certificate{
+		certs = append(certs, &v1.Certificate{
 			Certificate: oldCert.Certificate.Certificate,
 			Domain:      oldCert.Domains,
 			Key:         oldCert.Certificate.PrivateKey,

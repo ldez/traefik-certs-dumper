@@ -13,6 +13,7 @@ import (
 	"github.com/abronan/valkeyrie"
 	"github.com/abronan/valkeyrie/store"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
+	v1 "github.com/ldez/traefik-certs-dumper/v2/dumper/v1"
 	"github.com/ldez/traefik-certs-dumper/v2/hook"
 )
 
@@ -72,10 +73,10 @@ func dumpPair(pair *store.KVPair, baseConfig *dumper.BaseConfig) error {
 		return err
 	}
 
-	return dumper.Dump(data, baseConfig)
+	return v1.Dump(data, baseConfig)
 }
 
-func getStoredDataFromGzip(pair *store.KVPair) (*dumper.StoredData, error) {
+func getStoredDataFromGzip(pair *store.KVPair) (*v1.StoredData, error) {
 	reader, err := gzip.NewReader(bytes.NewBuffer(pair.Value))
 	if err != nil {
 		return nil, fmt.Errorf("fail to create GZip reader: %v", err)

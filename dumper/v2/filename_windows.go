@@ -1,6 +1,6 @@
 // +build windows
 
-package dumper
+package v2
 
 import "strings"
 

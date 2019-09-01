@@ -14,12 +14,6 @@ const (
 	keysSubDir  = "private"
 )
 
-// FileInfo File information.
-type FileInfo struct {
-	Name string
-	Ext  string
-}
-
 // Dump Dumps data to certificates.
 func Dump(data *StoredData, baseConfig *BaseConfig) error {
 	if baseConfig.Clean {

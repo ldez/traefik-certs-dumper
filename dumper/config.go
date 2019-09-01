@@ -10,3 +10,9 @@ type BaseConfig struct {
 	Watch        bool
 	Hook         string
 }
+
+// FileInfo File information.
+type FileInfo struct {
+	Name string
+	Ext  string
+}

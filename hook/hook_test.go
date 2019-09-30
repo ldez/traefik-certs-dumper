@@ -19,7 +19,6 @@ func Test_execute(t *testing.T) {
 
 	for _, test := range testCases {
 		t.Run(test.desc, func(t *testing.T) {
-
 			err := execute(test.command)
 			if err != nil {
 				t.Fatal(err)

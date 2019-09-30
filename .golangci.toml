@@ -35,7 +35,7 @@
   exclude-use-default = false
   max-per-linter = 0
   max-same-issues = 0
-  exclude = []
+  exclude = ["ST1000: at least one file in a package should have a package comment"]
   [[issues.exclude-rules]]
     path = "cmd/"
     linters = ["gochecknoglobals", "gochecknoinits"]

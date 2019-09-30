@@ -60,8 +60,8 @@ func dumpV2(acmeFile string, baseConfig *dumper.BaseConfig) error {
 		return err
 	}
 
-	data := &acme.StoredData{}
-	if err = json.NewDecoder(source).Decode(data); err != nil {
+	data := map[string]*acme.StoredData{}
+	if err = json.NewDecoder(source).Decode(&data); err != nil {
 		return err
 	}
 

@@ -17,7 +17,7 @@ const (
 )
 
 // Dump Dumps data to certificates.
-func Dump(data *acme.StoredData, baseConfig *dumper.BaseConfig) error {
+func Dump(data map[string]*acme.StoredData, baseConfig *dumper.BaseConfig) error {
 	if baseConfig.Clean {
 		err := cleanDir(baseConfig.DumpPath)
 		if err != nil {
@@ -35,24 +35,32 @@ func Dump(data *acme.StoredData, baseConfig *dumper.BaseConfig) error {
 		return err
 	}
 
-	for _, cert := range data.Certificates {
-		err := writeCert(baseConfig.DumpPath, cert.Certificate, baseConfig.CrtInfo, baseConfig.DomainSubDir)
-		if err != nil {
-			return err
+	for _, store := range data {
+		for _, cert := range store.Certificates {
+			err := writeCert(baseConfig.DumpPath, cert.Certificate, baseConfig.CrtInfo, baseConfig.DomainSubDir)
+			if err != nil {
+				return err
+			}
+
+			err = writeKey(baseConfig.DumpPath, cert.Certificate, baseConfig.KeyInfo, baseConfig.DomainSubDir)
+			if err != nil {
+				return err
+			}
 		}
 
-		err = writeKey(baseConfig.DumpPath, cert.Certificate, baseConfig.KeyInfo, baseConfig.DomainSubDir)
+		if store.Account == nil {
+			continue
+		}
+
+		privateKeyPem := extractPEMPrivateKey(store.Account)
+
+		err := ioutil.WriteFile(filepath.Join(baseConfig.DumpPath, keysSubDir, "letsencrypt"+baseConfig.KeyInfo.Ext), privateKeyPem, 0600)
 		if err != nil {
 			return err
 		}
 	}
 
-	if data.Account == nil {
-		return nil
-	}
-
-	privateKeyPem := extractPEMPrivateKey(data.Account)
-	return ioutil.WriteFile(filepath.Join(baseConfig.DumpPath, keysSubDir, "letsencrypt"+baseConfig.KeyInfo.Ext), privateKeyPem, 0600)
+	return nil
 }
 
 func writeCert(dumpPath string, cert acme.Certificate, info dumper.FileInfo, domainSubDir bool) error {

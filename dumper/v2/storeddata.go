@@ -15,15 +15,15 @@ type StoredData struct {
 
 // Certificate is a struct which contains all data needed from an ACME certificate
 type Certificate struct {
-	Domain      Domain
-	Certificate []byte
-	Key         []byte
+	Domain      Domain `json:"domain,omitempty"`
+	Certificate []byte `json:"certificate,omitempty"`
+	Key         []byte `json:"key,omitempty"`
 }
 
 // Domain holds a domain name with SANs
 type Domain struct {
-	Main string
-	SANs []string
+	Main string   `json:"main,omitempty"`
+	SANs []string `json:"sans,omitempty"`
 }
 
 // Account is used to store lets encrypt registration info

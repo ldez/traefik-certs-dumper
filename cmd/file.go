@@ -14,6 +14,8 @@ var fileCmd = &cobra.Command{
 	RunE: runE(func(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
 		acmeFile := cmd.Flag("source").Value.String()
 
+		baseConfig.Version = cmd.Flag("version").Value.String()
+
 		return file.Dump(acmeFile, baseConfig)
 	}),
 }

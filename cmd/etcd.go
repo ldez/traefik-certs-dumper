@@ -4,7 +4,8 @@ import (
 	"time"
 
 	"github.com/abronan/valkeyrie/store"
-	"github.com/abronan/valkeyrie/store/etcd/v2"
+	etcdv2 "github.com/abronan/valkeyrie/store/etcd/v2"
+	etcdv3 "github.com/abronan/valkeyrie/store/etcd/v3"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper/kv"
 	"github.com/spf13/cobra"
@@ -45,13 +46,14 @@ func etcdRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
 	switch backend {
 	case "etcd":
 		config.Backend = store.ETCD
+		etcdv2.Register()
 	case "etcdv3":
 		config.Backend = store.ETCDV3
+		etcdv3.Register()
 	default:
 		config.Backend = store.ETCD
+		etcdv2.Register()
 	}
-
-	etcd.Register()
 
 	return kv.Dump(config, baseConfig)
 }

@@ -44,9 +44,6 @@ func etcdRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
 	}
 
 	switch backend {
-	case "etcd":
-		config.Backend = store.ETCD
-		etcdv2.Register()
 	case "etcdv3":
 		config.Backend = store.ETCDV3
 		etcdv3.Register()

@@ -6,7 +6,7 @@ require (
 	github.com/abronan/valkeyrie v0.0.0-20190822142731-f2e1850dc905
 	github.com/containous/traefik/v2 v2.0.1
 	github.com/fsnotify/fsnotify v1.4.8-0.20190312181446-1485a34d5d57
-	github.com/go-acme/lego/v3 v3.0.2
+	github.com/go-acme/lego/v3 v3.1.0
 	github.com/labbsr0x/bindman-dns-webhook v1.0.2 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v0.0.5

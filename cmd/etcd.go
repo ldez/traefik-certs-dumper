@@ -22,6 +22,7 @@ func init() {
 	kvCmd.AddCommand(etcdCmd)
 
 	etcdCmd.Flags().Int("sync-period", 0, "Sync period for etcd in seconds.")
+	etcdCmd.Flags().String("etcd-version", "etcd", "The etcd version can be: 'etcd' or 'etcdv3'.")
 }
 
 func etcdRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
@@ -36,7 +37,20 @@ func etcdRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
 	}
 	config.Options.SyncPeriod = time.Duration(synPeriod) * time.Second
 
-	config.Backend = store.ETCD
+	backend, err := cmd.Flags().GetString("etcd-version")
+	if err != nil {
+		return err
+	}
+
+	switch backend {
+	case "etcd":
+		config.Backend = store.ETCD
+	case "etcdv3":
+		config.Backend = store.ETCDV3
+	default:
+		config.Backend = store.ETCD
+	}
+
 	etcd.Register()
 
 	return kv.Dump(config, baseConfig)

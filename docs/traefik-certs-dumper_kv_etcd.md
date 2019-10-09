@@ -13,8 +13,9 @@ traefik-certs-dumper kv etcd [flags]
 ### Options
 
 ```
-  -h, --help              help for etcd
-      --sync-period int   Sync period for etcd in seconds.
+      --etcd-version string   The etcd version can be: 'etcd' or 'etcdv3'. (default "etcd")
+  -h, --help                  help for etcd
+      --sync-period int       Sync period for etcd in seconds.
 ```
 
 ### Options inherited from parent commands

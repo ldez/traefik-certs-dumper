@@ -17,6 +17,7 @@ import (
 	"github.com/ldez/traefik-certs-dumper/v2/hook"
 )
 
+// DefaultStoreKeySuffix is the default suffix/storage.
 const DefaultStoreKeySuffix = "/acme/account/object"
 
 // Dump Dumps KV content to certificates.

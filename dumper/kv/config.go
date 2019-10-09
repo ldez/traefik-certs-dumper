@@ -6,6 +6,7 @@ import "github.com/abronan/valkeyrie/store"
 type Config struct {
 	Backend   store.Backend
 	Prefix    string
+	Suffix    string
 	Endpoints []string
 	Options   *store.Config
 }

@@ -17,7 +17,7 @@ import (
 	"github.com/ldez/traefik-certs-dumper/v2/hook"
 )
 
-const storeKeySuffix = "/acme/account/object"
+const DefaultStoreKeySuffix = "/acme/account/object"
 
 // Dump Dumps KV content to certificates.
 func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
@@ -26,7 +26,7 @@ func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
 		return fmt.Errorf("unable to create client of the store: %v", err)
 	}
 
-	storeKey := config.Prefix + storeKeySuffix
+	storeKey := config.Prefix + config.Suffix
 
 	if baseConfig.Watch {
 		return watch(kvStore, storeKey, baseConfig)

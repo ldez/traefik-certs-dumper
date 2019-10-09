@@ -29,6 +29,7 @@
     "dupl",
     "prealloc",
     "scopelint",
+    "wsl",
   ]
 
 [issues]

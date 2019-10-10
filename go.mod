@@ -4,10 +4,9 @@ go 1.12
 
 require (
 	github.com/abronan/valkeyrie v0.0.0-20190822142731-f2e1850dc905
-	github.com/containous/traefik/v2 v2.0.1
+	github.com/containous/traefik/v2 v2.0.2
 	github.com/fsnotify/fsnotify v1.4.8-0.20190312181446-1485a34d5d57
-	github.com/go-acme/lego/v3 v3.0.2
-	github.com/labbsr0x/bindman-dns-webhook v1.0.2 // indirect
+	github.com/go-acme/lego/v3 v3.1.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.4.0
@@ -15,13 +14,6 @@ require (
 
 // related to valkeyrie
 replace github.com/hashicorp/consul => github.com/hashicorp/consul v1.6.0
-
-// related to https://github.com/labbsr0x/goh/issues/3#issuecomment-532620929
-// can be removedw when lego v3.1.0 and Traefik v2 (with lego v3.1.0)
-replace (
-	github.com/labbsr0x/bindman-dns-webhook => github.com/labbsr0x/bindman-dns-webhook v1.0.2
-	github.com/labbsr0x/goh => github.com/labbsr0x/goh v1.0.1
-)
 
 // related to Traefik
 replace (

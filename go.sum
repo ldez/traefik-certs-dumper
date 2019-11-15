@@ -118,8 +118,6 @@ github.com/containous/minheap v0.0.0-20190809180810-6e71eb837595/go.mod h1:+lHFb
 github.com/containous/multibuf v0.0.0-20190809014333-8b6c9a7e6bba/go.mod h1:zkWcASFUJEst6QwCrxLdkuw1gvaKqmflEipm+iecV5M=
 github.com/containous/mux v0.0.0-20181024131434-c33f32e26898 h1:1srn9voikJGofblBhWy3WuZWqo14Ou7NaswNG/I2yWc=
 github.com/containous/mux v0.0.0-20181024131434-c33f32e26898/go.mod h1:z8WW7n06n8/1xF9Jl9WmuDeZuHAhfL+bwarNjsciwwg=
-github.com/containous/traefik/v2 v2.0.4 h1:wfWJPwuhraRSC4Lxmqa/Dr5mQa/VRIHGUX1hnzWvWFk=
-github.com/containous/traefik/v2 v2.0.4/go.mod h1:NRaSqz/FC+5woArsgL60pEp6EgNklmAT1p16XTiXkE0=
 github.com/containous/traefik/v2 v2.0.5 h1:2HfP3eU4TvC0iIe+F6e1h/+su6oWLxZap/T5ZCQxME8=
 github.com/containous/traefik/v2 v2.0.5/go.mod h1:ryaRs9wUH3xvpH/HGzjtKsAnP6XOX6QcqwEcN4k0ljM=
 github.com/coredns/coredns v1.1.2/go.mod h1:zASH/MVDgR6XZTbxvOnsZfffS+31vg6Ackf/wo1+AM0=
@@ -504,7 +502,6 @@ github.com/opencontainers/runc v1.0.0-rc8/go.mod h1:qT5XzbpPznkRYVz/mWwUaVBUv2rm
 github.com/opentracing-contrib/go-observer v0.0.0-20170622124052-a52f23424492/go.mod h1:Ngi6UdF0k5OKD5t5wlmGhe/EDKPoUM3BXZSSfIuJbis=
 github.com/opentracing/basictracer-go v1.0.0/go.mod h1:QfBfYuafItcjQuMwinw9GhYKwFXS9KnPs5lxoYwgW74=
 github.com/opentracing/opentracing-go v1.1.0/go.mod h1:UkNAQd3GIcIGf0SeVgPpRdFStlNbqXla1AfSYxPUl2o=
-github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.3/go.mod h1:/wsWhb9smxSfWAKL3wpBW7V8scJMt8N8gnaMCS9E/cA=
 github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.4/go.mod h1:/wsWhb9smxSfWAKL3wpBW7V8scJMt8N8gnaMCS9E/cA=
 github.com/openzipkin/zipkin-go v0.1.6/go.mod h1:QgAqvLzwWbR/WpD4A3cGpPtJrZXNIiJc5AZX7/PBEpw=
 github.com/openzipkin/zipkin-go v0.2.1/go.mod h1:NaW6tEwdmWMaCDZzg8sh+IBNOxHMPnhQw8ySjnjRyN4=

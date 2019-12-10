@@ -118,8 +118,6 @@ github.com/containous/minheap v0.0.0-20190809180810-6e71eb837595/go.mod h1:+lHFb
 github.com/containous/multibuf v0.0.0-20190809014333-8b6c9a7e6bba/go.mod h1:zkWcASFUJEst6QwCrxLdkuw1gvaKqmflEipm+iecV5M=
 github.com/containous/mux v0.0.0-20181024131434-c33f32e26898 h1:1srn9voikJGofblBhWy3WuZWqo14Ou7NaswNG/I2yWc=
 github.com/containous/mux v0.0.0-20181024131434-c33f32e26898/go.mod h1:z8WW7n06n8/1xF9Jl9WmuDeZuHAhfL+bwarNjsciwwg=
-github.com/containous/traefik/v2 v2.0.6 h1:3Ual0Ot2VSV6dgLtuTghP6VSGANu0aeEf2STUrhIzHc=
-github.com/containous/traefik/v2 v2.0.6/go.mod h1:IpqGGth+00ZmNB4FsEK9V18bvnVJEz3K9uNlzUFWePM=
 github.com/containous/traefik/v2 v2.0.7 h1:+fskR1CrQ867Hm6MyQ5wpjolKbiuMj/uJN2EQrV8+QY=
 github.com/containous/traefik/v2 v2.0.7/go.mod h1:IpqGGth+00ZmNB4FsEK9V18bvnVJEz3K9uNlzUFWePM=
 github.com/coredns/coredns v1.1.2/go.mod h1:zASH/MVDgR6XZTbxvOnsZfffS+31vg6Ackf/wo1+AM0=

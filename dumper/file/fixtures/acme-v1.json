@@ -1,0 +1,12 @@
+{
+  "Certificates": [
+    {
+      "domain": {
+        "main": "test.example.com"
+      },
+      "certificate": "Q2VydGlmaWNhdGU=",
+      "key": "Q2VydGlmaWNhdGUgS2V5",
+      "Store": "default"
+    }
+  ]
+}

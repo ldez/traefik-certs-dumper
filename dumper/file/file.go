@@ -33,6 +33,15 @@ func Dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
 }
 
 func dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
+	err := dumpEOF(acmeFile, baseConfig)
+	if err == io.EOF {
+		err = nil
+	}
+
+	return err
+}
+
+func dumpEOF(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	if baseConfig.Version == "v2" {
 		return dumpV2(acmeFile, baseConfig)
 	}

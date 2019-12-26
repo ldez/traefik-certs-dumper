@@ -45,13 +45,15 @@ type DomainsCertificate struct {
 
 // convertOldAccount converts account information from old account format.
 func convertOldAccount(account *AccountOld) *v1.StoredData {
-	storedData := &v1.StoredData{}
-	storedData.Account = &v1.Account{
-		PrivateKey:   account.PrivateKey,
-		Registration: account.Registration,
-		Email:        account.Email,
-		KeyType:      account.KeyType,
+	storedData := &v1.StoredData{
+		Account: &v1.Account{
+			PrivateKey:   account.PrivateKey,
+			Registration: account.Registration,
+			Email:        account.Email,
+			KeyType:      account.KeyType,
+		},
 	}
+
 	var certs []*v1.Certificate
 	for _, oldCert := range account.DomainsCertificate.Certs {
 		certs = append(certs, &v1.Certificate{
@@ -61,5 +63,6 @@ func convertOldAccount(account *AccountOld) *v1.StoredData {
 		})
 	}
 	storedData.Certificates = certs
+
 	return storedData
 }

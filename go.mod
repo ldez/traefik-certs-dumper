@@ -3,13 +3,14 @@ module github.com/ldez/traefik-certs-dumper/v2
 go 1.12
 
 require (
-	github.com/abronan/valkeyrie v0.0.0-20190822142731-f2e1850dc905
-	github.com/containous/traefik/v2 v2.1.0
+	github.com/abronan/valkeyrie v0.0.0-20191010124425-1ae9442de16e
+	github.com/containous/traefik/v2 v2.1.1
 	github.com/fsnotify/fsnotify v1.4.8-0.20190312181446-1485a34d5d57
 	github.com/go-acme/lego/v3 v3.2.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.6.1
+	github.com/stretchr/testify v1.4.0
 )
 
 // related to valkeyrie

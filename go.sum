@@ -53,6 +53,8 @@ github.com/VividCortex/gohistogram v1.0.0 h1:6+hBz+qvs0JOrrNhhmR7lFxo5sINxBCGXrd
 github.com/VividCortex/gohistogram v1.0.0/go.mod h1:Pf5mBqqDxYaXu3hDrrU+w6nw50o/4+TcAqDqk/vUH7g=
 github.com/abronan/valkeyrie v0.0.0-20190822142731-f2e1850dc905 h1:JG0OqQLCILn6ywoXJncu+/MFTTapP3aIIDDqB593HMc=
 github.com/abronan/valkeyrie v0.0.0-20190822142731-f2e1850dc905/go.mod h1:hTreU6x9m2IP2h8e0TGrSzAXSCI3lxic8/JT5CMknjY=
+github.com/abronan/valkeyrie v0.0.0-20191010124425-1ae9442de16e h1:4SrbWyef51DHDc957/8Ms/fDM4D+3bkbXqg6OTnIEAo=
+github.com/abronan/valkeyrie v0.0.0-20191010124425-1ae9442de16e/go.mod h1:2RUNONRAQ8bS1QcVJF3dYO/faiEro6NAAIQ6CqBkpD0=
 github.com/akamai/AkamaiOPEN-edgegrid-golang v0.9.0 h1:rXPPPxDA4GCPN0YWwyVHMzcxVpVg8gai2uGhJ3VqOSs=
 github.com/akamai/AkamaiOPEN-edgegrid-golang v0.9.0/go.mod h1:zpDJeKyp9ScW4NNrbdr+Eyxvry3ilGPewKoXw3XGN1k=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
@@ -100,8 +102,8 @@ github.com/containous/minheap v0.0.0-20190809180810-6e71eb837595/go.mod h1:+lHFb
 github.com/containous/multibuf v0.0.0-20190809014333-8b6c9a7e6bba/go.mod h1:zkWcASFUJEst6QwCrxLdkuw1gvaKqmflEipm+iecV5M=
 github.com/containous/mux v0.0.0-20181024131434-c33f32e26898 h1:1srn9voikJGofblBhWy3WuZWqo14Ou7NaswNG/I2yWc=
 github.com/containous/mux v0.0.0-20181024131434-c33f32e26898/go.mod h1:z8WW7n06n8/1xF9Jl9WmuDeZuHAhfL+bwarNjsciwwg=
-github.com/containous/traefik/v2 v2.1.0 h1:JGOWyigEvERyOduzq7/mqtpyQTx5jrQHax63CdfdRCk=
-github.com/containous/traefik/v2 v2.1.0/go.mod h1:fN0bDZLrFbuWSBo2Eq4obHArDH/KuWTch8nI6VmkQOA=
+github.com/containous/traefik/v2 v2.1.1 h1:c0Z1+bO8J50mIrj/nWQXOGGnEfeCnKQifRPfUvak+p4=
+github.com/containous/traefik/v2 v2.1.1/go.mod h1:fN0bDZLrFbuWSBo2Eq4obHArDH/KuWTch8nI6VmkQOA=
 github.com/coreos/bbolt v1.3.2 h1:wZwiHHUieZCquLkDL0B8UhzreNWsPHooDAG3q34zk0s=
 github.com/coreos/bbolt v1.3.2/go.mod h1:iRUV2dpdMOn7Bo10OQBFzIJO9kkE559Wcmn+qkEiiKk=
 github.com/coreos/bbolt v1.3.3 h1:n6AiVyVRKQFNb6mJlwESEvvLoDyiTzXX7ORAUlkeBdY=
@@ -744,6 +746,7 @@ gopkg.in/yaml.v2 v2.2.2 h1:ZCJp+EgiOT7lHqUV2J862kp8Qj64Jo6az82+3Td9dZw=
 gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.2.4 h1:/eiJrUcujPVeJ3xlSWaiNi3uSVmDGBK1pDHUHAnao1I=
 gopkg.in/yaml.v2 v2.2.4/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
+gotest.tools v2.2.0+incompatible h1:VsBPFP1AI068pPrMxtb/S8Zkgf9xEmTLJjfM+P5UIEo=
 gotest.tools v2.2.0+incompatible/go.mod h1:DsYFclhRJ6vuDpmuTbkuFWG+y2sxOXAzmJt81HFBacw=
 honnef.co/go/tools v0.0.0-20180728063816-88497007e858/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
 honnef.co/go/tools v0.0.0-20190102054323-c2f93a96b099/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=

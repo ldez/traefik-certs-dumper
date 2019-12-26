@@ -2,6 +2,7 @@ package v1
 
 import (
 	"encoding/pem"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -20,29 +21,29 @@ func Dump(data *StoredData, baseConfig *dumper.BaseConfig) error {
 	if baseConfig.Clean {
 		err := cleanDir(baseConfig.DumpPath)
 		if err != nil {
-			return err
+			return fmt.Errorf("folder cleaning failed: %w", err)
 		}
 	}
 
 	if !baseConfig.DomainSubDir {
 		if err := os.MkdirAll(filepath.Join(baseConfig.DumpPath, certsSubDir), 0755); err != nil {
-			return err
+			return fmt.Errorf("certs folder creation failure: %w", err)
 		}
 	}
 
 	if err := os.MkdirAll(filepath.Join(baseConfig.DumpPath, keysSubDir), 0755); err != nil {
-		return err
+		return fmt.Errorf("keys folder creation failure: %w", err)
 	}
 
 	for _, cert := range data.Certificates {
 		err := writeCert(baseConfig.DumpPath, cert, baseConfig.CrtInfo, baseConfig.DomainSubDir)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to write certificates: %w", err)
 		}
 
 		err = writeKey(baseConfig.DumpPath, cert, baseConfig.KeyInfo, baseConfig.DomainSubDir)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to write certificate keys: %w", err)
 		}
 	}
 

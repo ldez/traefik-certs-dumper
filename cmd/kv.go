@@ -92,7 +92,7 @@ func createTLSConfig(cmd *cobra.Command) (*tls.Config, error) {
 
 	cert, err := getCertificate(privateKey, certContent)
 	if err != nil {
-		return nil, fmt.Errorf("failed to load TLS keypair: %s", err)
+		return nil, fmt.Errorf("failed to load TLS keypair: %w", err)
 	}
 
 	return &tls.Config{
@@ -109,7 +109,7 @@ func getCertPool(ca string) (*x509.CertPool, error) {
 	if ca != "" {
 		caContent, err := getCAContent(ca)
 		if err != nil {
-			return nil, fmt.Errorf("failed to read CA. %s", err)
+			return nil, fmt.Errorf("failed to read CA. %w", err)
 		}
 
 		if !caPool.AppendCertsFromPEM(caContent) {

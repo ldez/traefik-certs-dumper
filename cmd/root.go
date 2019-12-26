@@ -109,7 +109,7 @@ func runE(apply func(*dumper.BaseConfig, *cobra.Command) error) func(*cobra.Comm
 func tree(root, indent string) error {
 	fi, err := os.Stat(root)
 	if err != nil {
-		return fmt.Errorf("could not stat %s: %v", root, err)
+		return fmt.Errorf("could not stat %s: %w", root, err)
 	}
 
 	fmt.Println(fi.Name())
@@ -119,7 +119,7 @@ func tree(root, indent string) error {
 
 	fis, err := ioutil.ReadDir(root)
 	if err != nil {
-		return fmt.Errorf("could not read dir %s: %v", root, err)
+		return fmt.Errorf("could not read dir %s: %w", root, err)
 	}
 
 	var names []string

@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"crypto/md5"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -34,20 +36,24 @@ func Dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
 
 func dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	if baseConfig.Version == "v2" {
-		return dumpV2(acmeFile, baseConfig)
+		err := dumpV2(acmeFile, baseConfig)
+		if err != nil {
+			return fmt.Errorf("v2: dump failed: %w", err)
+		}
+		return nil
 	}
 
-	return dumpV1(acmeFile, baseConfig)
+	err := dumpV1(acmeFile, baseConfig)
+	if err != nil {
+		return fmt.Errorf("v1: dump failed: %w", err)
+	}
+	return nil
 }
 
 func dumpV1(acmeFile string, baseConfig *dumper.BaseConfig) error {
-	source, err := os.Open(acmeFile)
-	if err != nil {
-		return err
-	}
-
 	data := &v1.StoredData{}
-	if err = json.NewDecoder(source).Decode(data); err != nil {
+	err := readJSONFile(acmeFile, data)
+	if err != nil {
 		return err
 	}
 
@@ -55,23 +61,38 @@ func dumpV1(acmeFile string, baseConfig *dumper.BaseConfig) error {
 }
 
 func dumpV2(acmeFile string, baseConfig *dumper.BaseConfig) error {
-	source, err := os.Open(acmeFile)
-	if err != nil {
-		return err
-	}
-
 	data := map[string]*acme.StoredData{}
-	if err = json.NewDecoder(source).Decode(&data); err != nil {
+	err := readJSONFile(acmeFile, &data)
+	if err != nil {
 		return err
 	}
 
 	return v2.Dump(data, baseConfig)
 }
 
+func readJSONFile(acmeFile string, data interface{}) error {
+	source, err := os.Open(acmeFile)
+	if err != nil {
+		return fmt.Errorf("failed to open file %q: %w", acmeFile, err)
+	}
+	defer func() { _ = source.Close() }()
+
+	err = json.NewDecoder(source).Decode(data)
+	if errors.Is(err, io.EOF) {
+		log.Printf("warn: file %q may not be ready: %v", acmeFile, err)
+		return nil
+	}
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal file %q: %w", acmeFile, err)
+	}
+
+	return nil
+}
+
 func watch(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to create new watcher: %w", err)
 	}
 
 	defer func() { _ = watcher.Close() }()
@@ -114,7 +135,7 @@ func watch(acmeFile string, baseConfig *dumper.BaseConfig) error {
 
 	err = watcher.Add(acmeFile)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to add a new watcher: %w", err)
 	}
 
 	<-done
@@ -125,12 +146,12 @@ func watch(acmeFile string, baseConfig *dumper.BaseConfig) error {
 func manageEvent(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile string, previousHash []byte, baseConfig *dumper.BaseConfig) ([]byte, error) {
 	err := manageRename(watcher, event, acmeFile)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("watcher renewal failed: %w", err)
 	}
 
 	hash, err := calculateHash(acmeFile)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("file hash calculation failed: %w", err)
 	}
 
 	if !bytes.Equal(previousHash, hash) {

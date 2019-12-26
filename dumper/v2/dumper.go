@@ -2,6 +2,7 @@ package v2
 
 import (
 	"encoding/pem"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -21,30 +22,30 @@ func Dump(data map[string]*acme.StoredData, baseConfig *dumper.BaseConfig) error
 	if baseConfig.Clean {
 		err := cleanDir(baseConfig.DumpPath)
 		if err != nil {
-			return err
+			return fmt.Errorf("folder cleaning failed: %w", err)
 		}
 	}
 
 	if !baseConfig.DomainSubDir {
 		if err := os.MkdirAll(filepath.Join(baseConfig.DumpPath, certsSubDir), 0755); err != nil {
-			return err
+			return fmt.Errorf("certs folder creation failure: %w", err)
 		}
 	}
 
 	if err := os.MkdirAll(filepath.Join(baseConfig.DumpPath, keysSubDir), 0755); err != nil {
-		return err
+		return fmt.Errorf("keys folder creation failure: %w", err)
 	}
 
 	for _, store := range data {
 		for _, cert := range store.Certificates {
 			err := writeCert(baseConfig.DumpPath, cert.Certificate, baseConfig.CrtInfo, baseConfig.DomainSubDir)
 			if err != nil {
-				return err
+				return fmt.Errorf("failed to write certificates: %w", err)
 			}
 
 			err = writeKey(baseConfig.DumpPath, cert.Certificate, baseConfig.KeyInfo, baseConfig.DomainSubDir)
 			if err != nil {
-				return err
+				return fmt.Errorf("failed to write certificate keys: %w", err)
 			}
 		}
 
@@ -56,7 +57,7 @@ func Dump(data map[string]*acme.StoredData, baseConfig *dumper.BaseConfig) error
 
 		err := ioutil.WriteFile(filepath.Join(baseConfig.DumpPath, keysSubDir, "letsencrypt"+baseConfig.KeyInfo.Ext), privateKeyPem, 0600)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to write private key: %w", err)
 		}
 	}
 

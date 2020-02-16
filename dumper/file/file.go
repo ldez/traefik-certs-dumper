@@ -9,6 +9,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/containous/traefik/v2/pkg/provider/acme"
@@ -71,7 +72,7 @@ func dumpV2(acmeFile string, baseConfig *dumper.BaseConfig) error {
 }
 
 func readJSONFile(acmeFile string, data interface{}) error {
-	source, err := os.Open(acmeFile)
+	source, err := os.Open(filepath.Clean(acmeFile))
 	if err != nil {
 		return fmt.Errorf("failed to open file %q: %w", acmeFile, err)
 	}
@@ -186,7 +187,7 @@ func manageRename(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile stri
 }
 
 func calculateHash(acmeFile string) ([]byte, error) {
-	file, err := os.Open(acmeFile)
+	file, err := os.Open(filepath.Clean(acmeFile))
 	if err != nil {
 		return nil, err
 	}

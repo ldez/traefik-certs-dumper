@@ -5,6 +5,7 @@ import (
 	"compress/gzip"
 	"io/ioutil"
 	"log"
+	"path/filepath"
 	"time"
 
 	"github.com/abronan/valkeyrie"
@@ -91,7 +92,7 @@ func putData(backend store.Backend, addrs []string, content []byte) error {
 }
 
 func readFile(source string) ([]byte, error) {
-	content, err := ioutil.ReadFile(source)
+	content, err := ioutil.ReadFile(filepath.Clean(source))
 	if err != nil {
 		return nil, err
 	}

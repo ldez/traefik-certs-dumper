@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/abronan/valkeyrie/store"
@@ -125,7 +126,7 @@ func getCAContent(ca string) ([]byte, error) {
 		return []byte(ca), nil
 	}
 
-	caContent, err := ioutil.ReadFile(ca)
+	caContent, err := ioutil.ReadFile(filepath.Clean(ca))
 	if err != nil {
 		return nil, err
 	}

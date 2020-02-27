@@ -64,6 +64,8 @@ docker run ldez/traefik-certs-dumper:<tag_name>
 
 ## Examples
 
+**Note:** to dump data from Traefik v2, the CLI flag `--version v2` must be added.
+
 ### Simple Dump
 
 ```console

@@ -63,7 +63,8 @@ docker run ldez/traefik-certs-dumper:<tag_name>
 - [traefik-certs-dumper kv](docs/traefik-certs-dumper_kv.md)
 
 ## Examples
-Note: If you are dumping an acme.json file from Traefik v2, you must add "--version v2" as a command line arg.
+
+**Note:** to dump data from Traefik v2, the CLI flag `--version v2` must be added.
 
 ### Simple Dump
 

@@ -3,7 +3,7 @@ module github.com/ldez/traefik-certs-dumper/v2
 go 1.12
 
 require (
-	github.com/abronan/valkeyrie v0.0.0-20191010124425-1ae9442de16e
+	github.com/abronan/valkeyrie v0.0.0-20200127174252-ef4277a138cd
 	github.com/containous/traefik/v2 v2.2.0
 	github.com/fsnotify/fsnotify v1.4.8-0.20190312181446-1485a34d5d57
 	github.com/go-acme/lego/v3 v3.5.0

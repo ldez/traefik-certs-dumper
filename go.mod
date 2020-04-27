@@ -6,7 +6,7 @@ require (
 	github.com/abronan/valkeyrie v0.0.0-20200127174252-ef4277a138cd
 	github.com/containous/traefik/v2 v2.2.0
 	github.com/fsnotify/fsnotify v1.4.8-0.20190312181446-1485a34d5d57
-	github.com/go-acme/lego/v3 v3.5.0
+	github.com/go-acme/lego/v3 v3.6.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v0.0.7
 	github.com/spf13/viper v1.6.3

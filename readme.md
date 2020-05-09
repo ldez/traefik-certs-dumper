@@ -7,7 +7,7 @@
 
 If you appreciate this project:
 
-[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg?style=for-the-badge)](https://saythanks.io/to/ldez)
+[![Sponsor](https://img.shields.io/badge/Sponsor%20me-%E2%9D%A4%EF%B8%8F-pink)](https://github.com/sponsors/ldez)
 
 ## Features
 

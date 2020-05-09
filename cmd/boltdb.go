@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// boltdbCmd represents the boltdb command
+// boltdbCmd represents the boltdb command.
 var boltdbCmd = &cobra.Command{
 	Use:   "boltdb",
 	Short: "Dump the content of BoltDB.",

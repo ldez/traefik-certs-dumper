@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// fileCmd represents the file command
+// fileCmd represents the file command.
 var fileCmd = &cobra.Command{
 	Use:   "file",
 	Short: `Dump the content of the "acme.json" file.`,

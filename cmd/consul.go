@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// consulCmd represents the consul command
+// consulCmd represents the consul command.
 var consulCmd = &cobra.Command{
 	Use:   "consul",
 	Short: "Dump the content of Consul.",

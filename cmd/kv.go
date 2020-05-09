@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// kvCmd represents the kv command
+// kvCmd represents the kv command.
 var kvCmd = &cobra.Command{
 	Use:   "kv",
 	Short: `Dump the content of a KV store.`,

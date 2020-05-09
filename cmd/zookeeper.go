@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// zookeeperCmd represents the zookeeper command
+// zookeeperCmd represents the zookeeper command.
 var zookeeperCmd = &cobra.Command{
 	Use:   "zookeeper",
 	Short: "Dump the content of zookeeper.",

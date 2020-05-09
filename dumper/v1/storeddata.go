@@ -5,7 +5,7 @@ import (
 	"github.com/go-acme/lego/v3/registration"
 )
 
-// StoredData represents the data managed by the Store
+// StoredData represents the data managed by the Store.
 type StoredData struct {
 	Account        *Account
 	Certificates   []*Certificate
@@ -13,20 +13,20 @@ type StoredData struct {
 	TLSChallenges  map[string]*Certificate
 }
 
-// Certificate is a struct which contains all data needed from an ACME certificate
+// Certificate is a struct which contains all data needed from an ACME certificate.
 type Certificate struct {
 	Domain      Domain
 	Certificate []byte
 	Key         []byte
 }
 
-// Domain holds a domain name with SANs
+// Domain holds a domain name with SANs.
 type Domain struct {
 	Main string
 	SANs []string
 }
 
-// Account is used to store lets encrypt registration info
+// Account is used to store lets encrypt registration info.
 type Account struct {
 	Email        string
 	Registration *registration.Resource

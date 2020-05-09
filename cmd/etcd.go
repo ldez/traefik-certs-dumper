@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// etcdCmd represents the etcd command
+// etcdCmd represents the etcd command.
 var etcdCmd = &cobra.Command{
 	Use:   "etcd",
 	Short: "Dump the content of etcd.",

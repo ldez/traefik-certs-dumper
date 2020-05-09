@@ -6,7 +6,7 @@ import (
 	v1 "github.com/ldez/traefik-certs-dumper/v2/dumper/v1"
 )
 
-// CertificateOld is used to store certificate info
+// CertificateOld is used to store certificate info.
 type CertificateOld struct {
 	Domain        string
 	CertURL       string
@@ -15,7 +15,7 @@ type CertificateOld struct {
 	Certificate   []byte
 }
 
-// AccountOld is used to store lets encrypt registration info
+// AccountOld is used to store lets encrypt registration info.
 type AccountOld struct {
 	Email              string
 	Registration       *registration.Resource
@@ -26,18 +26,18 @@ type AccountOld struct {
 	HTTPChallenge      map[string]map[string][]byte
 }
 
-// DomainsCertificates stores a certificate for multiple domains
+// DomainsCertificates stores a certificate for multiple domains.
 type DomainsCertificates struct {
 	Certs []*DomainsCertificate
 }
 
-// ChallengeCert stores a challenge certificate
+// ChallengeCert stores a challenge certificate.
 type ChallengeCert struct {
 	Certificate []byte
 	PrivateKey  []byte
 }
 
-// DomainsCertificate contains a certificate for multiple domains
+// DomainsCertificate contains a certificate for multiple domains.
 type DomainsCertificate struct {
 	Domains     v1.Domain
 	Certificate *CertificateOld

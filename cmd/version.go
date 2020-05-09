@@ -13,7 +13,7 @@ var (
 	date    = "I don't remember exactly"
 )
 
-// versionCmd represents the version command
+// versionCmd represents the version command.
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Display version",

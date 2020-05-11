@@ -9,7 +9,7 @@ require (
 	github.com/go-acme/lego/v3 v3.6.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v0.0.7
-	github.com/spf13/viper v1.6.3
+	github.com/spf13/viper v1.7.0
 	github.com/stretchr/testify v1.5.1
 )
 

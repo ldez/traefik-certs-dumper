@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  traefik:
+    image: traefik:v1.7
+    command:
+      - --logLevel=INFO
+      - --defaultEntryPoints=web,websecure
+      - "--entryPoints=Name:web Address::80 Redirect.EntryPoint:websecure"
+      - "--entryPoints=Name:websecure Address::443 TLS"
+      - --docker
+      - --docker.exposedByDefault=false
+      - --acme
+      - --acme.email=email@example.com
+      - --acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --acme.entrypoint=websecure
+      - --acme.storage=/letsencrypt/acme.json
+      - --acme.onHostRule
+      - --acme.tlsChallenge
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./letsencrypt:/letsencrypt
+
+  traefik-certs-dumper:
+    image: ldez/traefik-certs-dumper:v2.7.0
+    entrypoint: sh -c '
+      apk add jq
+      ; while ! [ -e /data/acme.json ]
+      || ! [ `jq ".Certificates | length" /data/acme.json` != 0 ]; do
+      sleep 1
+      ; done
+      && traefik-certs-dumper file --watch --source /data/acme.json --dest /data/certs'
+    volumes:
+      - ./letsencrypt:/letsencrypt
+
+  whoami:
+    image: containous/whoami
+    labels:
+      traefik.enable: true
+      traefik.frontend.rule: Host:example.com

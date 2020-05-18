@@ -56,6 +56,8 @@ You can use pre-compiled binaries:
 docker run ldez/traefik-certs-dumper:<tag_name>
 ```
 
+Example: [docker-compose](docs/docker-compose-traefik-v1.yml)
+
 ## Usage
 
 - [traefik-certs-dumper](docs/traefik-certs-dumper.md)
@@ -65,58 +67,6 @@ docker run ldez/traefik-certs-dumper:<tag_name>
 ## Examples
 
 **Note:** to dump data from Traefik v2, the CLI flag `--version v2` must be added.
-
-### `docker-compose`
-
-`docker-compose.yml`:
-
-```yaml
-version: '3'
-
-services:
-    traefik:
-        image: traefik:1.7
-        command:
-            --entryPoints='Name:http Address::80'
-            --entryPoints='Name:https Address::443 TLS'
-            --defaultentrypoints=http,https
-            --logLevel=DEBUG
-            --docker
-            --docker.exposedByDefault=false
-            --acme
-            --acme.acmeLogging=true
-            --acme.entrypoint=https
-            --acme.storage=/data/acme.json
-            --acme.onHostRule=true
-            --acme.httpChallenge.entryPoint=http
-        ports:
-            - 8001:80
-            - 8002:443
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-            - .:/data
-
-    traefik-certs-dumper:
-        image: ldez/traefik-certs-dumper:v2.7.0
-        entrypoint: sh -c '
-            apk add jq
-            ; while ! [ -e /data/acme.json ]
-                || ! [ `jq ".Certificates | length" /data/acme.json` != 0 ]; do
-                    sleep 1
-                ; done
-            && traefik-certs-dumper file --watch 
-                --source /data/acme.json --dest /data/certs'
-        volumes:
-            - .:/data
-
-    whoami:
-        image: containous/whoami
-        labels:
-            traefik.enable: true
-            traefik.frontend.rule: Host:example.com
-```
-
-`traefik` ports are published to `8001` and `8002`. It's assumed here that you need certificates as separate files because you want to put `traefik` behind another proxy.
 
 ### Simple Dump
 
@@ -203,5 +153,3 @@ $ traefik-certs-dumper kv boltdb --endpoints /the/path/to/mydb.db
 ```console
 $ traefik-certs-dumper kv zookeeper --endpoints localhost:2181
 ```
-
-

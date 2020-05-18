@@ -29,10 +29,11 @@ services:
     entrypoint: sh -c '
       apk add jq
       ; while ! [ -e /data/acme.json ]
-      || ! [ `jq ".Certificates | length" /data/acme.json` != 0 ]; do
-      sleep 1
+        || ! [ `jq ".Certificates | length" /data/acme.json` != 0 ]; do
+          sleep 1
       ; done
-      && traefik-certs-dumper file --watch --source /data/acme.json --dest /data/certs'
+      && traefik-certs-dumper file --watch
+        --source /data/acme.json --dest /data/certs'
     volumes:
       - ./letsencrypt:/letsencrypt
 

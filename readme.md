@@ -56,6 +56,8 @@ You can use pre-compiled binaries:
 docker run ldez/traefik-certs-dumper:<tag_name>
 ```
 
+Example: [docker-compose](docs/docker-compose-traefik-v1.yml)
+
 ## Usage
 
 - [traefik-certs-dumper](docs/traefik-certs-dumper.md)
@@ -151,5 +153,3 @@ $ traefik-certs-dumper kv boltdb --endpoints /the/path/to/mydb.db
 ```console
 $ traefik-certs-dumper kv zookeeper --endpoints localhost:2181
 ```
-
-

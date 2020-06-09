@@ -35,7 +35,7 @@ services:
       && traefik-certs-dumper file --watch
         --source /data/acme.json --dest /data/certs'
     volumes:
-      - ./letsencrypt:/letsencrypt
+      - ./letsencrypt:/data
 
   whoami:
     image: containous/whoami

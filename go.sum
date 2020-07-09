@@ -105,8 +105,6 @@ github.com/armon/go-metrics v0.0.0-20190430140413-ec5e00d3c878/go.mod h1:3AMJUQh
 github.com/armon/go-radix v0.0.0-20180808171621-7fddfc383310/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgIH9cCH8=
 github.com/armon/go-radix v1.0.0/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgIH9cCH8=
 github.com/aws/aws-sdk-go v1.16.23/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
-github.com/aws/aws-sdk-go v1.23.0 h1:ilfJN/vJtFo1XDFxB2YMBYGeOvGZl6Qow17oyD4+Z9A=
-github.com/aws/aws-sdk-go v1.23.0/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
 github.com/aws/aws-sdk-go v1.30.20 h1:ktsy2vodSZxz/arYqo7DlpkIeNohHL+4Rmjdo7YGtrE=
 github.com/aws/aws-sdk-go v1.30.20/go.mod h1:5zCpMtNQVjRREroY7sYe8lOMRSxkhG6MZveU8YkpAk0=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
@@ -155,8 +153,6 @@ github.com/containous/minheap v0.0.0-20190809180810-6e71eb837595/go.mod h1:+lHFb
 github.com/containous/multibuf v0.0.0-20190809014333-8b6c9a7e6bba/go.mod h1:zkWcASFUJEst6QwCrxLdkuw1gvaKqmflEipm+iecV5M=
 github.com/containous/mux v0.0.0-20181024131434-c33f32e26898 h1:1srn9voikJGofblBhWy3WuZWqo14Ou7NaswNG/I2yWc=
 github.com/containous/mux v0.0.0-20181024131434-c33f32e26898/go.mod h1:z8WW7n06n8/1xF9Jl9WmuDeZuHAhfL+bwarNjsciwwg=
-github.com/containous/traefik/v2 v2.2.1 h1:vO1aVcDz3pSPk0aJ6zbpj8xtfcGQYhtJo1NTEYtY+wE=
-github.com/containous/traefik/v2 v2.2.1/go.mod h1:1QA8LtoiC0Xrntjzj5NNeLeEadd828kDavqHG1MEnM4=
 github.com/containous/traefik/v2 v2.2.2 h1:ZieYXw1K1+dw94c47pxEsmfjVoymr+viBpTIpPn1QzQ=
 github.com/containous/traefik/v2 v2.2.2/go.mod h1:d42LvooahX/t+Sj8mbYHpOVfqSFKrvF2KQndPcvSTjM=
 github.com/coreos/bbolt v1.3.2 h1:wZwiHHUieZCquLkDL0B8UhzreNWsPHooDAG3q34zk0s=
@@ -194,8 +190,6 @@ github.com/dimchansky/utfbom v1.1.0 h1:FcM3g+nofKgUteL8dm/UpdRXNC9KmADgTpLKsu0TR
 github.com/dimchansky/utfbom v1.1.0/go.mod h1:rO41eb7gLfo8SF1jd9F8HplJm1Fewwi4mQvIirEdv+8=
 github.com/dnaeon/go-vcr v0.0.0-20180814043457-aafff18a5cc2 h1:G9/PqfhOrt8JXnw0DGTfVoOkKHDhOlEZqhE/cu+NvQM=
 github.com/dnaeon/go-vcr v0.0.0-20180814043457-aafff18a5cc2/go.mod h1:aBB1+wY4s93YsC3HHjMBMrwTj2R9FHDzUr9KyGc8n1E=
-github.com/dnsimple/dnsimple-go v0.30.0 h1:IBIrn9jMKRMwporIRwdFyKdnHXVmwy6obnguB+ZMDIY=
-github.com/dnsimple/dnsimple-go v0.30.0/go.mod h1:O5TJ0/U6r7AfT8niYNlmohpLbCSG+c71tQlGr9SeGrg=
 github.com/dnsimple/dnsimple-go v0.60.0 h1:N+q+ML1CZGf+5r4udu9Opy7WJNtOaFT9aM86Af9gLhk=
 github.com/dnsimple/dnsimple-go v0.60.0/go.mod h1:O5TJ0/U6r7AfT8niYNlmohpLbCSG+c71tQlGr9SeGrg=
 github.com/docker/cli v0.0.0-20200221155518-740919cc7fc0/go.mod h1:JLrzqnKDaYBop7H2jaqPtU4hHvMKP+vjCwu2uszcLI8=
@@ -241,8 +235,6 @@ github.com/gambol99/go-marathon v0.0.0-20180614232016-99a156b96fb2/go.mod h1:GLy
 github.com/ghodss/yaml v0.0.0-20150909031657-73d445a93680/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/ghodss/yaml v1.0.0 h1:wQHKEahhL6wmXdzwWG11gIVCkOv05bNOh+Rxn0yngAk=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
-github.com/go-acme/lego/v3 v3.6.0 h1:Rv0MrX3DpVp9Xg77yR7x+PCksLLph3Ut/69/9Kim8ac=
-github.com/go-acme/lego/v3 v3.6.0/go.mod h1:sB/T7hfyz0HYIBvPmz/C8jIaxF6scbbiGKTzbQ22V6A=
 github.com/go-acme/lego/v3 v3.8.0 h1:9OOEn54eZvEPRRdM7xiC5f7EBW0MlEeChr+kzlIhdN8=
 github.com/go-acme/lego/v3 v3.8.0/go.mod h1:kYiHYgSRzb1l2NQPWvWvkVG5etNCusGFsZc2MTak3m0=
 github.com/go-cmd/cmd v1.0.5/go.mod h1:y8q8qlK5wQibcw63djSl/ntiHUHXHGdCkPk0j4QeW4s=
@@ -452,8 +444,6 @@ github.com/julienschmidt/httprouter v1.2.0/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7V
 github.com/kisielk/errcheck v1.1.0/go.mod h1:EZBBE59ingxPouuu3KfxchcWSUPOHkagtvWXihfKN4Q=
 github.com/kisielk/errcheck v1.2.0/go.mod h1:/BMXB+zMLi60iA8Vv6Ksmxu/1UDYcXs4uQLJ+jE2L00=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
-github.com/kolo/xmlrpc v0.0.0-20190717152603-07c4ee3fd181 h1:TrxPzApUukas24OMMVDUMlCs1XCExJtnGaDEiIAR4oQ=
-github.com/kolo/xmlrpc v0.0.0-20190717152603-07c4ee3fd181/go.mod h1:o03bZfuBwAXHetKXuInt4S7omeXUu62/A845kiycsSQ=
 github.com/kolo/xmlrpc v0.0.0-20200310150728-e0350524596b h1:DzHy0GlWeF0KAglaTMY7Q+khIFoG8toHP+wLFBVBQJc=
 github.com/kolo/xmlrpc v0.0.0-20200310150728-e0350524596b/go.mod h1:o03bZfuBwAXHetKXuInt4S7omeXUu62/A845kiycsSQ=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
@@ -537,8 +527,6 @@ github.com/nrdcg/auroradns v1.0.1 h1:m/kBq83Xvy3cU261MOknd8BdnOk12q4lAWM+kOdsC2Y
 github.com/nrdcg/auroradns v1.0.1/go.mod h1:y4pc0i9QXYlFCWrhWrUSIETnZgrf4KuwjDIWmmXo3JI=
 github.com/nrdcg/dnspod-go v0.4.0 h1:c/jn1mLZNKF3/osJ6mz3QPxTudvPArXTjpkmYj0uK6U=
 github.com/nrdcg/dnspod-go v0.4.0/go.mod h1:vZSoFSFeQVm2gWLMkyX61LZ8HI3BaqtHZWgPTGKr6KQ=
-github.com/nrdcg/goinwx v0.6.1 h1:AJnjoWPELyCtofhGcmzzcEMFd9YdF2JB/LgutWsWt/s=
-github.com/nrdcg/goinwx v0.6.1/go.mod h1:XPiut7enlbEdntAqalBIqcYcTEVhpv/dKWgDCX2SwKQ=
 github.com/nrdcg/goinwx v0.7.0 h1:j6JlOp0nNwtvaP09TvKqc9pktjH81nOad0+Gx9S1t9U=
 github.com/nrdcg/goinwx v0.7.0/go.mod h1:4tKJOCi/1lTxuw9/yB2Ez0aojwtUCSkckjc22eALpqE=
 github.com/nrdcg/namesilo v0.2.1 h1:kLjCjsufdW/IlC+iSfAqj0iQGgKjlbUUeDJio5Y6eMg=
@@ -721,8 +709,6 @@ github.com/vdemeester/shakers v0.1.0/go.mod h1:IZ1HHynUOQt32iQ3rvAeVddXLd19h/6LW
 github.com/vulcand/oxy v1.1.0/go.mod h1:ADiMYHi8gkGl2987yQIzDRoXZilANF4WtKaQ92OppKY=
 github.com/vulcand/predicate v1.1.0 h1:Gq/uWopa4rx/tnZu2opOSBqHK63Yqlou/SzrbwdJiNg=
 github.com/vulcand/predicate v1.1.0/go.mod h1:mlccC5IRBoc2cIFmCB8ZM62I3VDb6p2GXESMHa3CnZg=
-github.com/vultr/govultr v0.1.4 h1:UnNMixYFVO0p80itc8PcweoVENyo1PasfvwKhoasR9U=
-github.com/vultr/govultr v0.1.4/go.mod h1:9H008Uxr/C4vFNGLqKx232C206GL0PBHzOP0809bGNA=
 github.com/vultr/govultr v0.4.2 h1:9i8xKZ+xp6vwZ9raqHoBLzhB4wCnMj7nOQTj5YIRLWY=
 github.com/vultr/govultr v0.4.2/go.mod h1:TUuUizMOFc7z+PNMssb6iGjKjQfpw5arIaOLfocVudQ=
 github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c/go.mod h1:lB8K/P019DLNhemzwFU4jHLhdvlE6uDZjXFejJXr49I=

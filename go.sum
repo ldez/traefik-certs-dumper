@@ -153,8 +153,8 @@ github.com/containous/minheap v0.0.0-20190809180810-6e71eb837595/go.mod h1:+lHFb
 github.com/containous/multibuf v0.0.0-20190809014333-8b6c9a7e6bba/go.mod h1:zkWcASFUJEst6QwCrxLdkuw1gvaKqmflEipm+iecV5M=
 github.com/containous/mux v0.0.0-20181024131434-c33f32e26898 h1:1srn9voikJGofblBhWy3WuZWqo14Ou7NaswNG/I2yWc=
 github.com/containous/mux v0.0.0-20181024131434-c33f32e26898/go.mod h1:z8WW7n06n8/1xF9Jl9WmuDeZuHAhfL+bwarNjsciwwg=
-github.com/containous/traefik/v2 v2.2.3 h1:1WKUH7WavgKSFJ+AYXhyl2mInsQqk8pwoBrEv524MEA=
-github.com/containous/traefik/v2 v2.2.3/go.mod h1:d42LvooahX/t+Sj8mbYHpOVfqSFKrvF2KQndPcvSTjM=
+github.com/containous/traefik/v2 v2.2.5 h1:YiwariQrDw7kkRYPZWcQRgoXCFK1Z3rmCH0sIldOmO0=
+github.com/containous/traefik/v2 v2.2.5/go.mod h1:d42LvooahX/t+Sj8mbYHpOVfqSFKrvF2KQndPcvSTjM=
 github.com/coreos/bbolt v1.3.2 h1:wZwiHHUieZCquLkDL0B8UhzreNWsPHooDAG3q34zk0s=
 github.com/coreos/bbolt v1.3.2/go.mod h1:iRUV2dpdMOn7Bo10OQBFzIJO9kkE559Wcmn+qkEiiKk=
 github.com/coreos/bbolt v1.3.3 h1:n6AiVyVRKQFNb6mJlwESEvvLoDyiTzXX7ORAUlkeBdY=

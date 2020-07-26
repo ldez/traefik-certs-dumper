@@ -29,7 +29,7 @@ services:
     entrypoint: sh -c '
       apk add jq
       ; while ! [ -e /data/acme.json ]
-        || ! [ `jq ".letsencrypt.Certificates | length" /data/acme.json` != 0 ]; do
+        || ! [ `jq ".Certificates | length" /data/acme.json` != 0 ]; do
           sleep 1
       ; done
       ; if ! id -u traefik > /dev/null 2>&1; then

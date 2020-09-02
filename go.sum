@@ -92,6 +92,7 @@ github.com/abronan/valkeyrie v0.0.0-20200127174252-ef4277a138cd h1:UlQRt3CZdeD+W
 github.com/abronan/valkeyrie v0.0.0-20200127174252-ef4277a138cd/go.mod h1:2RUNONRAQ8bS1QcVJF3dYO/faiEro6NAAIQ6CqBkpD0=
 github.com/akamai/AkamaiOPEN-edgegrid-golang v0.9.8 h1:6rJvj+NXjjauunLeS7uGy891F1cuAwsWKa9iGzTjz1s=
 github.com/akamai/AkamaiOPEN-edgegrid-golang v0.9.8/go.mod h1:aVvklgKsPENRkl29bNwrHISa1F+YLGTHArMxZMBqWM8=
+github.com/akamai/AkamaiOPEN-edgegrid-golang v0.9.18 h1:KyEv96ncdgOIJRTKMcWlIqM0umf8X3LQP6oOyg0hNsM=
 github.com/akamai/AkamaiOPEN-edgegrid-golang v0.9.18/go.mod h1:L+HB2uBoDgi3+r1pJEJcbGwyyHhd2QXaGsKLbDwtm8Q=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
@@ -236,7 +237,6 @@ github.com/gambol99/go-marathon v0.0.0-20180614232016-99a156b96fb2/go.mod h1:GLy
 github.com/ghodss/yaml v0.0.0-20150909031657-73d445a93680/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/ghodss/yaml v1.0.0 h1:wQHKEahhL6wmXdzwWG11gIVCkOv05bNOh+Rxn0yngAk=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
-github.com/go-acme/lego v2.7.2+incompatible h1:ThhpPBgf6oa9X/vRd0kEmWOsX7+vmYdckmGZSb+FEp0=
 github.com/go-acme/lego/v3 v3.8.0 h1:9OOEn54eZvEPRRdM7xiC5f7EBW0MlEeChr+kzlIhdN8=
 github.com/go-acme/lego/v3 v3.8.0/go.mod h1:kYiHYgSRzb1l2NQPWvWvkVG5etNCusGFsZc2MTak3m0=
 github.com/go-acme/lego/v3 v3.9.0 h1:Kyvg2GGqRJHfK2Stu57M45TDTx0y1bsxLH7lpeP3n0A=
@@ -341,7 +341,9 @@ github.com/gophercloud/gophercloud v0.1.0/go.mod h1:vxM41WHh5uqHVBMZHzuwNOHh8XEo
 github.com/gophercloud/gophercloud v0.3.0 h1:6sjpKIpVwRIIwmcEGp+WwNovNsem+c+2vm6oxshRpL8=
 github.com/gophercloud/gophercloud v0.3.0/go.mod h1:vxM41WHh5uqHVBMZHzuwNOHh8XEoIEcSTewFxm1c5g8=
 github.com/gophercloud/gophercloud v0.6.1-0.20191122030953-d8ac278c1c9d/go.mod h1:ozGNgr9KYOVATV5jsgHl/ceCDXGuguqOZAzoQ/2vcNM=
+github.com/gophercloud/gophercloud v0.7.0 h1:vhmQQEM2SbnGCg2/3EzQnQZ3V7+UCGy9s8exQCprNYg=
 github.com/gophercloud/gophercloud v0.7.0/go.mod h1:gmC5oQqMDOMO1t1gq5DquX/yAU808e/4mzjjDA76+Ss=
+github.com/gophercloud/utils v0.0.0-20200508015959-b0167b94122c h1:iawx2ojEQA7c+GmkaVO5sN+k8YONibXyDO8RlsC+1bs=
 github.com/gophercloud/utils v0.0.0-20200508015959-b0167b94122c/go.mod h1:ehWUbLQJPqS0Ep+CxeD559hsm9pthPXadJNKwZkp43w=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 h1:EGx4pi6eqNxGaHF6qqu48+N2wcFQ5qg5FXgOdqsJ5d8=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
@@ -532,6 +534,7 @@ github.com/nbio/st v0.0.0-20140626010706-e9e8d9816f32 h1:W6apQkHrMkS0Muv8G/TipAy
 github.com/nbio/st v0.0.0-20140626010706-e9e8d9816f32/go.mod h1:9wM+0iRr9ahx58uYLpLIr5fm8diHn0JbqRycJi6w0Ms=
 github.com/nrdcg/auroradns v1.0.1 h1:m/kBq83Xvy3cU261MOknd8BdnOk12q4lAWM+kOdsC2Y=
 github.com/nrdcg/auroradns v1.0.1/go.mod h1:y4pc0i9QXYlFCWrhWrUSIETnZgrf4KuwjDIWmmXo3JI=
+github.com/nrdcg/desec v0.5.0 h1:foL7hqivYOMlv0qDhHXJtuuEXkqf0wW9EQMqyrt228g=
 github.com/nrdcg/desec v0.5.0/go.mod h1:2ejvMazkav1VdDbv2HeQO7w+Ta1CGHqzQr27ZBYTuEQ=
 github.com/nrdcg/dnspod-go v0.4.0 h1:c/jn1mLZNKF3/osJ6mz3QPxTudvPArXTjpkmYj0uK6U=
 github.com/nrdcg/dnspod-go v0.4.0/go.mod h1:vZSoFSFeQVm2gWLMkyX61LZ8HI3BaqtHZWgPTGKr6KQ=
@@ -911,6 +914,7 @@ golang.org/x/time v0.0.0-20190921001708-c4c64cad1fd0 h1:xQwXv67TxFo9nC1GJFyab5eq
 golang.org/x/time v0.0.0-20190921001708-c4c64cad1fd0/go.mod h1:tRJNPiyCQ0inRvYxbN9jk5I+vvW/OXSQhTDSoE431IQ=
 golang.org/x/time v0.0.0-20191024005414-555d28b269f0 h1:/5xXl8Y5W96D+TtHSlonuFqGHIWVuyCkGJLwGh9JJFs=
 golang.org/x/time v0.0.0-20191024005414-555d28b269f0/go.mod h1:tRJNPiyCQ0inRvYxbN9jk5I+vvW/OXSQhTDSoE431IQ=
+golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e h1:EHBhcS0mlXEAVwNyO2dLfjToGsyY4j24pTs2ScHnX7s=
 golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e/go.mod h1:tRJNPiyCQ0inRvYxbN9jk5I+vvW/OXSQhTDSoE431IQ=
 golang.org/x/tools v0.0.0-20180221164845-07fd8470d635/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
 golang.org/x/tools v0.0.0-20180828015842-6cd1fcedba52/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
@@ -1027,6 +1031,7 @@ gopkg.in/alecthomas/kingpin.v2 v2.2.6/go.mod h1:FMv+mEhP44yOT+4EoQTLFTRgOQ1FBLks
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 h1:qIbj1fsPNlZgppZ+VLlY7N33q108Sa+fhmuc+sWQYwY=
 gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 h1:YR8cESwS4TdDjEe65xsg0ogRM/Nc3DYOhEAlW+xobZo=
 gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/errgo.v2 v2.1.0/go.mod h1:hNsd1EY+bozCKY1Ytp96fpM3vjJbqLJn88ws8XvfDNI=
 gopkg.in/fsnotify.v1 v1.4.7/go.mod h1:Tz8NjZHkW78fSQdbUxIjBTcgA1z1m8ZHf0WmKUhAMys=

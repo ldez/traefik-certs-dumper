@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/abronan/valkeyrie v0.0.0-20200127174252-ef4277a138cd
-	github.com/containous/traefik/v2 v2.2.8
+	github.com/containous/traefik/v2 v2.2.10
 	github.com/fsnotify/fsnotify v1.4.8-0.20190312181446-1485a34d5d57
 	github.com/go-acme/lego/v3 v3.9.0
 	github.com/mitchellh/go-homedir v1.1.0

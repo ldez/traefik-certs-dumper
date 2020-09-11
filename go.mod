@@ -6,21 +6,15 @@ require (
 	github.com/abronan/valkeyrie v0.0.0-20200127174252-ef4277a138cd
 	github.com/containous/traefik/v2 v2.2.11
 	github.com/fsnotify/fsnotify v1.4.8-0.20190312181446-1485a34d5d57
-	github.com/go-acme/lego/v3 v3.9.0
+	github.com/go-acme/lego/v4 v4.0.1
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v0.0.7
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1
 )
 
-// related to valkeyrie
-replace github.com/hashicorp/consul => github.com/hashicorp/consul v1.6.0
-
 // related to Traefik
-replace (
-	github.com/Azure/go-autorest => github.com/Azure/go-autorest v12.4.1+incompatible
-	github.com/docker/docker => github.com/docker/engine v0.0.0-20190725163905-fa8dd90ceb7b
-)
+replace github.com/docker/docker => github.com/docker/engine v0.0.0-20190725163905-fa8dd90ceb7b
 
 // related to Traefik: Containous forks
 replace (

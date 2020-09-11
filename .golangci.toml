@@ -33,6 +33,8 @@
     "gomnd",
     "testpackage",
     "goerr113",
+    "nlreturn",
+    "exhaustive",
   ]
 
 [issues]

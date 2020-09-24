@@ -7,9 +7,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/containous/traefik/v2/pkg/provider/acme"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
+	"github.com/traefik/traefik/v2/pkg/provider/acme"
 )
 
 const (

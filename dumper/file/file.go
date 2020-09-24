@@ -12,12 +12,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/containous/traefik/v2/pkg/provider/acme"
 	"github.com/fsnotify/fsnotify"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	v1 "github.com/ldez/traefik-certs-dumper/v2/dumper/v1"
 	v2 "github.com/ldez/traefik-certs-dumper/v2/dumper/v2"
 	"github.com/ldez/traefik-certs-dumper/v2/hook"
+	"github.com/traefik/traefik/v2/pkg/provider/acme"
 )
 
 // Dump Dumps "acme.json" file to certificates.

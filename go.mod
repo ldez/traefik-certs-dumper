@@ -4,13 +4,13 @@ go 1.14
 
 require (
 	github.com/abronan/valkeyrie v0.0.0-20200127174252-ef4277a138cd
-	github.com/containous/traefik/v2 v2.2.11
 	github.com/fsnotify/fsnotify v1.4.8-0.20190312181446-1485a34d5d57
 	github.com/go-acme/lego/v4 v4.0.1
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v0.0.7
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1
+	github.com/traefik/traefik/v2 v2.3.0
 )
 
 // related to Traefik

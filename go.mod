@@ -10,7 +10,7 @@ require (
 	github.com/spf13/cobra v0.0.7
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1
-	github.com/traefik/traefik/v2 v2.3.0
+	github.com/traefik/traefik/v2 v2.3.1
 )
 
 // related to Traefik

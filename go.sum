@@ -258,8 +258,7 @@ github.com/ghodss/yaml v1.0.0 h1:wQHKEahhL6wmXdzwWG11gIVCkOv05bNOh+Rxn0yngAk=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/go-acme/lego/v4 v4.0.1 h1:vPwbTYfw5+fOaON9rWCN43iNrPw5cdJBhNMnA8oxBTM=
 github.com/go-acme/lego/v4 v4.0.1/go.mod h1:pIFm5tWkXSgiAEfJ/XQCQIvX1cEvHFwbgLZyx8OVSUE=
-github.com/go-acme/lego/v4 v4.1.0 h1:/9pMjaeaLq6m0n+io+kv2ySs2ZfrmH6eazuMoN18GHo=
-github.com/go-acme/lego/v4 v4.1.0/go.mod h1:pIFm5tWkXSgiAEfJ/XQCQIvX1cEvHFwbgLZyx8OVSUE=
+github.com/go-acme/lego/v4 v4.1.1 h1:RsQzIh5Q3US99M/Ts/uQmMsfS8Bh0pLcu1vzYnpQnS0=
 github.com/go-acme/lego/v4 v4.1.1/go.mod h1:pIFm5tWkXSgiAEfJ/XQCQIvX1cEvHFwbgLZyx8OVSUE=
 github.com/go-cmd/cmd v1.0.5/go.mod h1:y8q8qlK5wQibcw63djSl/ntiHUHXHGdCkPk0j4QeW4s=
 github.com/go-errors/errors v1.0.1 h1:LUHzmkK3GUKUrL/1gfBUxAHzcev3apQlezX/+O7ma6w=
@@ -498,7 +497,6 @@ github.com/labbsr0x/bindman-dns-webhook v1.0.2 h1:I7ITbmQPAVwrDdhd6dHKi+MYJTJqPC
 github.com/labbsr0x/bindman-dns-webhook v1.0.2/go.mod h1:p6b+VCXIR8NYKpDr8/dg1HKfQoRHCdcsROXKvmoehKA=
 github.com/labbsr0x/goh v1.0.1 h1:97aBJkDjpyBZGPbQuOK5/gHcSFbcr5aRsq3RSRJFpPk=
 github.com/labbsr0x/goh v1.0.1/go.mod h1:8K2UhVoaWXcCU7Lxoa2omWnC8gyW8px7/lmO61c027w=
-github.com/ldez/traefik-certs-dumper v1.5.0 h1:nSsyh42KEyXzHnYMV4eB+uuXJ5CyOvUJKD0703Mwn3I=
 github.com/libkermit/compose v0.0.0-20171122111507-c04e39c026ad/go.mod h1:GyCk/ifDcqsU1tsRMMWqXANnTtxzcwEWscb7j5qmblM=
 github.com/libkermit/docker v0.0.0-20171122101128-e6674d32b807/go.mod h1:std11u6pTaNwryy0Hy1dTQNdHKka1jNpflEieKtv5VE=
 github.com/libkermit/docker-check v0.0.0-20171122104347-1113af38e591/go.mod h1:EBQ0jeOrBpOTkquwjmJl4W6z5xqlf5oA2LZfTqRNcO0=

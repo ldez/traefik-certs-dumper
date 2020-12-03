@@ -58,6 +58,16 @@ jobs:
       - name: Make
         run: make
 
+      # https://goreleaser.com/ci/actions/
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v2
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          version: latest
+          args: release --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # Install Docker image multi-arch builder
       - name: Install seihon ${{ env.SEIHON_VERSION }}
         if: startsWith(github.ref, 'refs/tags/v')
@@ -76,13 +86,3 @@ jobs:
       - name: Deploy Docker Images (seihon)
         if: startsWith(github.ref, 'refs/tags/v')
         run: make publish-images
-
-      # https://goreleaser.com/ci/actions/
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v2
-        if: startsWith(github.ref, 'refs/tags/v')
-        with:
-          version: latest
-          args: release --rm-dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

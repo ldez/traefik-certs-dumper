@@ -1,7 +1,7 @@
 # traefik-certs-dumper
 
 [![GitHub release](https://img.shields.io/github/release/ldez/traefik-certs-dumper.svg)](https://github.com/ldez/traefik-certs-dumper/releases/latest)
-[![Build Status](https://travis-ci.com/ldez/traefik-certs-dumper.svg?branch=master)](https://travis-ci.com/ldez/traefik-certs-dumper)
+[![Build Status](https://github.com/ldez/traefik-certs-dumper/workflows/Main/badge.svg?branch=master)](https://github.com/ldez/traefik-certs-dumper/actions)
 [![Docker Information](https://images.microbadger.com/badges/image/ldez/traefik-certs-dumper.svg)](https://hub.docker.com/r/ldez/traefik-certs-dumper/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ldez/traefik-certs-dumper)](https://goreportcard.com/report/github.com/ldez/traefik-certs-dumper)
 

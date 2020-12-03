@@ -34,7 +34,7 @@ func execute(command string) error {
 		fmt.Println(string(output))
 	}
 
-	if ctxCmd.Err() == context.DeadlineExceeded {
+	if errors.Is(ctxCmd.Err(), context.DeadlineExceeded) {
 		return errors.New("hook timed out")
 	}
 

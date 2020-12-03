@@ -85,4 +85,4 @@ jobs:
           version: latest
           args: release --rm-dist
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_REPO }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

@@ -62,7 +62,7 @@ jobs:
       - name: Install seihon ${{ env.SEIHON_VERSION }}
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          curl -sSfL https://raw.githubusercontent.com/ldez/seihon/master/godownloader.sh | sh -s -- -b $(go env GOPATH)/bin "${GOPATH}/bin" ${SEIHON_VERSION}
+          curl -sSfL https://raw.githubusercontent.com/ldez/seihon/master/godownloader.sh | sh -s -- -b $(go env GOPATH)/bin ${SEIHON_VERSION}
           seihon --version
 
       - name: Docker Login

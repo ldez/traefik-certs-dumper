@@ -25,7 +25,7 @@ services:
       - ./letsencrypt:/letsencrypt
 
   traefik-certs-dumper:
-    image: ldez/traefik-certs-dumper:v2.7.0
+    image: ldez/traefik-certs-dumper:v2.7.4
     entrypoint: sh -c '
       apk add jq
       ; while ! [ -e /data/acme.json ]
@@ -38,7 +38,7 @@ services:
       - ./letsencrypt:/data
 
   whoami:
-    image: containous/whoami
+    image: traefik/whoami:v1.6.0
     labels:
       traefik.enable: true
       traefik.frontend.rule: Host:example.com

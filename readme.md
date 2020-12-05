@@ -27,7 +27,7 @@ If you appreciate this project:
 ### Download / CI Integration
 
 ```bash
-curl -sfL https://raw.githubusercontent.com/ldez/traefik-certs-dumper/master/godownloader.sh | bash -s -- -b $GOPATH/bin v2.7.0
+curl -sfL https://raw.githubusercontent.com/ldez/traefik-certs-dumper/master/godownloader.sh | bash -s -- -b $(go env GOPATH)/bin v2.7.4
 ```
 
 <!--
@@ -56,7 +56,10 @@ You can use pre-compiled binaries:
 docker run ldez/traefik-certs-dumper:<tag_name>
 ```
 
-Example: [docker-compose](docs/docker-compose-traefik-v1.yml)
+Examples:
+
+- Traefik v1: [docker-compose](docs/docker-compose-traefik-v1.yml)
+- Traefik v2: [docker-compose](docs/docker-compose-traefik-v2.yml)
 
 ## Usage
 

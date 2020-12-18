@@ -494,7 +494,6 @@ github.com/labbsr0x/bindman-dns-webhook v1.0.2 h1:I7ITbmQPAVwrDdhd6dHKi+MYJTJqPC
 github.com/labbsr0x/bindman-dns-webhook v1.0.2/go.mod h1:p6b+VCXIR8NYKpDr8/dg1HKfQoRHCdcsROXKvmoehKA=
 github.com/labbsr0x/goh v1.0.1 h1:97aBJkDjpyBZGPbQuOK5/gHcSFbcr5aRsq3RSRJFpPk=
 github.com/labbsr0x/goh v1.0.1/go.mod h1:8K2UhVoaWXcCU7Lxoa2omWnC8gyW8px7/lmO61c027w=
-github.com/ldez/traefik-certs-dumper v1.5.0 h1:nSsyh42KEyXzHnYMV4eB+uuXJ5CyOvUJKD0703Mwn3I=
 github.com/libkermit/compose v0.0.0-20171122111507-c04e39c026ad/go.mod h1:GyCk/ifDcqsU1tsRMMWqXANnTtxzcwEWscb7j5qmblM=
 github.com/libkermit/docker v0.0.0-20171122101128-e6674d32b807/go.mod h1:std11u6pTaNwryy0Hy1dTQNdHKka1jNpflEieKtv5VE=
 github.com/libkermit/docker-check v0.0.0-20171122104347-1113af38e591/go.mod h1:EBQ0jeOrBpOTkquwjmJl4W6z5xqlf5oA2LZfTqRNcO0=
@@ -700,6 +699,7 @@ github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPx
 github.com/sirupsen/logrus v1.4.1/go.mod h1:ni0Sbl8bgC9z8RoU9G6nDWqqs/fq4eDPysMBDgk/93Q=
 github.com/sirupsen/logrus v1.4.2 h1:SPIRibHv4MatM3XXNO2BJeFLZwZ2LvZgfQ5+UNI2im4=
 github.com/sirupsen/logrus v1.4.2/go.mod h1:tLMulIdttU9McNUspp0xgXVQah82FyeX6MwdIuYE2rE=
+github.com/sirupsen/logrus v1.7.0 h1:ShrD1U9pZB12TX0cVy0DtePoCH97K8EtX+mg7ZARUtM=
 github.com/sirupsen/logrus v1.7.0/go.mod h1:yWOB1SBYBC5VeMP7gHvWumXLIWorT60ONWic61uBYv0=
 github.com/skratchdot/open-golang v0.0.0-20160302144031-75fb7ed4208c/go.mod h1:sUM3LWHvSMaG192sy56D9F7CNvL7jUJVXoqM1QKLnog=
 github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d h1:zE9ykElWQ6/NYmHa3jpm/yHnI4xSofP+UP6SpjHcSeM=
@@ -761,10 +761,8 @@ github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5 h1:LnC5Kc
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/traefik/paerser v0.1.1 h1:Suj0iA4hTAV6E4Dh5/++TXAj5u6iTwydBlFssIUz+9w=
 github.com/traefik/paerser v0.1.1/go.mod h1:yYnAgdEC2wJH5CgG75qGWC8SsFDEapg09o9RrA6FfrE=
-github.com/traefik/traefik/v2 v2.3.5 h1:MKa0SMeVeaYuU0QFQ9DyTwoQF1VjpXlbipFkW0vBv9M=
-github.com/traefik/traefik/v2 v2.3.5/go.mod h1:W4VM+y4xzzgFjCM2Ht8b27M1hvE4cNhrPSjKbyOaiZM=
+github.com/traefik/traefik/v2 v2.3.6 h1:uEjY/DKM9DU7PKddOOCmmCu3R8Q2XnSKqI5XQJggKkk=
 github.com/traefik/traefik/v2 v2.3.6/go.mod h1:HGwLEH8/ApKkvWYn9fwWmu858WvATlSHpOJm6J2o4vE=
-github.com/traefik/yaegi v0.9.7/go.mod h1:FAYnRlZyuVlEkvnkHq3bvJ1lW5be6XuwgLdkYgYG6Lk=
 github.com/traefik/yaegi v0.9.8/go.mod h1:FAYnRlZyuVlEkvnkHq3bvJ1lW5be6XuwgLdkYgYG6Lk=
 github.com/transip/gotransip/v6 v6.2.0 h1:0Z+qVsyeiQdWfcAUeJyF0IEKAPvhJwwpwPi2WGtBIiE=
 github.com/transip/gotransip/v6 v6.2.0/go.mod h1:pQZ36hWWRahCUXkFWlx9Hs711gLd8J4qdgLdRzmtY+g=

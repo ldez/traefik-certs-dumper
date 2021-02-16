@@ -74,7 +74,6 @@ github.com/Masterminds/sprig/v3 v3.1.0/go.mod h1:ONGMf7UfYGAbMXCZmQLy8x3lCDIPrEZ
 github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5/go.mod h1:tTuCMEN+UleMWgg9dVx4Hu52b1bJo+59jBh3ajtinzw=
 github.com/Microsoft/hcsshim v0.8.7/go.mod h1:OHd7sQqRFrYd3RmSgbgji+ctCwkbq2wbEYNSzOYtcBQ=
 github.com/NYTimes/gziphandler v0.0.0-20170623195520-56545f4a5d46/go.mod h1:3wb06e3pkSAbeQ52E9H9iFoQsEEwGN64994WTCIhntQ=
-github.com/NYTimes/gziphandler v1.1.1/go.mod h1:n/CVRwUEOgIxrgPvAQhUUr9oeUtvrhMomdKFjzJNB0c=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/OpenDNS/vegadns2client v0.0.0-20180418235048-a3fa4a771d87 h1:xPMsUicZ3iosVPSIP7bW5EcGUzjiiMl1OYTe14y/R24=
 github.com/OpenDNS/vegadns2client v0.0.0-20180418235048-a3fa4a771d87/go.mod h1:iGLljf5n9GjT6kc0HBvyI1nOKnGQbNB66VzSNbK5iks=
@@ -797,10 +796,11 @@ github.com/tinylib/msgp v1.0.2/go.mod h1:+d+yLhGm8mzTaHzB+wgMYrodPfmZrzkirds8fDW
 github.com/tmc/grpc-websocket-proxy v0.0.0-20170815181823-89b8d40f7ca8/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5 h1:LnC5Kc/wtumK+WB441p7ynQJzVuNRJiqddSIE3IlSEQ=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
+github.com/traefik/gziphandler v1.1.2-0.20210212101304-175e0fad6888/go.mod h1:sLqwoN03tkluITKL+lPEZbfsJQU2suYoKbrR/HeV9aM=
 github.com/traefik/paerser v0.1.1 h1:Suj0iA4hTAV6E4Dh5/++TXAj5u6iTwydBlFssIUz+9w=
 github.com/traefik/paerser v0.1.1/go.mod h1:yYnAgdEC2wJH5CgG75qGWC8SsFDEapg09o9RrA6FfrE=
-github.com/traefik/traefik/v2 v2.4.2 h1:5jYzbUvGYP8LifVNSJKBTbU8W0JhF8G/UTawNcv/K68=
-github.com/traefik/traefik/v2 v2.4.2/go.mod h1:+xIABZe3YXy3TPFy+hbMfxuLGGe0WyqJ00wqlzpQyLY=
+github.com/traefik/traefik/v2 v2.4.3 h1:0+Nqg0vjc4c2v5GKGom73rVl3y5/65p36Sa4JIYh6pY=
+github.com/traefik/traefik/v2 v2.4.3/go.mod h1:bA+9fn7L1qcPPYkdoaoqYLxE03wjJuob33BY8X72DBc=
 github.com/traefik/yaegi v0.9.8/go.mod h1:FAYnRlZyuVlEkvnkHq3bvJ1lW5be6XuwgLdkYgYG6Lk=
 github.com/transip/gotransip/v6 v6.2.0 h1:0Z+qVsyeiQdWfcAUeJyF0IEKAPvhJwwpwPi2WGtBIiE=
 github.com/transip/gotransip/v6 v6.2.0/go.mod h1:pQZ36hWWRahCUXkFWlx9Hs711gLd8J4qdgLdRzmtY+g=

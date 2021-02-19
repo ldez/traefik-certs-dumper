@@ -528,7 +528,6 @@ github.com/labbsr0x/bindman-dns-webhook v1.0.2 h1:I7ITbmQPAVwrDdhd6dHKi+MYJTJqPC
 github.com/labbsr0x/bindman-dns-webhook v1.0.2/go.mod h1:p6b+VCXIR8NYKpDr8/dg1HKfQoRHCdcsROXKvmoehKA=
 github.com/labbsr0x/goh v1.0.1 h1:97aBJkDjpyBZGPbQuOK5/gHcSFbcr5aRsq3RSRJFpPk=
 github.com/labbsr0x/goh v1.0.1/go.mod h1:8K2UhVoaWXcCU7Lxoa2omWnC8gyW8px7/lmO61c027w=
-github.com/ldez/traefik-certs-dumper v1.5.0 h1:nSsyh42KEyXzHnYMV4eB+uuXJ5CyOvUJKD0703Mwn3I=
 github.com/libkermit/compose v0.0.0-20171122111507-c04e39c026ad/go.mod h1:GyCk/ifDcqsU1tsRMMWqXANnTtxzcwEWscb7j5qmblM=
 github.com/libkermit/docker v0.0.0-20171122101128-e6674d32b807/go.mod h1:std11u6pTaNwryy0Hy1dTQNdHKka1jNpflEieKtv5VE=
 github.com/libkermit/docker-check v0.0.0-20171122104347-1113af38e591/go.mod h1:EBQ0jeOrBpOTkquwjmJl4W6z5xqlf5oA2LZfTqRNcO0=
@@ -800,8 +799,7 @@ github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1
 github.com/traefik/gziphandler v1.1.2-0.20210212101304-175e0fad6888/go.mod h1:sLqwoN03tkluITKL+lPEZbfsJQU2suYoKbrR/HeV9aM=
 github.com/traefik/paerser v0.1.1 h1:Suj0iA4hTAV6E4Dh5/++TXAj5u6iTwydBlFssIUz+9w=
 github.com/traefik/paerser v0.1.1/go.mod h1:yYnAgdEC2wJH5CgG75qGWC8SsFDEapg09o9RrA6FfrE=
-github.com/traefik/traefik/v2 v2.4.3 h1:0+Nqg0vjc4c2v5GKGom73rVl3y5/65p36Sa4JIYh6pY=
-github.com/traefik/traefik/v2 v2.4.3/go.mod h1:bA+9fn7L1qcPPYkdoaoqYLxE03wjJuob33BY8X72DBc=
+github.com/traefik/traefik/v2 v2.4.5 h1:GI8iI7iVAbtSby3MDn60gW2bc5RMDheCqttLImjyqIU=
 github.com/traefik/traefik/v2 v2.4.5/go.mod h1:bA+9fn7L1qcPPYkdoaoqYLxE03wjJuob33BY8X72DBc=
 github.com/traefik/yaegi v0.9.8/go.mod h1:FAYnRlZyuVlEkvnkHq3bvJ1lW5be6XuwgLdkYgYG6Lk=
 github.com/transip/gotransip/v6 v6.2.0 h1:0Z+qVsyeiQdWfcAUeJyF0IEKAPvhJwwpwPi2WGtBIiE=
@@ -1208,7 +1206,6 @@ gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.2.4/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.2.7/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.2.8/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
-gopkg.in/yaml.v2 v2.3.0 h1:clyUAQHOM3G0M3f5vQj7LuJrETvjVot3Z5el9nffUtU=
 gopkg.in/yaml.v2 v2.3.0/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.4.0 h1:D8xgwECY7CYvx+Y2n4sBz93Jn9JRvxdiyyo8CTfuKaY=
 gopkg.in/yaml.v2 v2.4.0/go.mod h1:RDklbk79AGWmwhnvt/jBztapEOGDOx6ZbXqjP6csGnQ=

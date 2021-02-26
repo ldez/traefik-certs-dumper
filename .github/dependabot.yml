@@ -6,8 +6,3 @@ updates:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: github.com/containous/traefik/v2
-    versions:
-    - "> 2.1.6"
-    - "< 2.2"

@@ -209,8 +209,9 @@ github.com/dnsimple/dnsimple-go v0.63.0 h1:0doY8VW/ckRIMTmOw4E1vwqo+bhtjDzvh1pU2
 github.com/dnsimple/dnsimple-go v0.63.0/go.mod h1:O5TJ0/U6r7AfT8niYNlmohpLbCSG+c71tQlGr9SeGrg=
 github.com/docker/cli v0.0.0-20200221155518-740919cc7fc0/go.mod h1:JLrzqnKDaYBop7H2jaqPtU4hHvMKP+vjCwu2uszcLI8=
 github.com/docker/distribution v2.7.1+incompatible/go.mod h1:J2gT2udsDAN96Uj4KfcMRqY0/ypR+oyYUYmja8H+y+w=
+github.com/docker/docker v0.7.3-0.20190327010347-be7ac8be2ae0/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
+github.com/docker/docker v17.12.0-ce-rc1.0.20200204220554-5f6d6f3f2203+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
 github.com/docker/docker-credential-helpers v0.6.3/go.mod h1:WRaJzqw3CTB9bk10avuGsjVBZsD05qeibJ1/TYlvc0Y=
-github.com/docker/engine v1.4.2-0.20200204220554-5f6d6f3f2203/go.mod h1:3CPr2caMgTHxxIAZgEMd3uLYPDlRvPqCpyeRf6ncPcY=
 github.com/docker/go-connections v0.4.0/go.mod h1:Gbd7IOopHjR8Iph03tsViu4nIes5XhDvyHbTtUxmeec=
 github.com/docker/go-metrics v0.0.0-20181218153428-b84716841b82/go.mod h1:/u0gXw0Gay3ceNrsHubL3BtdOL2fHf93USgMTe0W5dI=
 github.com/docker/go-units v0.3.3/go.mod h1:fgPhTUdO+D/Jk86RDLlptpiXQzgHJF7gydDDbaIK4Dk=

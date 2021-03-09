@@ -1,6 +1,6 @@
 module github.com/ldez/traefik-certs-dumper/v2
 
-go 1.14
+go 1.16
 
 require (
 	github.com/abronan/valkeyrie v0.1.0

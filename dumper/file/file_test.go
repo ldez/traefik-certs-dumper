@@ -1,8 +1,6 @@
 package file
 
 import (
-	"io/ioutil"
-	"os"
 	"testing"
 
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
@@ -35,9 +33,7 @@ func TestDump(t *testing.T) {
 		t.Run(test.desc, func(t *testing.T) {
 			t.Parallel()
 
-			dir, err := ioutil.TempDir("", "traefik-cert-dumper")
-			require.NoError(t, err)
-			defer func() { _ = os.RemoveAll(dir) }()
+			dir := t.TempDir()
 
 			cfg := &dumper.BaseConfig{
 				DumpPath: dir,
@@ -53,7 +49,7 @@ func TestDump(t *testing.T) {
 				Version: test.version,
 			}
 
-			err = Dump(test.acmeFile, cfg)
+			err := Dump(test.acmeFile, cfg)
 			require.NoError(t, err)
 		})
 	}

@@ -4,7 +4,6 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"time"
@@ -87,7 +86,7 @@ func createTLSConfig(cmd *cobra.Command) (*tls.Config, error) {
 	privateKey := cmd.Flag("tls.key").Value.String()
 	certContent := cmd.Flag("tls.cert").Value.String()
 
-	if !insecureSkipVerify && (len(certContent) == 0 || len(privateKey) == 0) {
+	if !insecureSkipVerify && (certContent == "" || privateKey == "") {
 		return nil, fmt.Errorf("TLS Certificate or Key file must be set when TLS configuration is created")
 	}
 
@@ -122,11 +121,14 @@ func getCertPool(ca string) (*x509.CertPool, error) {
 }
 
 func getCAContent(ca string) ([]byte, error) {
-	if _, errCA := os.Stat(ca); errCA != nil {
-		return []byte(ca), nil
+	if _, err := os.Stat(ca); err != nil {
+		if os.IsNotExist(err) {
+			return []byte(ca), nil
+		}
+		return nil, err
 	}
 
-	caContent, err := ioutil.ReadFile(filepath.Clean(ca))
+	caContent, err := os.ReadFile(filepath.Clean(ca))
 	if err != nil {
 		return nil, err
 	}

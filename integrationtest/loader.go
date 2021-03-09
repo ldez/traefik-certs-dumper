@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	"compress/gzip"
-	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 	"time"
 
@@ -92,7 +92,7 @@ func putData(backend store.Backend, addrs []string, content []byte) error {
 }
 
 func readFile(source string) ([]byte, error) {
-	content, err := ioutil.ReadFile(filepath.Clean(source))
+	content, err := os.ReadFile(filepath.Clean(source))
 	if err != nil {
 		return nil, err
 	}

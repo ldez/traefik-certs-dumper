@@ -1,0 +1,82 @@
+run:
+  timeout: 5m
+  skip-files: []
+
+linters-settings:
+  govet:
+    check-shadowing: true
+  gocyclo:
+    min-complexity: 12
+  maligned:
+    suggest-new: true
+  goconst:
+    min-len: 3
+    min-occurrences: 3
+  misspell:
+    locale: US
+  gofumpt:
+    extra-rules: true
+  depguard:
+    list-type: blacklist
+    include-go-root: false
+    packages:
+      - github.com/pkg/errors
+  godox:
+    keywords:
+      - FIXME
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+    disabled-checks:
+      - sloppyReassign
+      - rangeValCopy
+      - octalLiteral
+      - paramTypeCombine # already handle by gofumpt.extra-rules
+    settings:
+      hugeParam:
+        sizeThreshold: 100
+  forbidigo:
+    forbid:
+      - '^print(ln)?$'
+      - '^spew\.Print(f|ln)?$'
+      - '^spew\.Dump$'
+
+linters:
+  enable-all: true
+  disable:
+    - scopelint # deprecated
+    - interfacer # deprecated
+    - maligned # deprecated
+    - sqlclosecheck # not relevant (SQL)
+    - rowserrcheck # not relevant (SQL)
+    - cyclop # duplicate of gocyclo
+    - lll
+    - gas
+    - dupl
+    - prealloc
+    - scopelint
+    - wsl
+    - nlreturn
+    - gomnd
+    - testpackage
+    - paralleltest
+    - tparallel
+    - goerr113
+    - wrapcheck
+    - exhaustive
+    - exhaustivestruct
+    - ifshort
+
+issues:
+  exclude-use-default: false
+  max-per-linter: 0
+  max-same-issues: 0
+  exclude:
+    - 'ST1000: at least one file in a package should have a package comment'
+  exclude-rules:
+    - path: cmd/
+      linters:
+        - gochecknoglobals
+        - gochecknoinits

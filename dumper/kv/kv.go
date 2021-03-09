@@ -5,7 +5,7 @@ import (
 	"compress/gzip"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -83,7 +83,7 @@ func getStoredDataFromGzip(pair *store.KVPair) (*v1.StoredData, error) {
 		return nil, fmt.Errorf("fail to create GZip reader: %w", err)
 	}
 
-	acmeData, err := ioutil.ReadAll(reader)
+	acmeData, err := io.ReadAll(reader)
 	if err != nil {
 		return nil, fmt.Errorf("unable to read the pair content: %w", err)
 	}

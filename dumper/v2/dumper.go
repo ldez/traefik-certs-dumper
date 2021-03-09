@@ -3,7 +3,6 @@ package v2
 import (
 	"encoding/pem"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -55,7 +54,7 @@ func Dump(data map[string]*acme.StoredData, baseConfig *dumper.BaseConfig) error
 
 		privateKeyPem := extractPEMPrivateKey(store.Account)
 
-		err := ioutil.WriteFile(filepath.Join(baseConfig.DumpPath, keysSubDir, "letsencrypt"+baseConfig.KeyInfo.Ext), privateKeyPem, 0600)
+		err := os.WriteFile(filepath.Join(baseConfig.DumpPath, keysSubDir, "letsencrypt"+baseConfig.KeyInfo.Ext), privateKeyPem, 0600)
 		if err != nil {
 			return fmt.Errorf("failed to write private key: %w", err)
 		}
@@ -73,7 +72,7 @@ func writeCert(dumpPath string, cert acme.Certificate, info dumper.FileInfo, dom
 		}
 	}
 
-	return ioutil.WriteFile(certPath, cert.Certificate, 0666)
+	return os.WriteFile(certPath, cert.Certificate, 0666)
 }
 
 func writeKey(dumpPath string, cert acme.Certificate, info dumper.FileInfo, domainSubDir bool) error {
@@ -85,7 +84,7 @@ func writeKey(dumpPath string, cert acme.Certificate, info dumper.FileInfo, doma
 		}
 	}
 
-	return ioutil.WriteFile(keyPath, cert.Key, 0600)
+	return os.WriteFile(keyPath, cert.Key, 0600)
 }
 
 func extractPEMPrivateKey(account *acme.Account) []byte {
@@ -118,7 +117,7 @@ func cleanDir(dumpPath string) error {
 		return errExists
 	}
 
-	dir, err := ioutil.ReadDir(dumpPath)
+	dir, err := os.ReadDir(dumpPath)
 	if err != nil {
 		return err
 	}

@@ -2,14 +2,13 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strconv"
 
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
-	homedir "github.com/mitchellh/go-homedir"
+	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -117,7 +116,7 @@ func tree(root, indent string) error {
 		return nil
 	}
 
-	fis, err := ioutil.ReadDir(root)
+	fis, err := os.ReadDir(root)
 	if err != nil {
 		return fmt.Errorf("could not read dir %s: %w", root, err)
 	}

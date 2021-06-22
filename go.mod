@@ -11,8 +11,6 @@ require (
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.7.0
 	github.com/traefik/traefik/v2 v2.4.9
-	github.com/transip/gotransip/v6 v6.6.0 // indirect
-	github.com/vultr/govultr/v2 v2.4.0 // indirect
 )
 
 // Containous forks

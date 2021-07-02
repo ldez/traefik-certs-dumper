@@ -7,8 +7,8 @@ require (
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/go-acme/lego/v4 v4.4.0
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/spf13/cobra v1.1.3
-	github.com/spf13/viper v1.7.1
+	github.com/spf13/cobra v1.2.0
+	github.com/spf13/viper v1.8.1
 	github.com/stretchr/testify v1.7.0
 	github.com/traefik/traefik/v2 v2.4.9
 )

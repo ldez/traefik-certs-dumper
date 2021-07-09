@@ -42,10 +42,18 @@ linters-settings:
       - '^print(ln)?$'
       - '^spew\.Print(f|ln)?$'
       - '^spew\.Dump$'
+  gomoddirectives:
+    replace-allow-list:
+      - github.com/abbot/go-http-auth
+      - github.com/go-check/check
+      - github.com/gorilla/mux
+      - github.com/mailgun/minheap
+      - github.com/mailgun/multibuf
 
 linters:
   enable-all: true
   disable:
+    - golint # deprecated
     - scopelint # deprecated
     - interfacer # deprecated
     - maligned # deprecated

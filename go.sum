@@ -921,8 +921,8 @@ github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1
 github.com/traefik/gziphandler v1.1.2-0.20210212101304-175e0fad6888/go.mod h1:sLqwoN03tkluITKL+lPEZbfsJQU2suYoKbrR/HeV9aM=
 github.com/traefik/paerser v0.1.4 h1:/IXjV04Gf6di51H8Jl7jyS3OylsLjIasrwXIIwj1aT8=
 github.com/traefik/paerser v0.1.4/go.mod h1:FIdQ4Y92ulQUGSeZgxchtBKEcLw1o551PMNg9PoIq/4=
-github.com/traefik/traefik/v2 v2.4.10 h1:Ld8IldXJAt+/1h8GvSh4idCIBzw6w+KHcgLYGAkw9LE=
-github.com/traefik/traefik/v2 v2.4.10/go.mod h1:exWRc8aTkJoaQnudl97NzS9sp9ecBpf/a4y7OD7gHCQ=
+github.com/traefik/traefik/v2 v2.4.11 h1:oyCszTnjH/ZcjxN4w8Xjw0TaM7baQaST0DcGYMAVFZ8=
+github.com/traefik/traefik/v2 v2.4.11/go.mod h1:exWRc8aTkJoaQnudl97NzS9sp9ecBpf/a4y7OD7gHCQ=
 github.com/traefik/yaegi v0.9.17/go.mod h1:FAYnRlZyuVlEkvnkHq3bvJ1lW5be6XuwgLdkYgYG6Lk=
 github.com/transip/gotransip/v6 v6.2.0 h1:0Z+qVsyeiQdWfcAUeJyF0IEKAPvhJwwpwPi2WGtBIiE=
 github.com/transip/gotransip/v6 v6.2.0/go.mod h1:pQZ36hWWRahCUXkFWlx9Hs711gLd8J4qdgLdRzmtY+g=

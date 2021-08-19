@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/abronan/valkeyrie v0.2.0
-	github.com/fsnotify/fsnotify v1.4.9
+	github.com/fsnotify/fsnotify v1.5.0
 	github.com/go-acme/lego/v4 v4.4.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.2.1

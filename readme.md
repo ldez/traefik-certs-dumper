@@ -131,6 +131,40 @@ dump
    └──letsencrypt.key
 ```
 
+## Hook
+
+Hook can be a one liner passed as a string, or a file for more complex post-hook scenarios.
+For the former, create a file (ex: `hook.sh`) and mount it, then pass `sh hooksh` as a parameter to `--post-hook`.
+
+Here is a docker-compose example:
+
+```yml
+version: '3.7'
+
+services:
+# ...
+
+  traefik-certs-dumper:
+    image: ldez/traefik-certs-dumper:v2.7.4
+    container_name: traefik-certs-dumper
+    entrypoint: sh -c '
+      apk add jq
+      ; while ! [ -e /data/acme.json ]
+      || ! [ `jq ".[] | .Certificates | length" /data/acme.json` != 0 ]; do
+      sleep 1
+      ; done
+      && traefik-certs-dumper file --version v2 --watch
+        --source /data/acme.json --dest /data/certs
+        --post-hook "sh /hook.sh"'
+    labels:
+      traefik.enable: false
+    volumes:
+      - ./letsencrypt:/data
+      - ./hook.sh:/hook.sh
+
+# ...
+```
+
 ### KV store
 
 #### Consul

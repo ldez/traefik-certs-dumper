@@ -156,3 +156,29 @@ $ traefik-certs-dumper kv boltdb --endpoints /the/path/to/mydb.db
 ```console
 $ traefik-certs-dumper kv zookeeper --endpoints localhost:2181
 ```
+
+## Hook example
+
+Hook can be a one liner passed as a string, or a file for more complex post-hook scenarios. For the former, create a file hook.sh and mount it, then pass "sh hooksh" as a parameter to --post-hook.
+
+Here is a docker-compose example:
+
+```console
+  traefik-certs-dumper:
+    image: ldez/traefik-certs-dumper:v2.7.0
+    container_name: traefik-certs-dumper
+    entrypoint: sh -c '
+      apk add jq
+      ; while ! [ -e /data/acme.json ]
+      || ! [ `jq ".[] | .Certificates | length" /data/acme.json` != 0 ]; do
+      sleep 1
+      ; done
+      && ls /data/certs/chat.talbot.audio
+      && traefik-certs-dumper file --version v2 --domain-subdir --crt-ext=.pem --key-ext=.pem --watch --source /data/acme.json --dest /data/certs/ --post-hook  "sh /traefik-certs-dumper/hook.sh"'
+    labels:
+      - "traefik.enable=false"
+    volumes:
+      - "./letsencrypt-data:/data"
+      - "./traefik-certs-dumper-data:/traefik-certs-dumper"
+      - "./out-data:/out-data"
+```

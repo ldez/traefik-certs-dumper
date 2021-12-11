@@ -26,12 +26,12 @@ func Dump(data map[string]*acme.StoredData, baseConfig *dumper.BaseConfig) error
 	}
 
 	if !baseConfig.DomainSubDir {
-		if err := os.MkdirAll(filepath.Join(baseConfig.DumpPath, certsSubDir), 0755); err != nil {
+		if err := os.MkdirAll(filepath.Join(baseConfig.DumpPath, certsSubDir), 0o755); err != nil {
 			return fmt.Errorf("certs folder creation failure: %w", err)
 		}
 	}
 
-	if err := os.MkdirAll(filepath.Join(baseConfig.DumpPath, keysSubDir), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Join(baseConfig.DumpPath, keysSubDir), 0o755); err != nil {
 		return fmt.Errorf("keys folder creation failure: %w", err)
 	}
 
@@ -54,7 +54,7 @@ func Dump(data map[string]*acme.StoredData, baseConfig *dumper.BaseConfig) error
 
 		privateKeyPem := extractPEMPrivateKey(store.Account)
 
-		err := os.WriteFile(filepath.Join(baseConfig.DumpPath, keysSubDir, "letsencrypt"+baseConfig.KeyInfo.Ext), privateKeyPem, 0600)
+		err := os.WriteFile(filepath.Join(baseConfig.DumpPath, keysSubDir, "letsencrypt"+baseConfig.KeyInfo.Ext), privateKeyPem, 0o600)
 		if err != nil {
 			return fmt.Errorf("failed to write private key: %w", err)
 		}
@@ -67,24 +67,24 @@ func writeCert(dumpPath string, cert acme.Certificate, info dumper.FileInfo, dom
 	certPath := filepath.Join(dumpPath, certsSubDir, safeName(cert.Domain.Main+info.Ext))
 	if domainSubDir {
 		certPath = filepath.Join(dumpPath, safeName(cert.Domain.Main), info.Name+info.Ext)
-		if err := os.MkdirAll(filepath.Join(dumpPath, safeName(cert.Domain.Main)), 0755); err != nil {
+		if err := os.MkdirAll(filepath.Join(dumpPath, safeName(cert.Domain.Main)), 0o755); err != nil {
 			return err
 		}
 	}
 
-	return os.WriteFile(certPath, cert.Certificate, 0666)
+	return os.WriteFile(certPath, cert.Certificate, 0o666)
 }
 
 func writeKey(dumpPath string, cert acme.Certificate, info dumper.FileInfo, domainSubDir bool) error {
 	keyPath := filepath.Join(dumpPath, keysSubDir, safeName(cert.Domain.Main+info.Ext))
 	if domainSubDir {
 		keyPath = filepath.Join(dumpPath, safeName(cert.Domain.Main), info.Name+info.Ext)
-		if err := os.MkdirAll(filepath.Join(dumpPath, safeName(cert.Domain.Main)), 0755); err != nil {
+		if err := os.MkdirAll(filepath.Join(dumpPath, safeName(cert.Domain.Main)), 0o755); err != nil {
 			return err
 		}
 	}
 
-	return os.WriteFile(keyPath, cert.Key, 0600)
+	return os.WriteFile(keyPath, cert.Key, 0o600)
 }
 
 func extractPEMPrivateKey(account *acme.Account) []byte {

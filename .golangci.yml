@@ -49,6 +49,7 @@ linters-settings:
       - github.com/gorilla/mux
       - github.com/mailgun/minheap
       - github.com/mailgun/multibuf
+      - github.com/jaguilar/vt100
 
 linters:
   enable-all: true
@@ -76,6 +77,8 @@ linters:
     - exhaustive
     - exhaustivestruct
     - ifshort
+    - varnamelen
+    - nilnil
 
 issues:
   exclude-use-default: false

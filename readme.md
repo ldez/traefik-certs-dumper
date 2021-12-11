@@ -27,7 +27,7 @@ If you appreciate this project:
 ### Download / CI Integration
 
 ```bash
-curl -sfL https://raw.githubusercontent.com/ldez/traefik-certs-dumper/master/godownloader.sh | bash -s -- -b $(go env GOPATH)/bin v2.7.4
+curl -sfL https://raw.githubusercontent.com/ldez/traefik-certs-dumper/master/godownloader.sh | bash -s -- -b $(go env GOPATH)/bin v2.8.0
 ```
 
 <!--

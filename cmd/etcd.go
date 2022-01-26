@@ -3,9 +3,9 @@ package cmd
 import (
 	"time"
 
-	"github.com/abronan/valkeyrie/store"
-	etcdv2 "github.com/abronan/valkeyrie/store/etcd/v2"
-	etcdv3 "github.com/abronan/valkeyrie/store/etcd/v3"
+	"github.com/kvtools/valkeyrie/store"
+	etcdv2 "github.com/kvtools/valkeyrie/store/etcd/v2"
+	etcdv3 "github.com/kvtools/valkeyrie/store/etcd/v3"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper/kv"
 	"github.com/spf13/cobra"

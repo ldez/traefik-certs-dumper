@@ -8,12 +8,12 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/abronan/valkeyrie"
-	"github.com/abronan/valkeyrie/store"
-	"github.com/abronan/valkeyrie/store/boltdb"
-	"github.com/abronan/valkeyrie/store/consul"
-	etcdv3 "github.com/abronan/valkeyrie/store/etcd/v3"
-	"github.com/abronan/valkeyrie/store/zookeeper"
+	"github.com/kvtools/valkeyrie"
+	"github.com/kvtools/valkeyrie/store"
+	"github.com/kvtools/valkeyrie/store/boltdb"
+	"github.com/kvtools/valkeyrie/store/consul"
+	etcdv3 "github.com/kvtools/valkeyrie/store/etcd/v3"
+	"github.com/kvtools/valkeyrie/store/zookeeper"
 )
 
 const storeKey = "traefik/acme/account/object"

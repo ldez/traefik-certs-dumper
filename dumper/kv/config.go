@@ -1,6 +1,6 @@
 package kv
 
-import "github.com/abronan/valkeyrie/store"
+import "github.com/kvtools/valkeyrie/store"
 
 // Config KV configuration.
 type Config struct {

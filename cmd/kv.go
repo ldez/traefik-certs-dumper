@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/abronan/valkeyrie/store"
+	"github.com/kvtools/valkeyrie/store"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper/kv"
 	"github.com/spf13/cobra"
 )

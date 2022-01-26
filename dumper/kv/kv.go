@@ -10,8 +10,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/abronan/valkeyrie"
-	"github.com/abronan/valkeyrie/store"
+	"github.com/kvtools/valkeyrie"
+	"github.com/kvtools/valkeyrie/store"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	v1 "github.com/ldez/traefik-certs-dumper/v2/dumper/v1"
 	"github.com/ldez/traefik-certs-dumper/v2/hook"

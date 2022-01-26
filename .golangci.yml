@@ -4,11 +4,11 @@ run:
 
 linters-settings:
   govet:
-    check-shadowing: true
+    enable-all: true
+    disable:
+      - fieldalignment
   gocyclo:
     min-complexity: 12
-  maligned:
-    suggest-new: true
   goconst:
     min-len: 3
     min-occurrences: 3
@@ -17,10 +17,13 @@ linters-settings:
   gofumpt:
     extra-rules: true
   depguard:
-    list-type: blacklist
+    list-type: denylist
     include-go-root: false
     packages:
       - github.com/pkg/errors
+  funlen:
+    lines: -1
+    statements: 40
   godox:
     keywords:
       - FIXME
@@ -55,9 +58,9 @@ linters:
   enable-all: true
   disable:
     - golint # deprecated
-    - scopelint # deprecated
     - interfacer # deprecated
     - maligned # deprecated
+    - scopelint # deprecated
     - sqlclosecheck # not relevant (SQL)
     - rowserrcheck # not relevant (SQL)
     - cyclop # duplicate of gocyclo

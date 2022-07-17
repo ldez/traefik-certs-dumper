@@ -1,0 +1,40 @@
+[Unit]
+Description=traefik certs dumper
+; If you do not start traefik via systemd, choose network.target or docker.target
+After=traefik.target
+Wants=network-online.target systemd-networkd-wait-online.service
+
+[Service]
+Restart=on-abnormal
+User=root
+ExecStart=/usr/local/bin/traefik-certs-dumper file --version v2 --source /etc/traefik/acme/acme.json --dest /etc/ssl --watch
+RestartSec=30
+TimeoutSec=30
+;WatchdogSec=30
+
+; Limit the number of file descriptors; see `man systemd.exec` for more limit settings.
+; LimitNOFILE=1048576
+; Limit number of processes in this unit
+LimitNPROC=1
+
+; Use private /tmp and /var/tmp, which are discarded after traefik stops.
+PrivateTmp=true
+; Use a minimal /dev (May bring additional security if switched to 'true', but it may not work on Raspberry Pis or other devices)
+PrivateDevices=true
+; Hide /home, /root, and /run/user. Nobody will steal your SSH-keys.
+ProtectHome=true
+; Make cgroups /sys/fs/cgroup read-only
+ProtectControlGroups=true
+; Make kernel settings (procfs and sysfs) read-only
+ProtectKernelTunables=true
+; Make /usr, /boot, /etc and possibly some more folders read-only.
+ProtectSystem=full
+; This merely retains r/w access rights, it does not add any new. Must still be writable on the host!
+ReadWriteDirectories=/etc/ssl
+ReadOnlyPaths=/etc/traefik/acme/acme.json
+
+; The following additional security directives only work with systemd v229 or later.
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

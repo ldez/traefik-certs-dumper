@@ -139,13 +139,13 @@ For the former, create a file (ex: `hook.sh`) and mount it, then pass `sh hooksh
 Here is a docker-compose example:
 
 ```yml
-version: '3.7'
+version: '3.9'
 
 services:
 # ...
 
   traefik-certs-dumper:
-    image: ldez/traefik-certs-dumper:v2.7.4
+    image: ldez/traefik-certs-dumper:v2.8.1
     container_name: traefik-certs-dumper
     entrypoint: sh -c '
       apk add jq

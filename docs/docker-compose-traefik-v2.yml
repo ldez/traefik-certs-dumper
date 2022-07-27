@@ -1,9 +1,9 @@
-version: '3.7'
+version: '3.9'
 
 services:
 
   traefik:
-    image: traefik:v2.3
+    image: traefik:v2.8.1
     command:
       - --log.level=INFO
       - --entrypoints.web.address=:80
@@ -25,7 +25,7 @@ services:
       - ./letsencrypt/:/letsencrypt
 
   traefik-certs-dumper:
-    image: ldez/traefik-certs-dumper:v2.7.4
+    image: ldez/traefik-certs-dumper:v2.8.1
     entrypoint: sh -c '
       apk add jq
       ; while ! [ -e /data/acme.json ]

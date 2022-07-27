@@ -61,6 +61,7 @@ linters:
     - interfacer # deprecated
     - maligned # deprecated
     - scopelint # deprecated
+    - exhaustivestruct # deprecated
     - sqlclosecheck # not relevant (SQL)
     - rowserrcheck # not relevant (SQL)
     - cyclop # duplicate of gocyclo
@@ -78,7 +79,7 @@ linters:
     - goerr113
     - wrapcheck
     - exhaustive
-    - exhaustivestruct
+    - exhaustruct
     - ifshort
     - varnamelen
     - nilnil
@@ -94,3 +95,6 @@ issues:
       linters:
         - gochecknoglobals
         - gochecknoinits
+    - path: "(.+)_test.go"
+      linters:
+        - nosnakecase

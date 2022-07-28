@@ -38,7 +38,7 @@ services:
       - ./letsencrypt:/data
 
   whoami:
-    image: traefik/whoami:v1.6.0
+    image: traefik/whoami:v1.8.1
     labels:
       traefik.enable: true
       traefik.frontend.rule: Host:example.com

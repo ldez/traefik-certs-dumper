@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"context"
+
 	"github.com/kvtools/valkeyrie/store"
 	"github.com/kvtools/valkeyrie/store/zookeeper"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
@@ -29,5 +31,5 @@ func zookeeperRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
 	config.Backend = store.ZK
 	zookeeper.Register()
 
-	return kv.Dump(config, baseConfig)
+	return kv.Dump(context.Background(), config, baseConfig)
 }

@@ -1,12 +1,13 @@
 package cmd
 
 import (
+	"context"
+
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper/file"
 	"github.com/spf13/cobra"
 )
 
-// fileCmd represents the file command.
 var fileCmd = &cobra.Command{
 	Use:   "file",
 	Short: `Dump the content of the "acme.json" file.`,
@@ -16,7 +17,7 @@ var fileCmd = &cobra.Command{
 
 		baseConfig.Version = cmd.Flag("version").Value.String()
 
-		return file.Dump(acmeFile, baseConfig)
+		return file.Dump(context.Background(), acmeFile, baseConfig)
 	}),
 }
 

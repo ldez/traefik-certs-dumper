@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"log"
 	"os"
 	"path/filepath"
@@ -22,38 +23,38 @@ func main() {
 	log.SetFlags(log.Lshortfile)
 
 	source := "./acme.json"
-	err := loadData(source)
+	err := loadData(context.Background(), source)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func loadData(source string) error {
+func loadData(ctx context.Context, source string) error {
 	content, err := readFile(source)
 	if err != nil {
 		return err
 	}
 
 	// Consul
-	err = putData(store.CONSUL, []string{"localhost:8500"}, content)
+	err = putData(ctx, store.CONSUL, []string{"localhost:8500"}, content)
 	if err != nil {
 		return err
 	}
 
 	// ETCD v3
-	err = putData(store.ETCDV3, []string{"localhost:2379"}, content)
+	err = putData(ctx, store.ETCDV3, []string{"localhost:2379"}, content)
 	if err != nil {
 		return err
 	}
 
 	// Zookeeper
-	err = putData(store.ZK, []string{"localhost:2181"}, content)
+	err = putData(ctx, store.ZK, []string{"localhost:2181"}, content)
 	if err != nil {
 		return err
 	}
 
 	// BoltDB
-	err = putData(store.BOLTDB, []string{"/tmp/test-traefik-certs-dumper.db"}, content)
+	err = putData(ctx, store.BOLTDB, []string{"/tmp/test-traefik-certs-dumper.db"}, content)
 	if err != nil {
 		return err
 	}
@@ -61,7 +62,7 @@ func loadData(source string) error {
 	return nil
 }
 
-func putData(backend store.Backend, addrs []string, content []byte) error {
+func putData(ctx context.Context, backend store.Backend, addrs []string, content []byte) error {
 	storeConfig := &store.Config{
 		ConnectionTimeout: 3 * time.Second,
 		Bucket:            "traefik",
@@ -78,12 +79,12 @@ func putData(backend store.Backend, addrs []string, content []byte) error {
 		boltdb.Register()
 	}
 
-	kvStore, err := valkeyrie.NewStore(backend, addrs, storeConfig)
+	kvStore, err := valkeyrie.NewStore(ctx, backend, addrs, storeConfig)
 	if err != nil {
 		return err
 	}
 
-	if err := kvStore.Put(storeKey, content, nil); err != nil {
+	if err := kvStore.Put(ctx, storeKey, content, nil); err != nil {
 		return err
 	}
 

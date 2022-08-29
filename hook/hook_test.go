@@ -1,6 +1,9 @@
 package hook
 
-import "testing"
+import (
+	"context"
+	"testing"
+)
 
 func Test_execute(t *testing.T) {
 	testCases := []struct {
@@ -19,7 +22,7 @@ func Test_execute(t *testing.T) {
 
 	for _, test := range testCases {
 		t.Run(test.desc, func(t *testing.T) {
-			err := execute(test.command)
+			err := execute(context.Background(), test.command)
 			if err != nil {
 				t.Fatal(err)
 			}

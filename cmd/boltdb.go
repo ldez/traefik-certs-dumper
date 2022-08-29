@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"context"
+
 	"github.com/kvtools/valkeyrie/store"
 	"github.com/kvtools/valkeyrie/store/boltdb"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
@@ -35,5 +37,5 @@ func boltdbRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
 	config.Backend = store.BOLTDB
 	boltdb.Register()
 
-	return kv.Dump(config, baseConfig)
+	return kv.Dump(context.Background(), config, baseConfig)
 }

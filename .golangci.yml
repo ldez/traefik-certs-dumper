@@ -53,23 +53,32 @@ linters-settings:
       - github.com/mailgun/minheap
       - github.com/mailgun/multibuf
       - github.com/jaguilar/vt100
+  gosec:
+    excludes:
+      - G204 # Subprocess launched with a potential tainted input or cmd arguments
+      - G301 # Expect directory permissions to be 0750 or less
+      - G306 # Expect WriteFile permissions to be 0600 or less
 
 linters:
   enable-all: true
   disable:
-    - golint # deprecated
+    - scopelint # deprecated
     - interfacer # deprecated
     - maligned # deprecated
-    - scopelint # deprecated
+    - golint # deprecated
     - exhaustivestruct # deprecated
+    - scopelint # deprecated
+    - varcheck # deprecated
+    - structcheck # deprecated
+    - nosnakecase # deprecated
+    - deadcode # deprecated
+    - ifshort # deprecated
     - sqlclosecheck # not relevant (SQL)
     - rowserrcheck # not relevant (SQL)
     - cyclop # duplicate of gocyclo
     - lll
-    - gas
     - dupl
     - prealloc
-    - scopelint
     - wsl
     - nlreturn
     - gomnd
@@ -80,7 +89,6 @@ linters:
     - wrapcheck
     - exhaustive
     - exhaustruct
-    - ifshort
     - varnamelen
     - nilnil
 
@@ -90,11 +98,9 @@ issues:
   max-same-issues: 0
   exclude:
     - 'ST1000: at least one file in a package should have a package comment'
+    - 'package-comments: should have a package comment'
   exclude-rules:
     - path: cmd/
       linters:
         - gochecknoglobals
         - gochecknoinits
-    - path: "(.+)_test.go"
-      linters:
-        - nosnakecase

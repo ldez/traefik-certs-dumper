@@ -1,16 +1,16 @@
 module github.com/ldez/traefik-certs-dumper/v2
 
-go 1.17
+go 1.19
 
 require (
 	github.com/fsnotify/fsnotify v1.5.4
 	github.com/go-acme/lego/v4 v4.8.0
-	github.com/kvtools/valkeyrie v0.4.1
+	github.com/kvtools/valkeyrie v0.4.2-0.20220810161836-a9a70ee3f199
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.12.0
 	github.com/stretchr/testify v1.8.0
-	github.com/traefik/traefik/v2 v2.8.1
+	github.com/traefik/traefik/v2 v2.8.3
 )
 
 require (
@@ -30,7 +30,7 @@ require (
 	github.com/akamai/AkamaiOPEN-edgegrid-golang v1.1.1 // indirect
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.1183 // indirect
 	github.com/armon/go-metrics v0.3.10 // indirect
-	github.com/aws/aws-sdk-go v1.39.0 // indirect
+	github.com/aws/aws-sdk-go v1.44.47 // indirect
 	github.com/boombuler/barcode v1.0.1-0.20190219062509-6c824513bacc // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/cloudflare/cloudflare-go v0.20.0 // indirect
@@ -128,13 +128,13 @@ require (
 	github.com/subosito/gotenv v1.3.0 // indirect
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.287 // indirect
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.0.287 // indirect
-	github.com/traefik/paerser v0.1.5 // indirect
+	github.com/traefik/paerser v0.1.8 // indirect
 	github.com/transip/gotransip/v6 v6.6.1 // indirect
 	github.com/unrolled/render v1.0.2 // indirect
 	github.com/vinyldns/go-vinyldns v0.9.16 // indirect
 	github.com/vulcand/predicate v1.2.0 // indirect
 	github.com/vultr/govultr/v2 v2.16.0 // indirect
-	go.etcd.io/bbolt v1.3.5 // indirect
+	go.etcd.io/bbolt v1.3.6 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.4 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.4 // indirect
 	go.etcd.io/etcd/client/v2 v2.305.4 // indirect
@@ -146,9 +146,9 @@ require (
 	go.uber.org/zap v1.18.1 // indirect
 	golang.org/x/crypto v0.0.0-20220427172511-eb4f295cb31f // indirect
 	golang.org/x/mod v0.5.0 // indirect
-	golang.org/x/net v0.0.0-20220520000938-2e3eb7b945c2 // indirect
+	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e // indirect
 	golang.org/x/oauth2 v0.0.0-20220411215720-9780585627b5 // indirect
-	golang.org/x/sys v0.0.0-20220615213510-4f61da869c0c // indirect
+	golang.org/x/sys v0.0.0-20220704084225-05e143d24a9e // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20211116232009-f0f3c7e86c11 // indirect

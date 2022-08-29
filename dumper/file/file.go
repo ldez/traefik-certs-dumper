@@ -2,7 +2,8 @@ package file
 
 import (
 	"bytes"
-	"crypto/md5"
+	"context"
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -21,16 +22,16 @@ import (
 )
 
 // Dump Dumps "acme.json" file to certificates.
-func Dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
+func Dump(ctx context.Context, acmeFile string, baseConfig *dumper.BaseConfig) error {
 	err := dump(acmeFile, baseConfig)
 	if err != nil {
 		return err
 	}
 
 	if baseConfig.Watch {
-		hook.Exec(baseConfig.Hook)
+		hook.Exec(ctx, baseConfig.Hook)
 
-		return watch(acmeFile, baseConfig)
+		return watch(ctx, acmeFile, baseConfig)
 	}
 	return nil
 }
@@ -90,7 +91,7 @@ func readJSONFile(acmeFile string, data interface{}) error {
 	return nil
 }
 
-func watch(acmeFile string, baseConfig *dumper.BaseConfig) error {
+func watch(ctx context.Context, acmeFile string, baseConfig *dumper.BaseConfig) error {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		return fmt.Errorf("failed to create new watcher: %w", err)
@@ -113,7 +114,7 @@ func watch(acmeFile string, baseConfig *dumper.BaseConfig) error {
 					log.Println("event:", event)
 				}
 
-				hash, errW := manageEvent(watcher, event, acmeFile, previousHash, baseConfig)
+				hash, errW := manageEvent(ctx, watcher, event, acmeFile, previousHash, baseConfig)
 				if errW != nil {
 					log.Println("error:", errW)
 					done <- true
@@ -144,7 +145,7 @@ func watch(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	return nil
 }
 
-func manageEvent(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile string, previousHash []byte, baseConfig *dumper.BaseConfig) ([]byte, error) {
+func manageEvent(ctx context.Context, watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile string, previousHash []byte, baseConfig *dumper.BaseConfig) ([]byte, error) {
 	err := manageRename(watcher, event, acmeFile)
 	if err != nil {
 		return nil, fmt.Errorf("watcher renewal failed: %w", err)
@@ -168,7 +169,7 @@ func manageEvent(watcher *fsnotify.Watcher, event fsnotify.Event, acmeFile strin
 			log.Println("Dumped new certificate data.")
 		}
 
-		hook.Exec(baseConfig.Hook)
+		hook.Exec(ctx, baseConfig.Hook)
 	}
 
 	return hash, nil
@@ -193,7 +194,7 @@ func calculateHash(acmeFile string) ([]byte, error) {
 	}
 	defer func() { _ = file.Close() }()
 
-	h := md5.New()
+	h := sha256.New()
 	_, err = io.Copy(h, file)
 	if err != nil {
 		return nil, err

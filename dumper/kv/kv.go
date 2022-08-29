@@ -3,6 +3,7 @@ package kv
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -21,8 +22,8 @@ import (
 const DefaultStoreKeySuffix = "/acme/account/object"
 
 // Dump Dumps KV content to certificates.
-func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
-	kvStore, err := valkeyrie.NewStore(config.Backend, config.Endpoints, config.Options)
+func Dump(ctx context.Context, config *Config, baseConfig *dumper.BaseConfig) error {
+	kvStore, err := valkeyrie.NewStore(ctx, config.Backend, config.Endpoints, config.Options)
 	if err != nil {
 		return fmt.Errorf("unable to create client of the store: %w", err)
 	}
@@ -30,10 +31,10 @@ func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
 	storeKey := config.Prefix + config.Suffix
 
 	if baseConfig.Watch {
-		return watch(kvStore, storeKey, baseConfig)
+		return watch(ctx, kvStore, storeKey, baseConfig)
 	}
 
-	pair, err := kvStore.Get(storeKey, nil)
+	pair, err := kvStore.Get(ctx, storeKey, nil)
 	if err != nil {
 		return fmt.Errorf("unable to retrieve %s value: %w", storeKey, err)
 	}
@@ -41,10 +42,8 @@ func Dump(config *Config, baseConfig *dumper.BaseConfig) error {
 	return dumpPair(pair, baseConfig)
 }
 
-func watch(kvStore store.Store, storeKey string, baseConfig *dumper.BaseConfig) error {
-	stopCh := make(<-chan struct{})
-
-	pairs, err := kvStore.Watch(storeKey, stopCh, nil)
+func watch(ctx context.Context, kvStore store.Store, storeKey string, baseConfig *dumper.BaseConfig) error {
+	pairs, err := kvStore.Watch(ctx, storeKey, nil)
 	if err != nil {
 		return err
 	}
@@ -64,7 +63,7 @@ func watch(kvStore store.Store, storeKey string, baseConfig *dumper.BaseConfig) 
 			log.Println("Dumped new certificate data.")
 		}
 
-		hook.Exec(baseConfig.Hook)
+		hook.Exec(ctx, baseConfig.Hook)
 	}
 }
 

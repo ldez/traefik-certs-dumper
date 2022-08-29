@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"time"
 
 	"github.com/kvtools/valkeyrie/store"
@@ -52,5 +53,5 @@ func etcdRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
 		etcdv2.Register()
 	}
 
-	return kv.Dump(config, baseConfig)
+	return kv.Dump(context.Background(), config, baseConfig)
 }

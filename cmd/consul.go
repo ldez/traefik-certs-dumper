@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"context"
+
 	"github.com/kvtools/valkeyrie/store"
 	"github.com/kvtools/valkeyrie/store/consul"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
@@ -33,5 +35,5 @@ func consulRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
 	config.Backend = store.CONSUL
 	consul.Register()
 
-	return kv.Dump(config, baseConfig)
+	return kv.Dump(context.Background(), config, baseConfig)
 }

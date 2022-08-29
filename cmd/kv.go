@@ -98,7 +98,7 @@ func createTLSConfig(cmd *cobra.Command) (*tls.Config, error) {
 	return &tls.Config{
 		Certificates:       []tls.Certificate{cert},
 		RootCAs:            caPool,
-		InsecureSkipVerify: insecureSkipVerify,
+		InsecureSkipVerify: insecureSkipVerify, //nolint:gosec // it's a CLI option.
 		ClientAuth:         clientAuth,
 	}, nil
 }

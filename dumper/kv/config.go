@@ -1,12 +1,14 @@
 package kv
 
-import "github.com/kvtools/valkeyrie/store"
+import (
+	"github.com/kvtools/valkeyrie"
+)
 
 // Config KV configuration.
 type Config struct {
-	Backend   store.Backend
+	StoreName string
 	Prefix    string
 	Suffix    string
 	Endpoints []string
-	Options   *store.Config
+	Options   valkeyrie.Config
 }

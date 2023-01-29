@@ -23,7 +23,7 @@ const DefaultStoreKeySuffix = "/acme/account/object"
 
 // Dump Dumps KV content to certificates.
 func Dump(ctx context.Context, config *Config, baseConfig *dumper.BaseConfig) error {
-	kvStore, err := valkeyrie.NewStore(ctx, config.Backend, config.Endpoints, config.Options)
+	kvStore, err := valkeyrie.NewStore(ctx, config.StoreName, config.Endpoints, config.Options)
 	if err != nil {
 		return fmt.Errorf("unable to create client of the store: %w", err)
 	}

@@ -4,9 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/kvtools/valkeyrie/store"
-	etcdv2 "github.com/kvtools/valkeyrie/store/etcd/v2"
-	etcdv3 "github.com/kvtools/valkeyrie/store/etcd/v3"
+	"github.com/kvtools/etcdv2"
+	"github.com/kvtools/etcdv3"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper/kv"
 	"github.com/spf13/cobra"
@@ -33,24 +32,46 @@ func etcdRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
 		return err
 	}
 
+	backend, err := cmd.Flags().GetString("etcd-version")
+	if err != nil {
+		return err
+	}
+
+	tlsConfig, err := createTLSConfig(cmd)
+	if err != nil {
+		return err
+	}
+
 	synPeriod, err := cmd.Flags().GetInt("sync-period")
 	if err != nil {
 		return err
 	}
-	config.Options.SyncPeriod = time.Duration(synPeriod) * time.Second
 
-	backend, err := cmd.Flags().GetString("etcd-version")
+	connectionTimeout, err := cmd.Flags().GetInt("connection-timeout")
 	if err != nil {
 		return err
 	}
 
 	switch backend {
 	case "etcdv3":
-		config.Backend = store.ETCDV3
-		etcdv3.Register()
+		config.Options = &etcdv3.Config{
+			TLS:               tlsConfig,
+			ConnectionTimeout: time.Duration(connectionTimeout) * time.Second,
+			SyncPeriod:        time.Duration(synPeriod) * time.Second,
+			Username:          cmd.Flag("password").Value.String(),
+			Password:          cmd.Flag("username").Value.String(),
+		}
+		config.StoreName = etcdv3.StoreName
 	default:
-		config.Backend = store.ETCD
-		etcdv2.Register()
+		config.Options = &etcdv2.Config{
+			TLS:               tlsConfig,
+			ConnectionTimeout: time.Duration(connectionTimeout) * time.Second,
+			SyncPeriod:        time.Duration(synPeriod) * time.Second,
+			Username:          cmd.Flag("password").Value.String(),
+			Password:          cmd.Flag("username").Value.String(),
+		}
+
+		config.StoreName = etcdv2.StoreName
 	}
 
 	return kv.Dump(context.Background(), config, baseConfig)

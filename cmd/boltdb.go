@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"context"
+	"time"
 
-	"github.com/kvtools/valkeyrie/store"
-	"github.com/kvtools/valkeyrie/store/boltdb"
+	"github.com/kvtools/boltdb"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper/kv"
 	"github.com/spf13/cobra"
@@ -31,11 +31,20 @@ func boltdbRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
 		return err
 	}
 
-	config.Options.Bucket = cmd.Flag("bucket").Value.String()
-	config.Options.PersistConnection, _ = cmd.Flags().GetBool("persist-connection")
+	connectionTimeout, err := cmd.Flags().GetInt("connection-timeout")
+	if err != nil {
+		return err
+	}
 
-	config.Backend = store.BOLTDB
-	boltdb.Register()
+	persistConnection, _ := cmd.Flags().GetBool("persist-connection")
+
+	config.Options = &boltdb.Config{
+		Bucket:            cmd.Flag("bucket").Value.String(),
+		PersistConnection: persistConnection,
+		ConnectionTimeout: time.Duration(connectionTimeout) * time.Second,
+	}
+
+	config.StoreName = boltdb.StoreName
 
 	return kv.Dump(context.Background(), config, baseConfig)
 }

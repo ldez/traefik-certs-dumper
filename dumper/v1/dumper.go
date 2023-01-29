@@ -92,7 +92,7 @@ func extractPEMPrivateKey(account *Account) []byte {
 			Bytes: account.PrivateKey,
 		}
 	default:
-		panic("unsupported key type")
+		panic(fmt.Sprintf("unsupported key type: '%v'", account.KeyType))
 	}
 
 	return pem.EncodeToMemory(block)

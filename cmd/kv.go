@@ -6,9 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"time"
 
-	"github.com/kvtools/valkeyrie/store"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper/kv"
 	"github.com/spf13/cobra"
 )
@@ -44,26 +42,10 @@ func getKvConfig(cmd *cobra.Command) (*kv.Config, error) {
 		return nil, err
 	}
 
-	connectionTimeout, err := cmd.Flags().GetInt("connection-timeout")
-	if err != nil {
-		return nil, err
-	}
-
-	tlsConfig, err := createTLSConfig(cmd)
-	if err != nil {
-		return nil, err
-	}
-
 	return &kv.Config{
 		Endpoints: endpoints,
 		Prefix:    cmd.Flag("prefix").Value.String(),
 		Suffix:    cmd.Flag("suffix").Value.String(),
-		Options: &store.Config{
-			ConnectionTimeout: time.Duration(connectionTimeout) * time.Second,
-			Username:          cmd.Flag("password").Value.String(),
-			Password:          cmd.Flag("username").Value.String(),
-			TLS:               tlsConfig,
-		},
 	}, nil
 }
 

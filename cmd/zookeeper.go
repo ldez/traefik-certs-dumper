@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"context"
+	"time"
 
-	"github.com/kvtools/valkeyrie/store"
-	"github.com/kvtools/valkeyrie/store/zookeeper"
+	"github.com/kvtools/zookeeper"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper/kv"
 	"github.com/spf13/cobra"
@@ -28,8 +28,19 @@ func zookeeperRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
 		return err
 	}
 
-	config.Backend = store.ZK
-	zookeeper.Register()
+	connectionTimeout, err := cmd.Flags().GetInt("connection-timeout")
+	if err != nil {
+		return err
+	}
+
+	config.Options = &zookeeper.Config{
+		ConnectionTimeout: time.Duration(connectionTimeout) * time.Second,
+		Username:          cmd.Flag("password").Value.String(),
+		Password:          cmd.Flag("username").Value.String(),
+		MaxBufferSize:     0,
+	}
+
+	config.StoreName = zookeeper.StoreName
 
 	return kv.Dump(context.Background(), config, baseConfig)
 }

@@ -9,12 +9,11 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/kvtools/boltdb"
+	"github.com/kvtools/consul"
+	"github.com/kvtools/etcdv3"
 	"github.com/kvtools/valkeyrie"
-	"github.com/kvtools/valkeyrie/store"
-	"github.com/kvtools/valkeyrie/store/boltdb"
-	"github.com/kvtools/valkeyrie/store/consul"
-	etcdv3 "github.com/kvtools/valkeyrie/store/etcd/v3"
-	"github.com/kvtools/valkeyrie/store/zookeeper"
+	"github.com/kvtools/zookeeper"
 )
 
 const storeKey = "traefik/acme/account/object"
@@ -36,25 +35,30 @@ func loadData(ctx context.Context, source string) error {
 	}
 
 	// Consul
-	err = putData(ctx, store.CONSUL, []string{"localhost:8500"}, content)
+
+	err = putData(ctx, consul.StoreName, []string{"localhost:8500"},
+		&consul.Config{ConnectionTimeout: 3 * time.Second}, content)
 	if err != nil {
 		return err
 	}
 
 	// ETCD v3
-	err = putData(ctx, store.ETCDV3, []string{"localhost:2379"}, content)
+	err = putData(ctx, etcdv3.StoreName, []string{"localhost:2379"},
+		&etcdv3.Config{ConnectionTimeout: 3 * time.Second}, content)
 	if err != nil {
 		return err
 	}
 
 	// Zookeeper
-	err = putData(ctx, store.ZK, []string{"localhost:2181"}, content)
+	err = putData(ctx, zookeeper.StoreName, []string{"localhost:2181"},
+		&zookeeper.Config{ConnectionTimeout: 3 * time.Second}, content)
 	if err != nil {
 		return err
 	}
 
 	// BoltDB
-	err = putData(ctx, store.BOLTDB, []string{"/tmp/test-traefik-certs-dumper.db"}, content)
+	err = putData(ctx, boltdb.StoreName, []string{"/tmp/test-traefik-certs-dumper.db"},
+		&boltdb.Config{ConnectionTimeout: 3 * time.Second, Bucket: "traefik"}, content)
 	if err != nil {
 		return err
 	}
@@ -62,24 +66,8 @@ func loadData(ctx context.Context, source string) error {
 	return nil
 }
 
-func putData(ctx context.Context, backend store.Backend, addrs []string, content []byte) error {
-	storeConfig := &store.Config{
-		ConnectionTimeout: 3 * time.Second,
-		Bucket:            "traefik",
-	}
-
-	switch backend {
-	case store.CONSUL:
-		consul.Register()
-	case store.ETCDV3:
-		etcdv3.Register()
-	case store.ZK:
-		zookeeper.Register()
-	case store.BOLTDB:
-		boltdb.Register()
-	}
-
-	kvStore, err := valkeyrie.NewStore(ctx, backend, addrs, storeConfig)
+func putData(ctx context.Context, backend string, addrs []string, options valkeyrie.Config, content []byte) error {
+	kvStore, err := valkeyrie.NewStore(ctx, backend, addrs, options)
 	if err != nil {
 		return err
 	}

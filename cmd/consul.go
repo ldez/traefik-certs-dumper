@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"context"
+	"time"
 
-	"github.com/kvtools/valkeyrie/store"
-	"github.com/kvtools/valkeyrie/store/consul"
+	"github.com/kvtools/consul"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper/kv"
 	"github.com/spf13/cobra"
@@ -30,10 +30,24 @@ func consulRun(baseConfig *dumper.BaseConfig, cmd *cobra.Command) error {
 		return err
 	}
 
-	config.Options.Token = cmd.Flag("token").Value.String()
+	tlsConfig, err := createTLSConfig(cmd)
+	if err != nil {
+		return err
+	}
 
-	config.Backend = store.CONSUL
-	consul.Register()
+	connectionTimeout, err := cmd.Flags().GetInt("connection-timeout")
+	if err != nil {
+		return err
+	}
+
+	config.Options = &consul.Config{
+		TLS:               tlsConfig,
+		ConnectionTimeout: time.Duration(connectionTimeout) * time.Second,
+		Token:             cmd.Flag("token").Value.String(),
+		Namespace:         "",
+	}
+
+	config.StoreName = consul.StoreName
 
 	return kv.Dump(context.Background(), config, baseConfig)
 }

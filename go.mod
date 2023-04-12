@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/fsnotify/fsnotify v1.6.0
-	github.com/go-acme/lego/v4 v4.10.0
+	github.com/go-acme/lego/v4 v4.10.2
 	github.com/kvtools/boltdb v1.0.2
 	github.com/kvtools/consul v1.0.2
 	github.com/kvtools/etcdv2 v1.0.2
@@ -15,7 +15,7 @@ require (
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0
 	github.com/stretchr/testify v1.8.1
-	github.com/traefik/traefik/v2 v2.9.8
+	github.com/traefik/traefik/v2 v2.9.10
 )
 
 require (

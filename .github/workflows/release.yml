@@ -14,12 +14,27 @@ jobs:
       CGO_ENABLED: 0
 
     steps:
+      # temporary workaround for an error in free disk space action
+      # https://github.com/jlumbroso/free-disk-space/issues/14
+      - name: Update Package List and Remove Dotnet
+        run: |
+          sudo apt-get update
+          sudo apt-get remove -y '^dotnet-.*'
 
-      # https://github.com/marketplace/actions/checkout
-      - name: Check out code
-        uses: actions/checkout@v3
+      # https://github.com/marketplace/actions/free-disk-space-ubuntu
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
         with:
-          fetch-depth: 0
+          # this might remove tools that are actually needed
+          tool-cache: false
+
+          # all of these default to true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: false
 
       # https://github.com/marketplace/actions/setup-go-environment
       - name: Set up Go ${{ env.GO_VERSION }}
@@ -27,23 +42,19 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
 
-      # https://github.com/marketplace/actions/cache
-      - name: Cache Go modules
-        uses: actions/cache@v2
+      # https://github.com/marketplace/actions/checkout
+      - name: Check out code
+        uses: actions/checkout@v4
         with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-
+          fetch-depth: 0
       - name: Make
         run: make build
 
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v2
+        uses: goreleaser/goreleaser-action@v4
         with:
           version: latest
-          args: release --rm-dist --timeout=90m
+          args: release -p 1 --clean --timeout=90m
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

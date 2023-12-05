@@ -1,6 +1,8 @@
 module github.com/ldez/traefik-certs-dumper/v2
 
-go 1.19
+go 1.21
+
+toolchain go1.21.3
 
 require (
 	github.com/fsnotify/fsnotify v1.6.0

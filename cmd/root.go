@@ -20,7 +20,7 @@ var rootCmd = &cobra.Command{
 	Use:   "traefik-certs-dumper",
 	Short: "Dump Let's Encrypt certificates from Traefik.",
 	Long:  `Dump Let's Encrypt certificates from Traefik.`,
-	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+	PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 		if cmd.Name() == "version" {
 			return nil
 		}

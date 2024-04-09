@@ -16,8 +16,6 @@ type CertificateOld struct {
 }
 
 // AccountOld is used to store lets encrypt registration info.
-//
-//nolint:musttag // tag are useless here.
 type AccountOld struct {
 	Email              string
 	Registration       *registration.Resource

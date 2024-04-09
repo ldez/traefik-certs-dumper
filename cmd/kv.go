@@ -3,6 +3,7 @@ package cmd
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -69,7 +70,7 @@ func createTLSConfig(cmd *cobra.Command) (*tls.Config, error) {
 	certContent := cmd.Flag("tls.cert").Value.String()
 
 	if !insecureSkipVerify && (certContent == "" || privateKey == "") {
-		return nil, fmt.Errorf("TLS Certificate or Key file must be set when TLS configuration is created")
+		return nil, errors.New("TLS Certificate or Key file must be set when TLS configuration is created")
 	}
 
 	cert, err := getCertificate(privateKey, certContent)
@@ -95,7 +96,7 @@ func getCertPool(ca string) (*x509.CertPool, error) {
 		}
 
 		if !caPool.AppendCertsFromPEM(caContent) {
-			return nil, fmt.Errorf("failed to parse CA")
+			return nil, errors.New("failed to parse CA")
 		}
 	}
 
@@ -137,11 +138,11 @@ func getCertificate(privateKey, certContent string) (tls.Certificate, error) {
 	_, errCertIsFile := os.Stat(certContent)
 
 	if errCertIsFile == nil && os.IsNotExist(errKeyIsFile) {
-		return tls.Certificate{}, fmt.Errorf("tls cert is a file, but tls key is not")
+		return tls.Certificate{}, errors.New("tls cert is a file, but tls key is not")
 	}
 
 	if os.IsNotExist(errCertIsFile) && errKeyIsFile == nil {
-		return tls.Certificate{}, fmt.Errorf("TLS key is a file, but tls cert is not")
+		return tls.Certificate{}, errors.New("TLS key is a file, but tls cert is not")
 	}
 
 	// string

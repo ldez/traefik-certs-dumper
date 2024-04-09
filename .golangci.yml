@@ -1,6 +1,5 @@
 run:
   timeout: 5m
-  skip-files: []
 
 linters-settings:
   govet:
@@ -107,3 +106,10 @@ issues:
       linters:
         - gochecknoglobals
         - gochecknoinits
+
+output:
+  show-stats: true
+  sort-results: true
+  sort-order:
+    - linter
+    - file

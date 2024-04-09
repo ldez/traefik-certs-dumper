@@ -88,6 +88,7 @@ func getStoredDataFromGzip(pair *store.KVPair) (*v1.StoredData, error) {
 	}
 
 	account := &AccountOld{}
+	//nolint:musttag // old format
 	if err := json.Unmarshal(acmeData, &account); err != nil {
 		return nil, fmt.Errorf("unable marshal AccountOld: %w", err)
 	}

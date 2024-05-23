@@ -738,8 +738,8 @@ github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.0.490/go.mod 
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/traefik/paerser v0.2.0 h1:zqCLGSXoNlcBd+mzqSCLjon/I6phqIjeJL2xFB2ysgQ=
 github.com/traefik/paerser v0.2.0/go.mod h1:afzaVcgF8A+MpTnPG4wBr4whjanCSYA6vK5RwaYVtRc=
-github.com/traefik/traefik/v2 v2.11.2 h1:BuvZD0uraRgM9pkx1yI/sRO0yB/Ov4OCuqlywvsE5+Q=
-github.com/traefik/traefik/v2 v2.11.2/go.mod h1:xWigO+RC0cQt24GqWCTeBeFiG6XqjCvpIn84v05wLtQ=
+github.com/traefik/traefik/v2 v2.11.3 h1:Eh8AxOWgV/c9ViobOxD8KBJ0IpRs2fX3jTd7jXLQ6rQ=
+github.com/traefik/traefik/v2 v2.11.3/go.mod h1:xWigO+RC0cQt24GqWCTeBeFiG6XqjCvpIn84v05wLtQ=
 github.com/transip/gotransip/v6 v6.23.0 h1:PsTdjortrEZ8IFFifEryzjVjOy9SgK4ahlnhKBBIQgA=
 github.com/transip/gotransip/v6 v6.23.0/go.mod h1:nzv9eN2tdsUrm5nG5ZX6AugYIU4qgsMwIn2c0EZLk8c=
 github.com/tv42/httpunix v0.0.0-20150427012821-b75d8614f926/go.mod h1:9ESjWnEqriFuLhtthL60Sar/7RFoluCcXsuvEwTV5KM=

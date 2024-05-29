@@ -64,17 +64,8 @@ linters-settings:
 linters:
   enable-all: true
   disable:
-    - scopelint # deprecated
-    - interfacer # deprecated
-    - maligned # deprecated
-    - golint # deprecated
-    - exhaustivestruct # deprecated
-    - scopelint # deprecated
-    - varcheck # deprecated
-    - structcheck # deprecated
-    - nosnakecase # deprecated
-    - deadcode # deprecated
-    - ifshort # deprecated
+    - gomnd # deprecated
+    - execinquery # deprecated
     - sqlclosecheck # not relevant (SQL)
     - rowserrcheck # not relevant (SQL)
     - cyclop # duplicate of gocyclo
@@ -83,11 +74,11 @@ linters:
     - prealloc
     - wsl
     - nlreturn
-    - gomnd
+    - mnd
     - testpackage
     - paralleltest
     - tparallel
-    - goerr113
+    - err113
     - wrapcheck
     - exhaustive
     - exhaustruct

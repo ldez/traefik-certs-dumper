@@ -69,7 +69,7 @@ Examples:
 
 ## Examples
 
-**Note:** to dump data from Traefik v2, the CLI flag `--version v2` must be added.
+**Note:** to dump data from Traefik v2 or v3, the CLI flag `--version v2` must be added.
 
 ### Simple Dump
 

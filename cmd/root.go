@@ -131,10 +131,10 @@ func tree(root, indent string) error {
 	for i, name := range names {
 		add := "│  "
 		if i == len(names)-1 {
-			fmt.Printf(indent + "└──")
+			fmt.Print(indent + "└──")
 			add = "   "
 		} else {
-			fmt.Printf(indent + "├──")
+			fmt.Print(indent + "├──")
 		}
 
 		if err := tree(filepath.Join(root, name), indent+add); err != nil {

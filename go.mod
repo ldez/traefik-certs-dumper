@@ -1,6 +1,6 @@
 module github.com/ldez/traefik-certs-dumper/v2
 
-go 1.22
+go 1.23.0
 
 require (
 	github.com/fsnotify/fsnotify v1.7.0
@@ -12,8 +12,8 @@ require (
 	github.com/kvtools/valkeyrie v1.0.0
 	github.com/kvtools/zookeeper v1.0.2
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/spf13/cobra v1.8.0
-	github.com/spf13/viper v1.18.2
+	github.com/spf13/cobra v1.8.1
+	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.9.0
 	github.com/traefik/traefik/v2 v2.11.6
 )
@@ -101,7 +101,7 @@ require (
 	github.com/gophercloud/utils v0.0.0-20231010081019-80377eca5d56 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/gravitational/trace v1.1.16-0.20220114165159-14a9a7dd6aaf // indirect
-	github.com/hashicorp/consul/api v1.26.1 // indirect
+	github.com/hashicorp/consul/api v1.28.2 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-hclog v1.6.3 // indirect
@@ -152,7 +152,7 @@ require (
 	github.com/oracle/oci-go-sdk/v65 v65.63.1 // indirect
 	github.com/ovh/go-ovh v1.5.1 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
-	github.com/pelletier/go-toml/v2 v2.1.0 // indirect
+	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/pires/go-proxyproto v0.6.1 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/pkg/errors v0.9.1 // indirect
@@ -192,10 +192,10 @@ require (
 	github.com/yandex-cloud/go-genproto v0.0.0-20240318083951-4fe6125f286e // indirect
 	github.com/yandex-cloud/go-sdk v0.0.0-20240318084659-dfa50323a0b4 // indirect
 	go.etcd.io/bbolt v1.3.6 // indirect
-	go.etcd.io/etcd/api/v3 v3.5.10 // indirect
-	go.etcd.io/etcd/client/pkg/v3 v3.5.10 // indirect
-	go.etcd.io/etcd/client/v2 v2.305.10 // indirect
-	go.etcd.io/etcd/client/v3 v3.5.10 // indirect
+	go.etcd.io/etcd/api/v3 v3.5.12 // indirect
+	go.etcd.io/etcd/client/pkg/v3 v3.5.12 // indirect
+	go.etcd.io/etcd/client/v2 v2.305.12 // indirect
+	go.etcd.io/etcd/client/v3 v3.5.12 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.49.0 // indirect
 	go.opentelemetry.io/otel v1.24.0 // indirect

@@ -66,6 +66,7 @@ linters:
   disable:
     - gomnd # deprecated
     - execinquery # deprecated
+    - exportloopref # deprecated
     - sqlclosecheck # not relevant (SQL)
     - rowserrcheck # not relevant (SQL)
     - cyclop # duplicate of gocyclo

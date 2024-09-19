@@ -36,16 +36,10 @@ jobs:
           docker-images: true
           swap-storage: false
 
-
-      # https://github.com/marketplace/actions/checkout
-      - name: Check out code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      # https://github.com/marketplace/actions/setup-go-environment
-      - name: Set up Go ${{ env.GO_VERSION }}
-        uses: actions/setup-go@v5
+      - uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
 

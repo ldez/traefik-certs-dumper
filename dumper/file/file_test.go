@@ -27,6 +27,11 @@ func TestDump(t *testing.T) {
 			acmeFile: "./fixtures/acme-v2.json",
 			version:  "v2",
 		},
+		{
+			desc:     "should dump traefik v3 file content",
+			acmeFile: "./fixtures/acme-v3.json",
+			version:  "v3",
+		},
 	}
 
 	for _, test := range testCases {

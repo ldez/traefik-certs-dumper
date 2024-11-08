@@ -1,0 +1,36 @@
+{
+  "default": {
+    "Account": {
+      "Email": "test@email.com",
+      "Registration": {
+        "body": {
+          "status": "valid",
+          "contact": [
+            "mailto:test@email.com"
+          ]
+        },
+        "uri": "https://acme-v02.api.letsencrypt.org/acme/acct/12345678"
+      },
+      "PrivateKey": "Q2VydGlmaWNhdGUgS2V5",
+      "KeyType": "4096"
+    },
+    "Certificates": [
+      {
+        "domain": {
+          "main": "my.domain.com"
+        },
+        "certificate": "Q2VydGlmaWNhdGU=",
+        "key": "Q2VydGlmaWNhdGUgS2V5",
+        "Store": "default"
+      },
+      {
+        "domain": {
+          "main": "my.domain2.com"
+        },
+        "certificate": "Q2VydGlmaWNhdGU=",
+        "key": "Q2VydGlmaWNhdGUgS2V5",
+        "Store": "default"
+      }
+    ]
+  }
+}

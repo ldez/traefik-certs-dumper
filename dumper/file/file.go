@@ -15,10 +15,12 @@ import (
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
-	v1 "github.com/ldez/traefik-certs-dumper/v2/dumper/v1"
-	v2 "github.com/ldez/traefik-certs-dumper/v2/dumper/v2"
+	dumperv1 "github.com/ldez/traefik-certs-dumper/v2/dumper/v1"
+	dumperv2 "github.com/ldez/traefik-certs-dumper/v2/dumper/v2"
+	dumperv3 "github.com/ldez/traefik-certs-dumper/v2/dumper/v3"
 	"github.com/ldez/traefik-certs-dumper/v2/hook"
-	"github.com/traefik/traefik/v2/pkg/provider/acme"
+	acmev2 "github.com/traefik/traefik/v2/pkg/provider/acme"
+	acmev3 "github.com/traefik/traefik/v3/pkg/provider/acme"
 )
 
 // Dump Dumps "acme.json" file to certificates.
@@ -33,43 +35,74 @@ func Dump(ctx context.Context, acmeFile string, baseConfig *dumper.BaseConfig) e
 
 		return watch(ctx, acmeFile, baseConfig)
 	}
+
 	return nil
 }
 
 func dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
-	if baseConfig.Version == "v2" {
+	switch baseConfig.Version {
+	case "v3":
+		err := dumpV3(acmeFile, baseConfig)
+		if err != nil {
+			return fmt.Errorf("v3: dump failed: %w", err)
+		}
+
+		return nil
+
+	case "v2":
 		err := dumpV2(acmeFile, baseConfig)
 		if err != nil {
 			return fmt.Errorf("v2: dump failed: %w", err)
 		}
+
+		return nil
+
+	case "v1":
+		err := dumpV1(acmeFile, baseConfig)
+		if err != nil {
+			return fmt.Errorf("v1: dump failed: %w", err)
+		}
+
+		return nil
+
+	default:
+		err := dumpV1(acmeFile, baseConfig)
+		if err != nil {
+			return fmt.Errorf("v1: dump failed: %w", err)
+		}
+
 		return nil
 	}
-
-	err := dumpV1(acmeFile, baseConfig)
-	if err != nil {
-		return fmt.Errorf("v1: dump failed: %w", err)
-	}
-	return nil
 }
 
 func dumpV1(acmeFile string, baseConfig *dumper.BaseConfig) error {
-	data := &v1.StoredData{}
+	data := &dumperv1.StoredData{}
 	err := readJSONFile(acmeFile, data)
 	if err != nil {
 		return err
 	}
 
-	return v1.Dump(data, baseConfig)
+	return dumperv1.Dump(data, baseConfig)
 }
 
 func dumpV2(acmeFile string, baseConfig *dumper.BaseConfig) error {
-	data := map[string]*acme.StoredData{}
+	data := map[string]*acmev2.StoredData{}
 	err := readJSONFile(acmeFile, &data)
 	if err != nil {
 		return err
 	}
 
-	return v2.Dump(data, baseConfig)
+	return dumperv2.Dump(data, baseConfig)
+}
+
+func dumpV3(acmeFile string, baseConfig *dumper.BaseConfig) error {
+	data := map[string]*acmev3.StoredData{}
+	err := readJSONFile(acmeFile, &data)
+	if err != nil {
+		return err
+	}
+
+	return dumperv3.Dump(data, baseConfig)
 }
 
 func readJSONFile(acmeFile string, data interface{}) error {

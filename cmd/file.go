@@ -25,5 +25,5 @@ func init() {
 	rootCmd.AddCommand(fileCmd)
 
 	fileCmd.Flags().String("source", "./acme.json", "Path to 'acme.json' file.")
-	fileCmd.Flags().String("version", "", "Traefik version. If empty use v1. Possible values: 'v2'.")
+	fileCmd.Flags().String("version", "", "Traefik version. If empty use v1. Possible values: 'v2', 'v3'.")
 }

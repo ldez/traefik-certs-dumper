@@ -16,7 +16,7 @@ require (
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.9.0
 	github.com/traefik/traefik/v2 v2.11.14
-	github.com/traefik/traefik/v3 v3.2.0
+	github.com/traefik/traefik/v3 v3.2.1
 )
 
 require (

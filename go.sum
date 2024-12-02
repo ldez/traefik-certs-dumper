@@ -942,8 +942,8 @@ github.com/traefik/paerser v0.2.1 h1:LFgeak1NmjEHF53c9ENdXdL1UMkF/lD5t+7Evsz4hH4
 github.com/traefik/paerser v0.2.1/go.mod h1:7BBDd4FANoVgaTZG+yh26jI6CA2nds7D/4VTEdIsh24=
 github.com/traefik/traefik/v2 v2.11.14 h1:TxYR6gnMW3xjA3qXHb65A+VrKa0VugH2tZ3BEKXoD1s=
 github.com/traefik/traefik/v2 v2.11.14/go.mod h1:jZCBQ6ccELy0tp0c19t5KET6UaWLvRetLDrzxzN2t2s=
-github.com/traefik/traefik/v3 v3.2.0 h1:yJR8lvwswRSl+qr/4SZilJHyw7Xus0gk5EY3jvEPmOo=
-github.com/traefik/traefik/v3 v3.2.0/go.mod h1:Xgo9sRUYf/KABlUAXaWzYaOTTBFqqUHsi586kH7znj0=
+github.com/traefik/traefik/v3 v3.2.1 h1:BqmKDwHraTWLr+MsH7t3QbUJCglSMMQCblIWB0hU4zw=
+github.com/traefik/traefik/v3 v3.2.1/go.mod h1:plWN6wBygERbwjEn1ieiAnCzUC1BEsTAXEIDZxO2ehE=
 github.com/transip/gotransip/v6 v6.26.0 h1:Aejfvh8rSp8Mj2GX/RpdBjMCv+Iy/DmgfNgczPDP550=
 github.com/transip/gotransip/v6 v6.26.0/go.mod h1:x0/RWGRK/zob817O3tfO2xhFoP1vu8YOHORx6Jpk80s=
 github.com/tv42/httpunix v0.0.0-20150427012821-b75d8614f926/go.mod h1:9ESjWnEqriFuLhtthL60Sar/7RFoluCcXsuvEwTV5KM=

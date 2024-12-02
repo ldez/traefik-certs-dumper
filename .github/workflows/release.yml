@@ -47,7 +47,7 @@ jobs:
         run: make build
 
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         with:
           version: v2
           args: release -p 1 --clean --timeout=90m

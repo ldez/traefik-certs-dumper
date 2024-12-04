@@ -1,12 +1,16 @@
 package cmd
 
 import (
+	"crypto/rand"
 	"fmt"
 	"log"
+	"math/big"
 	"os"
 	"path/filepath"
 	"strconv"
+	"time"
 
+	"github.com/charmbracelet/lipgloss"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -34,6 +38,7 @@ var rootCmd = &cobra.Command{
 				return fmt.Errorf("--crt-ext (%q) and --key-ext (%q) are identical, in this case --domain-subdir is required", crtExt, keyExt)
 			}
 		}
+
 		return nil
 	},
 }
@@ -45,6 +50,8 @@ func Execute() {
 		log.Println(err)
 		os.Exit(1)
 	}
+
+	help()
 }
 
 func init() {
@@ -176,4 +183,35 @@ func getBaseConfig(cmd *cobra.Command) (*dumper.BaseConfig, error) {
 		Watch:        watch,
 		Hook:         cmd.Flag("post-hook").Value.String(),
 	}, nil
+}
+
+func help() {
+	var maxInt int64 = 2 // -> 50%
+	if time.Now().Month() == time.December {
+		maxInt = 1 // -> 100%
+	}
+
+	n, _ := rand.Int(rand.Reader, big.NewInt(maxInt))
+	if n.Cmp(big.NewInt(0)) != 0 {
+		return
+	}
+
+	log.SetFlags(0)
+
+	pStyle := lipgloss.NewStyle().
+		Padding(1).
+		BorderStyle(lipgloss.RoundedBorder()).
+		BorderForeground(lipgloss.Color("161")).
+		Align(lipgloss.Center)
+
+	hStyle := lipgloss.NewStyle().Bold(true)
+
+	s := fmt.Sprintln(hStyle.Render("Request for Donation."))
+	s += `
+I need your help!
+Donations fund maintenance and development of traefik-certs-dumper.
+Click on this link to donate: https://bento.me/ldez`
+
+	log.Println(pStyle.Render(s))
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }

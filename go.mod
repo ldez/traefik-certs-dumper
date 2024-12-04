@@ -3,6 +3,7 @@ module github.com/ldez/traefik-certs-dumper/v2
 go 1.23.0
 
 require (
+	github.com/charmbracelet/lipgloss v1.0.0
 	github.com/fsnotify/fsnotify v1.8.0
 	github.com/go-acme/lego/v4 v4.20.2
 	github.com/kvtools/boltdb v1.0.2
@@ -61,9 +62,11 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.28.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.32.3 // indirect
 	github.com/aws/smithy-go v1.22.0 // indirect
+	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/benbjohnson/clock v1.3.0 // indirect
 	github.com/boombuler/barcode v1.0.1-0.20190219062509-6c824513bacc // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
+	github.com/charmbracelet/x/ansi v0.4.2 // indirect
 	github.com/civo/civogo v0.3.11 // indirect
 	github.com/cloudflare/cloudflare-go v0.108.0 // indirect
 	github.com/containous/alice v0.0.0-20181107144136-d83ebdd94cbd // indirect
@@ -139,14 +142,17 @@ require (
 	github.com/linode/linodego v1.42.0 // indirect
 	github.com/liquidweb/liquidweb-cli v0.6.9 // indirect
 	github.com/liquidweb/liquidweb-go v1.6.4 // indirect
+	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/miekg/dns v1.1.62 // indirect
 	github.com/mimuret/golang-iij-dpf v0.9.1 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/muesli/termenv v0.15.2 // indirect
 	github.com/namedotcom/go v0.0.0-20180403034216-08470befbe04 // indirect
 	github.com/nrdcg/auroradns v1.1.0 // indirect
 	github.com/nrdcg/bunny-go v0.0.0-20240207213615-dde5bf4577a3 // indirect
@@ -170,6 +176,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/pquerna/otp v1.4.0 // indirect
 	github.com/regfish/regfish-dnsapi-go v0.1.1 // indirect
+	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rs/zerolog v1.29.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sacloud/api-client-go v0.2.10 // indirect

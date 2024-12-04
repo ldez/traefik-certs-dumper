@@ -5,7 +5,7 @@ go 1.23.0
 require (
 	github.com/charmbracelet/lipgloss v1.0.0
 	github.com/fsnotify/fsnotify v1.8.0
-	github.com/go-acme/lego/v4 v4.20.2
+	github.com/go-acme/lego/v4 v4.20.4
 	github.com/kvtools/boltdb v1.0.2
 	github.com/kvtools/consul v1.0.2
 	github.com/kvtools/etcdv2 v1.0.2
@@ -15,7 +15,7 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	github.com/traefik/traefik/v2 v2.11.14
 	github.com/traefik/traefik/v3 v3.2.1
 )

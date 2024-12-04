@@ -1,5 +1,25 @@
-run:
-  timeout: 5m
+linters:
+  enable-all: true
+  disable:
+    - exportloopref # deprecated
+    - sqlclosecheck # not relevant (SQL)
+    - rowserrcheck # not relevant (SQL)
+    - cyclop # duplicate of gocyclo
+    - lll
+    - dupl
+    - prealloc
+    - wsl
+    - nlreturn
+    - mnd
+    - testpackage
+    - paralleltest
+    - tparallel
+    - err113
+    - wrapcheck
+    - exhaustive
+    - exhaustruct
+    - varnamelen
+    - nilnil
 
 linters-settings:
   govet:
@@ -61,31 +81,6 @@ linters-settings:
       - G301 # Expect directory permissions to be 0750 or less
       - G306 # Expect WriteFile permissions to be 0600 or less
 
-linters:
-  enable-all: true
-  disable:
-    - gomnd # deprecated
-    - execinquery # deprecated
-    - exportloopref # deprecated
-    - sqlclosecheck # not relevant (SQL)
-    - rowserrcheck # not relevant (SQL)
-    - cyclop # duplicate of gocyclo
-    - lll
-    - dupl
-    - prealloc
-    - wsl
-    - nlreturn
-    - mnd
-    - testpackage
-    - paralleltest
-    - tparallel
-    - err113
-    - wrapcheck
-    - exhaustive
-    - exhaustruct
-    - varnamelen
-    - nilnil
-
 issues:
   exclude-use-default: false
   max-issues-per-linter: 0
@@ -105,3 +100,6 @@ output:
   sort-order:
     - linter
     - file
+
+run:
+  timeout: 5m

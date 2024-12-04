@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GO_VERSION: stable
-      SEIHON_VERSION: v0.9.0
       CGO_ENABLED: 0
 
     steps:
@@ -43,22 +42,6 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
 
-      - name: Make
-        run: make build
-
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v6
-        with:
-          version: v2
-          args: release -p 1 --clean --timeout=90m
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install seihon ${{ env.SEIHON_VERSION }}
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/ldez/seihon/master/godownloader.sh | sh -s -- -b $(go env GOPATH)/bin ${SEIHON_VERSION}
-          seihon --version
-
       - name: Docker Login
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -66,5 +49,16 @@ jobs:
         run: |
           echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
 
-      - name: Deploy Docker Images (seihon)
-        run: make publish-images
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          version: latest
+          args: release -p 1 --clean --timeout=90m
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

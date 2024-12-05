@@ -146,7 +146,6 @@ services:
     image: ldez/traefik-certs-dumper:v2.8.1
     container_name: traefik-certs-dumper
     entrypoint: sh -c '
-      apk add jq
       ; while ! [ -e /data/acme.json ]
       || ! [ `jq ".[] | .Certificates | length" /data/acme.json` != 0 ]; do
       sleep 1

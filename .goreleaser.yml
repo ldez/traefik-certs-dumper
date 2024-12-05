@@ -6,7 +6,7 @@ builds:
     ldflags:
       - -s -w -X github.com/ldez/traefik-certs-dumper/cmd.version={{.Version}} -X github.com/ldez/traefik-certs-dumper/cmd.commit={{.ShortCommit}} -X github.com/ldez/traefik-certs-dumper/cmd.date={{.Date}}
     env:
-      - GO111MODULE=on
+      - CGO_ENABLED=0
     goos:
       - linux
       - darwin
@@ -54,16 +54,22 @@ docker_manifests:
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-amd64'
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-arm64'
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-armv7'
+      - 'ldez/traefik-certs-dumper:{{ .Tag }}-armv6'
+      - 'ldez/traefik-certs-dumper:{{ .Tag }}-386'
   - name_template: 'ldez/traefik-certs-dumper:latest'
     image_templates:
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-amd64'
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-arm64'
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-armv7'
+      - 'ldez/traefik-certs-dumper:{{ .Tag }}-armv6'
+      - 'ldez/traefik-certs-dumper:{{ .Tag }}-386'
   - name_template: 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}'
     image_templates:
       - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-amd64'
       - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-arm64'
       - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-armv7'
+      - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-armv6'
+      - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-386'
 
 dockers:
   - use: buildx
@@ -133,3 +139,48 @@ dockers:
       - '--label=org.opencontainers.image.revision={{.FullCommit}}'
       - '--label=org.opencontainers.image.version={{.Version}}'
       - '--platform=linux/arm/v7'
+
+  - use: buildx
+    goos: linux
+    goarch: arm
+    goarm: '6'
+    dockerfile: buildx.Dockerfile
+    image_templates:
+      - 'ldez/traefik-certs-dumper:latest-armv6'
+      - 'ldez/traefik-certs-dumper:latest-arm.v6' # only for compatibility with Seihon
+      - 'ldez/traefik-certs-dumper:{{ .Tag }}-armv6'
+      - 'ldez/traefik-certs-dumper:{{ .Tag }}-arm.v6' # only for compatibility with Seihon
+      - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-armv6'
+    build_flag_templates:
+      - '--pull'
+      # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
+      - '--label=org.opencontainers.image.title={{.ProjectName}}'
+      - '--label=org.opencontainers.image.description=Dump ACME data from Traefik to certificates'
+      - '--label=org.opencontainers.image.source={{.GitURL}}'
+      - '--label=org.opencontainers.image.url={{.GitURL}}'
+      - '--label=org.opencontainers.image.documentation=https://github.com/ldez/traefik-certs-dumper'
+      - '--label=org.opencontainers.image.created={{.Date}}'
+      - '--label=org.opencontainers.image.revision={{.FullCommit}}'
+      - '--label=org.opencontainers.image.version={{.Version}}'
+      - '--platform=linux/arm/v6'
+
+  - use: buildx
+    goos: linux
+    goarch: '386'
+    dockerfile: buildx.Dockerfile
+    image_templates:
+      - 'ldez/traefik-certs-dumper:latest-386'
+      - 'ldez/traefik-certs-dumper:{{ .Tag }}-386'
+      - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-386'
+    build_flag_templates:
+      - '--pull'
+      # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
+      - '--label=org.opencontainers.image.title={{.ProjectName}}'
+      - '--label=org.opencontainers.image.description=Dump ACME data from Traefik to certificates'
+      - '--label=org.opencontainers.image.source={{.GitURL}}'
+      - '--label=org.opencontainers.image.url={{.GitURL}}'
+      - '--label=org.opencontainers.image.documentation=https://github.com/ldez/traefik-certs-dumper'
+      - '--label=org.opencontainers.image.created={{.Date}}'
+      - '--label=org.opencontainers.image.revision={{.FullCommit}}'
+      - '--label=org.opencontainers.image.version={{.Version}}'
+      - '--platform=linux/386'

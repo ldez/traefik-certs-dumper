@@ -25,7 +25,7 @@ services:
   traefik-certs-dumper:
     image: ldez/traefik-certs-dumper:v2.8.1
     entrypoint: sh -c '
-      ; while ! [ -e /data/acme.json ]
+      while ! [ -e /data/acme.json ]
         || ! [ `jq ".Certificates | length" /data/acme.json` != 0 ]; do
           sleep 1
       ; done

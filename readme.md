@@ -137,8 +137,6 @@ For the former, create a file (ex: `hook.sh`) and mount it, then pass `sh hooksh
 Here is a docker-compose example:
 
 ```yml
-version: '3.9'
-
 services:
 # ...
 
@@ -146,7 +144,7 @@ services:
     image: ldez/traefik-certs-dumper:v2.8.1
     container_name: traefik-certs-dumper
     entrypoint: sh -c '
-      ; while ! [ -e /data/acme.json ]
+      while ! [ -e /data/acme.json ]
       || ! [ `jq ".[] | .Certificates | length" /data/acme.json` != 0 ]; do
       sleep 1
       ; done

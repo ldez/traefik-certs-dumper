@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
+	"github.com/ldez/traefik-certs-dumper/v2/internal/traefikv1"
 )
 
 const (
@@ -16,7 +17,7 @@ const (
 )
 
 // Dump Dumps data to certificates.
-func Dump(data *StoredData, baseConfig *dumper.BaseConfig) error {
+func Dump(data *traefikv1.StoredData, baseConfig *dumper.BaseConfig) error {
 	if baseConfig.Clean {
 		err := cleanDir(baseConfig.DumpPath)
 		if err != nil {
@@ -54,7 +55,7 @@ func Dump(data *StoredData, baseConfig *dumper.BaseConfig) error {
 	return os.WriteFile(filepath.Join(baseConfig.DumpPath, keysSubDir, "letsencrypt"+baseConfig.KeyInfo.Ext), privateKeyPem, 0o600)
 }
 
-func writeCert(dumpPath string, cert *Certificate, info dumper.FileInfo, domainSubDir bool) error {
+func writeCert(dumpPath string, cert *traefikv1.Certificate, info dumper.FileInfo, domainSubDir bool) error {
 	certPath := filepath.Join(dumpPath, certsSubDir, safeName(cert.Domain.Main+info.Ext))
 	if domainSubDir {
 		certPath = filepath.Join(dumpPath, safeName(cert.Domain.Main), info.Name+info.Ext)
@@ -66,7 +67,7 @@ func writeCert(dumpPath string, cert *Certificate, info dumper.FileInfo, domainS
 	return os.WriteFile(certPath, cert.Certificate, 0o666)
 }
 
-func writeKey(dumpPath string, cert *Certificate, info dumper.FileInfo, domainSubDir bool) error {
+func writeKey(dumpPath string, cert *traefikv1.Certificate, info dumper.FileInfo, domainSubDir bool) error {
 	keyPath := filepath.Join(dumpPath, keysSubDir, safeName(cert.Domain.Main+info.Ext))
 	if domainSubDir {
 		keyPath = filepath.Join(dumpPath, safeName(cert.Domain.Main), info.Name+info.Ext)
@@ -78,7 +79,7 @@ func writeKey(dumpPath string, cert *Certificate, info dumper.FileInfo, domainSu
 	return os.WriteFile(keyPath, cert.Key, 0o600)
 }
 
-func extractPEMPrivateKey(account *Account) []byte {
+func extractPEMPrivateKey(account *traefikv1.Account) []byte {
 	var block *pem.Block
 	switch account.KeyType {
 	case certcrypto.RSA2048, certcrypto.RSA4096, certcrypto.RSA8192:

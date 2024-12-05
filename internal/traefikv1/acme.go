@@ -1,4 +1,4 @@
-package v1
+package traefikv1
 
 import (
 	"github.com/go-acme/lego/v4/certcrypto"

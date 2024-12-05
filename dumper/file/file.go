@@ -19,8 +19,9 @@ import (
 	dumperv2 "github.com/ldez/traefik-certs-dumper/v2/dumper/v2"
 	dumperv3 "github.com/ldez/traefik-certs-dumper/v2/dumper/v3"
 	"github.com/ldez/traefik-certs-dumper/v2/hook"
-	acmev2 "github.com/traefik/traefik/v2/pkg/provider/acme"
-	acmev3 "github.com/traefik/traefik/v3/pkg/provider/acme"
+	"github.com/ldez/traefik-certs-dumper/v2/internal/traefikv1"
+	"github.com/ldez/traefik-certs-dumper/v2/internal/traefikv2"
+	"github.com/ldez/traefik-certs-dumper/v2/internal/traefikv3"
 )
 
 // Dump Dumps "acme.json" file to certificates.
@@ -76,7 +77,7 @@ func dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
 }
 
 func dumpV1(acmeFile string, baseConfig *dumper.BaseConfig) error {
-	data := &dumperv1.StoredData{}
+	data := &traefikv1.StoredData{}
 	err := readJSONFile(acmeFile, data)
 	if err != nil {
 		return err
@@ -86,7 +87,7 @@ func dumpV1(acmeFile string, baseConfig *dumper.BaseConfig) error {
 }
 
 func dumpV2(acmeFile string, baseConfig *dumper.BaseConfig) error {
-	data := map[string]*acmev2.StoredData{}
+	data := map[string]*traefikv2.StoredData{}
 	err := readJSONFile(acmeFile, &data)
 	if err != nil {
 		return err
@@ -96,7 +97,7 @@ func dumpV2(acmeFile string, baseConfig *dumper.BaseConfig) error {
 }
 
 func dumpV3(acmeFile string, baseConfig *dumper.BaseConfig) error {
-	data := map[string]*acmev3.StoredData{}
+	data := map[string]*traefikv3.StoredData{}
 	err := readJSONFile(acmeFile, &data)
 	if err != nil {
 		return err

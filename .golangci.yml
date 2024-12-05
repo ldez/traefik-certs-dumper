@@ -93,6 +93,9 @@ issues:
       linters:
         - gochecknoglobals
         - gochecknoinits
+    - path: internal/traefikv[1-3]/
+      linters:
+        - tagalign
 
 output:
   show-stats: true

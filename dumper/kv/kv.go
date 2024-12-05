@@ -16,6 +16,7 @@ import (
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	v1 "github.com/ldez/traefik-certs-dumper/v2/dumper/v1"
 	"github.com/ldez/traefik-certs-dumper/v2/hook"
+	"github.com/ldez/traefik-certs-dumper/v2/internal/traefikv1"
 )
 
 // DefaultStoreKeySuffix is the default suffix/storage.
@@ -76,7 +77,7 @@ func dumpPair(pair *store.KVPair, baseConfig *dumper.BaseConfig) error {
 	return v1.Dump(data, baseConfig)
 }
 
-func getStoredDataFromGzip(pair *store.KVPair) (*v1.StoredData, error) {
+func getStoredDataFromGzip(pair *store.KVPair) (*traefikv1.StoredData, error) {
 	reader, err := gzip.NewReader(bytes.NewBuffer(pair.Value))
 	if err != nil {
 		return nil, fmt.Errorf("fail to create GZip reader: %w", err)

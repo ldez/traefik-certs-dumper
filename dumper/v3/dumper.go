@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
-	"github.com/traefik/traefik/v3/pkg/provider/acme"
+	"github.com/ldez/traefik-certs-dumper/v2/internal/traefikv3"
 )
 
 const (
@@ -17,7 +17,7 @@ const (
 )
 
 // Dump Dumps data to certificates.
-func Dump(data map[string]*acme.StoredData, baseConfig *dumper.BaseConfig) error {
+func Dump(data map[string]*traefikv3.StoredData, baseConfig *dumper.BaseConfig) error {
 	if baseConfig.Clean {
 		err := cleanDir(baseConfig.DumpPath)
 		if err != nil {
@@ -63,7 +63,7 @@ func Dump(data map[string]*acme.StoredData, baseConfig *dumper.BaseConfig) error
 	return nil
 }
 
-func writeCert(dumpPath string, cert acme.Certificate, info dumper.FileInfo, domainSubDir bool) error {
+func writeCert(dumpPath string, cert traefikv3.Certificate, info dumper.FileInfo, domainSubDir bool) error {
 	certPath := filepath.Join(dumpPath, certsSubDir, safeName(cert.Domain.Main+info.Ext))
 	if domainSubDir {
 		certPath = filepath.Join(dumpPath, safeName(cert.Domain.Main), info.Name+info.Ext)
@@ -75,7 +75,7 @@ func writeCert(dumpPath string, cert acme.Certificate, info dumper.FileInfo, dom
 	return os.WriteFile(certPath, cert.Certificate, 0o666)
 }
 
-func writeKey(dumpPath string, cert acme.Certificate, info dumper.FileInfo, domainSubDir bool) error {
+func writeKey(dumpPath string, cert traefikv3.Certificate, info dumper.FileInfo, domainSubDir bool) error {
 	keyPath := filepath.Join(dumpPath, keysSubDir, safeName(cert.Domain.Main+info.Ext))
 	if domainSubDir {
 		keyPath = filepath.Join(dumpPath, safeName(cert.Domain.Main), info.Name+info.Ext)
@@ -87,7 +87,7 @@ func writeKey(dumpPath string, cert acme.Certificate, info dumper.FileInfo, doma
 	return os.WriteFile(keyPath, cert.Key, 0o600)
 }
 
-func extractPEMPrivateKey(account *acme.Account) []byte {
+func extractPEMPrivateKey(account *traefikv3.Account) []byte {
 	var block *pem.Block
 	switch account.KeyType {
 	case certcrypto.RSA2048, certcrypto.RSA4096, certcrypto.RSA8192:

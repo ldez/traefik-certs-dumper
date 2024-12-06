@@ -145,7 +145,7 @@ services:
     container_name: traefik-certs-dumper
     entrypoint: sh -c '
       while ! [ -e /data/acme.json ]
-      || ! [ `jq ".[] | .Certificates | length" /data/acme.json` != 0 ]; do
+      || ! [ `jq ".[] | .Certificates | length" /data/acme.json | jq -s "add" ` != 0 ]; do
       sleep 1
       ; done
       && traefik-certs-dumper file --version v2 --watch

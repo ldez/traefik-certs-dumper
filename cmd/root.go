@@ -209,8 +209,8 @@ func help() {
 	s := fmt.Sprintln(hStyle.Render("Request for Donation."))
 	s += `
 I need your help!
-Donations fund maintenance and development of traefik-certs-dumper.
-Click on this link to donate: https://bento.me/ldez`
+Donations fund the maintenance and development of traefik-certs-dumper.
+Click on this link to donate: https://donate.ldez.dev`
 
 	log.Println(pStyle.Render(s))
 	log.SetFlags(log.LstdFlags | log.Lshortfile)

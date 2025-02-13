@@ -18,9 +18,10 @@ If you appreciate this project:
     - from file ("acme.json")
     - from KV stores (Consul, Etcd, Zookeeper)
 - Output formats:
-    - use domain as sub-directory (allow custom names and extensions)
+    - use domain as subdirectory (allow custom names and extensions)
     - flat (domain as filename)
 - Hook (only with watch mode and if the data source changes)
+- Support Traefik v1, v2, and v3.
 
 ## Installation
 

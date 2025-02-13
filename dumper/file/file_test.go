@@ -1,7 +1,6 @@
 package file
 
 import (
-	"context"
 	"testing"
 
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
@@ -54,7 +53,7 @@ func TestDump(t *testing.T) {
 				Version: test.version,
 			}
 
-			err := Dump(context.Background(), test.acmeFile, cfg)
+			err := Dump(t.Context(), test.acmeFile, cfg)
 			require.NoError(t, err)
 		})
 	}

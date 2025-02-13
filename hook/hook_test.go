@@ -1,7 +1,6 @@
 package hook
 
 import (
-	"context"
 	"testing"
 )
 
@@ -22,7 +21,7 @@ func Test_execute(t *testing.T) {
 
 	for _, test := range testCases {
 		t.Run(test.desc, func(t *testing.T) {
-			err := execute(context.Background(), test.command)
+			err := execute(t.Context(), test.command)
 			if err != nil {
 				t.Fatal(err)
 			}

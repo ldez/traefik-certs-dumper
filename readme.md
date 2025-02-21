@@ -61,6 +61,7 @@ Examples:
 
 - Traefik v1: [docker-compose](docs/docker-compose-traefik-v1.yml)
 - Traefik v2: [docker-compose](docs/docker-compose-traefik-v2.yml)
+- Traefik v3: TODO
 
 ## Usage
 
@@ -132,7 +133,7 @@ dump
 
 ## Hook
 
-Hook can be a one liner passed as a string, or a file for more complex post-hook scenarios.
+Hook can be a one-liner passed as a string, or a file for more complex post-hook scenarios.
 For the former, create a file (ex: `hook.sh`) and mount it, then pass `sh hooksh` as a parameter to `--post-hook`.
 
 Here is a docker-compose example:

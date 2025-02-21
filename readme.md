@@ -28,7 +28,7 @@ If you appreciate this project:
 ### Download / CI Integration
 
 ```bash
-curl -sfL https://raw.githubusercontent.com/ldez/traefik-certs-dumper/master/godownloader.sh | bash -s -- -b $(go env GOPATH)/bin v2.8.1
+curl -sfL https://raw.githubusercontent.com/ldez/traefik-certs-dumper/master/godownloader.sh | bash -s -- -b $(go env GOPATH)/bin v2.9.3
 ```
 
 <!--
@@ -73,7 +73,7 @@ Examples:
 ### Simple Dump
 
 ```console
-$ traefik-certs-dumper file
+$ traefik-certs-dumper file --version v3
 dump
 ├──certs
 │  └──my.domain.com.key
@@ -85,7 +85,7 @@ dump
 ### Change source and destination
 
 ```console
-$ traefik-certs-dumper file --source ./acme.json --dest ./dump/test
+$ traefik-certs-dumper file --version v3 --source ./acme.json --dest ./dump/test
 test
 ├──certs
 │  └──my.domain.com.key
@@ -97,7 +97,7 @@ test
 ### Use domain as sub-directory
 
 ```console
-$ traefik-certs-dumper file --domain-subdir=true
+$ traefik-certs-dumper file --version v3 --domain-subdir=true
 dump
 ├──my.domain.com
 │  ├──certificate.crt
@@ -109,7 +109,7 @@ dump
 #### Change file extension
 
 ```console
-$ traefik-certs-dumper file --domain-subdir --crt-ext=.pem --key-ext=.pem
+$ traefik-certs-dumper file --version v3 --domain-subdir --crt-ext=.pem --key-ext=.pem
 dump
 ├──my.domain.com
 │  ├──certificate.pem
@@ -121,7 +121,7 @@ dump
 #### Change file name
 
 ```console
-$ traefik-certs-dumper file --domain-subdir --crt-name=fullchain --key-name=privkey
+$ traefik-certs-dumper file --version v3 --domain-subdir --crt-name=fullchain --key-name=privkey
 dump
 ├──my.domain.com
 │  ├──fullchain.crt
@@ -142,7 +142,7 @@ services:
 # ...
 
   traefik-certs-dumper:
-    image: ldez/traefik-certs-dumper:v2.8.1
+    image: ldez/traefik-certs-dumper:v2.9.3
     container_name: traefik-certs-dumper
     entrypoint: sh -c '
       while ! [ -e /data/acme.json ]

@@ -23,7 +23,7 @@ services:
       - ./letsencrypt:/letsencrypt
 
   traefik-certs-dumper:
-    image: ldez/traefik-certs-dumper:v2.8.1
+    image: ldez/traefik-certs-dumper:v2.9.3
     entrypoint: sh -c '
       while ! [ -e /data/acme.json ]
         || ! [ `jq ".Certificates | length" /data/acme.json` != 0 ]; do

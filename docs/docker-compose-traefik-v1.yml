@@ -29,8 +29,15 @@ services:
         || ! [ `jq ".Certificates | length" /data/acme.json` != 0 ]; do
           sleep 1
       ; done
-      && traefik-certs-dumper file --watch
-        --source /data/acme.json --dest /data/certs'
+      ; if ! id -u traefik > /dev/null 2>&1; then
+          addgroup --gid ${PGID} traefik
+          ; adduser --disabled-password --gecos "" --ingroup traefik --uid ${PUID} traefik
+      ; else
+        groupmod -g ${PGID} -o traefik
+        ; usermod -u ${PUID} -o traefik
+      ; fi
+      ; su - traefik -c "traefik-certs-dumper file --watch
+        --source /data/acme.json --dest /data/certs"'
     volumes:
       - ./letsencrypt:/data
 

@@ -63,6 +63,40 @@ Examples:
 - Traefik v2: [docker-compose](docs/docker-compose-traefik-v2.yml)
 - Traefik v3: TODO
 
+```bash
+# assuming you're using traefik in a container, storing its configuration in consul
+ubuntu@ereefs-prod-qld-00:~$ docker run --user $(id -u):$(id -g) --network consul_consul -v $(pwd)/dump/:/dump ldez/traefik-certs-dumper kv consul --endpoints consul.cluster:8500
+dump
+├──certs
+│  ├──*.some.domain.com.crt
+│  └──some.domain.com.crt
+└──private
+   ├──*.some.domain.com.key
+   ├──some.domain.com.key
+   └──letsencrypt.key
+ubuntu@ereefs-prod-qld-00:~$ ls -lah
+total 16K
+drwxr-xr-x 4 ubuntu ubuntu 4.0K Mar 26 04:23 .
+drwxr-xr-x 3 root   root   4.0K Mar 21 23:28 ..
+drwxr-xr-x 2 ubuntu ubuntu 4.0K Mar 26 04:23 certs
+drwxr-xr-x 2 ubuntu ubuntu 4.0K Mar 26 04:23 private
+ubuntu@ereefs-prod-qld-00:~$ ls -lah certs/ private/
+certs/:
+total 16K
+drwxr-xr-x 2 ubuntu ubuntu 4.0K Mar 26 04:23  .
+drwxr-xr-x 4 ubuntu ubuntu 4.0K Mar 26 04:23  ..
+-rw-r--r-- 1 ubuntu ubuntu 3.8K Mar 26 04:23 '*.some.domain.com.crt'
+-rw-r--r-- 1 ubuntu ubuntu 3.8K Mar 26 04:23  some.domain.com.crt
+
+private/:
+total 20K
+drwxr-xr-x 2 ubuntu ubuntu 4.0K Mar 26 04:23  .
+drwxr-xr-x 4 ubuntu ubuntu 4.0K Mar 26 04:23  ..
+-rw------- 1 ubuntu ubuntu 3.2K Mar 26 04:23 '*.some.domain.com.key'
+-rw------- 1 ubuntu ubuntu 3.2K Mar 26 04:23  some.domain.com.key
+-rw------- 1 ubuntu ubuntu 3.2K Mar 26 04:23  letsencrypt.key
+```
+
 ## Usage
 
 - [traefik-certs-dumper](docs/traefik-certs-dumper.md)

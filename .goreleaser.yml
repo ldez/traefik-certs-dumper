@@ -70,6 +70,27 @@ docker_manifests:
       - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-armv7'
       - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-armv6'
       - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-386'
+  - name_template: 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}'
+    image_templates:
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-amd64'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-arm64'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-armv7'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-armv6'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-386'
+  - name_template: 'ghcr.io/ldez/traefik-certs-dumper:latest'
+    image_templates:
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-amd64'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-arm64'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-armv7'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-armv6'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-386'
+  - name_template: 'ghcr.io/ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}'
+    image_templates:
+      - 'ghcr.io/ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-amd64'
+      - 'ghcr.io/ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-arm64'
+      - 'ghcr.io/ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-armv7'
+      - 'ghcr.io/ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-armv6'
+      - 'ghcr.io/ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-386'
 
 dockers:
   - use: buildx
@@ -80,6 +101,9 @@ dockers:
       - 'ldez/traefik-certs-dumper:latest-amd64'
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-amd64'
       - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-amd64'
+      - 'ghcr.io/ldez/traefik-certs-dumper:latest-amd64'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-amd64'
+      - 'ghcr.io/ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-amd64'
     build_flag_templates:
       - '--pull'
       # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
@@ -103,6 +127,9 @@ dockers:
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-arm64'
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-arm.v8' # only for compatibility with Seihon
       - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-arm64'
+      - 'ghcr.io/ldez/traefik-certs-dumper:latest-arm64'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-arm64'
+      - 'ghcr.io/ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-arm64'
     build_flag_templates:
       - '--pull'
       # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
@@ -127,6 +154,9 @@ dockers:
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-armv7'
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-arm.v7' # only for compatibility with Seihon
       - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-armv7'
+      - 'ghcr.io/ldez/traefik-certs-dumper:latest-armv7'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-armv7'
+      - 'ghcr.io/ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-armv7'
     build_flag_templates:
       - '--pull'
       # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
@@ -151,6 +181,9 @@ dockers:
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-armv6'
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-arm.v6' # only for compatibility with Seihon
       - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-armv6'
+      - 'ghcr.io/ldez/traefik-certs-dumper:latest-armv6'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-armv6'
+      - 'ghcr.io/ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-armv6'
     build_flag_templates:
       - '--pull'
       # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
@@ -172,6 +205,9 @@ dockers:
       - 'ldez/traefik-certs-dumper:latest-386'
       - 'ldez/traefik-certs-dumper:{{ .Tag }}-386'
       - 'ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-386'
+      - 'ghcr.io/ldez/traefik-certs-dumper:latest-386'
+      - 'ghcr.io/ldez/traefik-certs-dumper:{{ .Tag }}-386'
+      - 'ghcr.io/ldez/traefik-certs-dumper:v{{ .Major }}.{{ .Minor }}-386'
     build_flag_templates:
       - '--pull'
       # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys

@@ -33,7 +33,8 @@ services:
       --source /data/acme.json --dest /data/certs'
     volumes:
       - ./letsencrypt:/data
-
+    network_mode: "none"
+    
   whoami:
     image: traefik/whoami:v1.8.1
     labels:

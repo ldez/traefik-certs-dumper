@@ -62,6 +62,7 @@ func convertOldAccount(account *AccountOld) *traefikv1.StoredData {
 			Key:         oldCert.Certificate.PrivateKey,
 		})
 	}
+
 	storedData.Certificates = certs
 
 	return storedData

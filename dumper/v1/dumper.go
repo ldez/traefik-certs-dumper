@@ -52,6 +52,7 @@ func Dump(data *traefikv1.StoredData, baseConfig *dumper.BaseConfig) error {
 	}
 
 	privateKeyPem := extractPEMPrivateKey(data.Account)
+
 	return os.WriteFile(filepath.Join(baseConfig.DumpPath, keysSubDir, "letsencrypt"+baseConfig.KeyInfo.Ext), privateKeyPem, 0o600)
 }
 
@@ -81,6 +82,7 @@ func writeKey(dumpPath string, cert *traefikv1.Certificate, info dumper.FileInfo
 
 func extractPEMPrivateKey(account *traefikv1.Account) []byte {
 	var block *pem.Block
+
 	switch account.KeyType {
 	case certcrypto.RSA2048, certcrypto.RSA4096, certcrypto.RSA8192:
 		block = &pem.Block{

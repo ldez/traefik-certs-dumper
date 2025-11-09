@@ -119,6 +119,7 @@ func tree(root, indent string) error {
 	}
 
 	fmt.Println(fi.Name())
+
 	if !fi.IsDir() {
 		return nil
 	}
@@ -129,6 +130,7 @@ func tree(root, indent string) error {
 	}
 
 	var names []string
+
 	for _, fi := range fis {
 		if fi.Name()[0] != '.' {
 			names = append(names, fi.Name())
@@ -137,8 +139,10 @@ func tree(root, indent string) error {
 
 	for i, name := range names {
 		add := "│  "
+
 		if i == len(names)-1 {
 			fmt.Print(indent + "└──")
+
 			add = "   "
 		} else {
 			fmt.Print(indent + "├──")

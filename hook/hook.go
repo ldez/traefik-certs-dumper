@@ -29,6 +29,7 @@ func execute(ctx context.Context, command string) error {
 	defer cancel()
 
 	parts := strings.Fields(os.ExpandEnv(command))
+
 	output, err := exec.CommandContext(ctxCmd, parts[0], parts[1:]...).CombinedOutput()
 	if len(output) > 0 {
 		fmt.Println(string(output))

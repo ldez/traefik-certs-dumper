@@ -22,6 +22,7 @@ func main() {
 	log.SetFlags(log.Lshortfile)
 
 	source := "./acme.json"
+
 	err := loadData(context.Background(), source)
 	if err != nil {
 		log.Fatal(err)
@@ -77,6 +78,7 @@ func putData(ctx context.Context, backend string, addrs []string, options valkey
 	}
 
 	log.Printf("Successfully updated %s.\n", backend)
+
 	return nil
 }
 
@@ -87,6 +89,7 @@ func readFile(source string) ([]byte, error) {
 	}
 
 	var b bytes.Buffer
+
 	gz := gzip.NewWriter(&b)
 
 	defer func() {

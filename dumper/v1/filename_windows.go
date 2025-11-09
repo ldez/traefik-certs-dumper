@@ -1,5 +1,3 @@
-// +build windows
-
 package v1
 
 import "strings"

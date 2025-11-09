@@ -78,6 +78,7 @@ func dump(acmeFile string, baseConfig *dumper.BaseConfig) error {
 
 func dumpV1(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	data := &traefikv1.StoredData{}
+
 	err := readJSONFile(acmeFile, data)
 	if err != nil {
 		return err
@@ -88,6 +89,7 @@ func dumpV1(acmeFile string, baseConfig *dumper.BaseConfig) error {
 
 func dumpV2(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	data := map[string]*traefikv2.StoredData{}
+
 	err := readJSONFile(acmeFile, &data)
 	if err != nil {
 		return err
@@ -98,6 +100,7 @@ func dumpV2(acmeFile string, baseConfig *dumper.BaseConfig) error {
 
 func dumpV3(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	data := map[string]*traefikv3.StoredData{}
+
 	err := readJSONFile(acmeFile, &data)
 	if err != nil {
 		return err
@@ -106,11 +109,12 @@ func dumpV3(acmeFile string, baseConfig *dumper.BaseConfig) error {
 	return dumperv3.Dump(data, baseConfig)
 }
 
-func readJSONFile(acmeFile string, data interface{}) error {
+func readJSONFile(acmeFile string, data any) error {
 	source, err := os.Open(filepath.Clean(acmeFile))
 	if err != nil {
 		return fmt.Errorf("failed to open file %q: %w", acmeFile, err)
 	}
+
 	defer func() { _ = source.Close() }()
 
 	err = json.NewDecoder(source).Decode(data)
@@ -118,6 +122,7 @@ func readJSONFile(acmeFile string, data interface{}) error {
 		log.Printf("warn: file %q may not be ready: %v", acmeFile, err)
 		return nil
 	}
+
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal file %q: %w", acmeFile, err)
 	}
@@ -134,6 +139,7 @@ func watch(ctx context.Context, acmeFile string, baseConfig *dumper.BaseConfig) 
 	defer func() { _ = watcher.Close() }()
 
 	done := make(chan bool)
+
 	go func() {
 		var previousHash []byte
 
@@ -151,7 +157,9 @@ func watch(ctx context.Context, acmeFile string, baseConfig *dumper.BaseConfig) 
 				hash, errW := manageEvent(ctx, watcher, event, acmeFile, previousHash, baseConfig)
 				if errW != nil {
 					log.Println("error:", errW)
+
 					done <- true
+
 					return
 				}
 
@@ -163,7 +171,9 @@ func watch(ctx context.Context, acmeFile string, baseConfig *dumper.BaseConfig) 
 				}
 
 				log.Println("error:", errW)
+
 				done <- true
+
 				return
 			}
 		}
@@ -226,9 +236,11 @@ func calculateHash(acmeFile string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	defer func() { _ = file.Close() }()
 
 	h := sha256.New()
+
 	_, err = io.Copy(h, file)
 	if err != nil {
 		return nil, err

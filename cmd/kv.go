@@ -57,6 +57,7 @@ func createTLSConfig(cmd *cobra.Command) (*tls.Config, error) {
 	}
 
 	ca := cmd.Flag("tls.ca").Value.String()
+
 	caPool, err := getCertPool(ca)
 	if err != nil {
 		return nil, err
@@ -108,6 +109,7 @@ func getCAContent(ca string) ([]byte, error) {
 		if os.IsNotExist(err) {
 			return []byte(ca), nil
 		}
+
 		return nil, err
 	}
 
@@ -115,6 +117,7 @@ func getCAContent(ca string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return caContent, nil
 }
 
@@ -126,6 +129,7 @@ func getClientAuth(ca string, caOptional bool) tls.ClientAuthType {
 	if caOptional {
 		return tls.VerifyClientCertIfGiven
 	}
+
 	return tls.RequireAndVerifyClientCert
 }
 
@@ -158,5 +162,6 @@ func getCertificate(privateKey, certContent string) (tls.Certificate, error) {
 	if errCertIsFile != nil {
 		return tls.Certificate{}, errCertIsFile
 	}
+
 	return tls.Certificate{}, errKeyIsFile
 }

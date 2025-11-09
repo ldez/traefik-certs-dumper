@@ -89,6 +89,7 @@ func writeKey(dumpPath string, cert traefikv3.Certificate, info dumper.FileInfo,
 
 func extractPEMPrivateKey(account *traefikv3.Account) []byte {
 	var block *pem.Block
+
 	switch account.KeyType {
 	case certcrypto.RSA2048, certcrypto.RSA4096, certcrypto.RSA8192:
 		block = &pem.Block{

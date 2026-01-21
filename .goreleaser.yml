@@ -26,6 +26,12 @@ builds:
     ignore:
       - goos: darwin
         goarch: 386
+      - goos: windows
+        goarm: 7
+      - goos: windows
+        goarm: 6
+      - goos: windows
+        goarm: 5
 
 changelog:
   sort: asc

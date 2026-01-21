@@ -12,7 +12,9 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
+	"github.com/cenkalti/backoff/v5"
 	"github.com/fsnotify/fsnotify"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	dumperv1 "github.com/ldez/traefik-certs-dumper/v2/dumper/v1"
@@ -205,7 +207,14 @@ func manageEvent(ctx context.Context, watcher *fsnotify.Watcher, event fsnotify.
 			log.Println("detected changes on file:", event.Name)
 		}
 
-		if errD := dump(acmeFile, baseConfig); errD != nil {
+		bo := backoff.NewExponentialBackOff()
+		bo.InitialInterval = 500 * time.Millisecond
+		bo.MaxInterval = 3 * bo.InitialInterval
+
+		_, errD := backoff.Retry(ctx, func() (any, error) { return nil, dump(acmeFile, baseConfig) },
+			backoff.WithBackOff(bo),
+			backoff.WithMaxElapsedTime(10*bo.InitialInterval))
+		if errD != nil {
 			return nil, errD
 		}
 

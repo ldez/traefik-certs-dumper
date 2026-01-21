@@ -10,7 +10,9 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
+	"github.com/cenkalti/backoff/v5"
 	"github.com/kvtools/valkeyrie"
 	"github.com/kvtools/valkeyrie/store"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
@@ -56,6 +58,17 @@ func watch(ctx context.Context, kvStore store.Store, storeKey string, baseConfig
 		}
 
 		err = dumpPair(pair, baseConfig)
+		if err != nil {
+			return err
+		}
+
+		bo := backoff.NewExponentialBackOff()
+		bo.InitialInterval = 500 * time.Millisecond
+		bo.MaxInterval = 3 * bo.InitialInterval
+
+		_, err = backoff.Retry(ctx, func() (any, error) { return nil, dumpPair(pair, baseConfig) },
+			backoff.WithBackOff(bo),
+			backoff.WithMaxElapsedTime(10*bo.InitialInterval))
 		if err != nil {
 			return err
 		}

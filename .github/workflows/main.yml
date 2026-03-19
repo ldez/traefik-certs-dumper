@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GO_VERSION: stable
-      GOLANGCI_LINT_VERSION: v2.8.0
+      GOLANGCI_LINT_VERSION: v2.11
       CGO_ENABLED: 0
 
     steps:

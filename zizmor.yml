@@ -1,0 +1,11 @@
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        # Actions from GitHub are trusted.
+        "actions/*": ref-pin
+        "GitHubSecurityLab/*": ref-pin
+        # Actions from Docker are trusted.
+        "docker/*": ref-pin
+  secrets-outside-env:
+    disable: true

@@ -44,6 +44,18 @@ changelog:
       - '^test:'
       - '^tests:'
 
+release:
+  skip_upload: false
+  github:
+    owner: 'ldez'
+    name: 'traefik-certs-dumper'
+  header: |
+    I hope you enjoyed my work, please consider donating or asking your company to do so.
+    
+    This will be appreciated, thank you :heart:
+  
+    https://donate.ldez.dev
+
 archives:
   - id: tcd
     name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'

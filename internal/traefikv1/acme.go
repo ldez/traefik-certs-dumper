@@ -1,8 +1,7 @@
 package traefikv1
 
 import (
-	"github.com/go-acme/lego/v4/certcrypto"
-	"github.com/go-acme/lego/v4/registration"
+	"github.com/ldez/traefik-certs-dumper/v2/internal"
 )
 
 // StoredData represents the data managed by the Store.
@@ -29,7 +28,6 @@ type Domain struct {
 // Account is used to store lets encrypt registration info.
 type Account struct {
 	Email        string
-	Registration *registration.Resource
+	Registration *internal.Resource
 	PrivateKey   []byte
-	KeyType      certcrypto.KeyType
 }

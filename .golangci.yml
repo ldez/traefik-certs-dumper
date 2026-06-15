@@ -29,6 +29,7 @@ linters:
     - varnamelen
     - wrapcheck
     - noinlineerr
+    - gomodguard # deprecated
     - wsl # deprecated
   settings:
     depguard:

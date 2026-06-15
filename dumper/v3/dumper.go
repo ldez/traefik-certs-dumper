@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/ldez/traefik-certs-dumper/v2/dumper"
 	"github.com/ldez/traefik-certs-dumper/v2/internal/traefikv3"
 )
@@ -88,24 +87,10 @@ func writeKey(dumpPath string, cert traefikv3.Certificate, info dumper.FileInfo,
 }
 
 func extractPEMPrivateKey(account *traefikv3.Account) []byte {
-	var block *pem.Block
-
-	switch account.KeyType {
-	case certcrypto.RSA2048, certcrypto.RSA4096, certcrypto.RSA8192:
-		block = &pem.Block{
-			Type:  "RSA PRIVATE KEY",
-			Bytes: account.PrivateKey,
-		}
-	case certcrypto.EC256, certcrypto.EC384:
-		block = &pem.Block{
-			Type:  "EC PRIVATE KEY",
-			Bytes: account.PrivateKey,
-		}
-	default:
-		panic(fmt.Sprintf("unsupported key type: '%v'", account.KeyType))
-	}
-
-	return pem.EncodeToMemory(block)
+	return pem.EncodeToMemory(&pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: account.PrivateKey,
+	})
 }
 
 func cleanDir(dumpPath string) error {

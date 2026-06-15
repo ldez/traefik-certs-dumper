@@ -1,8 +1,7 @@
 package kv
 
 import (
-	"github.com/go-acme/lego/v4/certcrypto"
-	"github.com/go-acme/lego/v4/registration"
+	"github.com/ldez/traefik-certs-dumper/v2/internal"
 	"github.com/ldez/traefik-certs-dumper/v2/internal/traefikv1"
 )
 
@@ -18,9 +17,8 @@ type CertificateOld struct {
 // AccountOld is used to store lets encrypt registration info.
 type AccountOld struct {
 	Email              string
-	Registration       *registration.Resource
+	Registration       *internal.Resource
 	PrivateKey         []byte
-	KeyType            certcrypto.KeyType
 	DomainsCertificate DomainsCertificates
 	ChallengeCerts     map[string]*ChallengeCert
 	HTTPChallenge      map[string]map[string][]byte
@@ -50,7 +48,6 @@ func convertOldAccount(account *AccountOld) *traefikv1.StoredData {
 			PrivateKey:   account.PrivateKey,
 			Registration: account.Registration,
 			Email:        account.Email,
-			KeyType:      account.KeyType,
 		},
 	}
 

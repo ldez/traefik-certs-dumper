@@ -69,6 +69,7 @@ archives:
 dockers_v2:
   - images:
       - 'ldez/traefik-certs-dumper'
+      - 'ghcr.io/ldez/traefik-certs-dumper'
     dockerfile: buildx.Dockerfile
     platforms:
       - linux/amd64
